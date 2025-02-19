@@ -7,6 +7,8 @@
  * License: GPL2
  */
 
+// Hook para agregar el menú en la administración
+add_action('admin_menu', 'mi_plugin_menu');
 
  function mi_plugin_menu() {
     add_menu_page(
@@ -35,6 +37,3 @@ function mi_plugin_pagina() {
     </div>
     <?php
 }
-
-// Hook para agregar el menú en la administración
-add_action('admin_menu', 'mi_plugin_menu');
