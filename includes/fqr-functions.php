@@ -1,13 +1,13 @@
 <?php
 /*
-Plugin Name: My First Plugin
-Description: This is my first plugin! It makes a new admin menu link!
+Plugin Name: FAQer
+Description: FAQ ur mom
 Author: Your Name
 */
-add_action( 'admin_menu', 'mfp_Add_My_Admin_Link' );
+add_action( 'admin_menu', 'fqr_Add_My_Admin_Link' );
 
 // Add a new top level menu link to the ACP
-function mfp_Add_My_Admin_Link()
+function fqr_Add_My_Admin_Link()
 {
     add_menu_page(
         'Miau Primera Pagina', // Title of the page
@@ -27,7 +27,7 @@ function fqr_shortcode_function() {
     return '<p>Este es un shortcode de FQR Plugin.</p>';
 }
 function mi_plugin_pagina() {
-    ?>
+    ?> 
     <div class="wrap">
         <h1>Bienvenido a Mi Plugin</h1>
         <p>Esta es la página de configuración de tu plugin personalizado.</p>
