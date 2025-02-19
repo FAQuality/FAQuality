@@ -7,9 +7,18 @@
  * License: GPL2
  */
 
- add_action('wp_footer', function(){?>
 
-<script>
-	// Here comes the code
-</script>
-<?php }  ,9999); ?>
+function mi_plugin_menu() {
+    add_menu_page(
+        'FAQer', // Título de la página
+        'FAQer', // Nombre del menú
+        'manage_options', // Capacidad requerida para ver el menú
+        'mi-plugin', // Slug del menú (URL amigable)
+        'mi_plugin_pagina', // Función que mostrará el contenido de la página
+        'dashicons-admin-plugins', // Icono del menú (puedes usar uno de los iconos predeterminados de WordPress)
+        4 // Posición en el menú de administración
+    );
+}
+
+
+?>
