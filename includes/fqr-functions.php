@@ -1,8 +1,9 @@
 <?php
 /*
- * Add my new menu to the Admin Control Panel
- */
-// Hook the 'admin_menu' action hook, run the function named 'mfp_Add_My_Admin_Link()'
+Plugin Name: My First Plugin
+Description: This is my first plugin! It makes a new admin menu link!
+Author: Your Name
+*/
 add_action( 'admin_menu', 'mfp_Add_My_Admin_Link' );
 
 // Add a new top level menu link to the ACP
@@ -12,7 +13,8 @@ function mfp_Add_My_Admin_Link()
         'Miau Primera Pagina', // Title of the page
         'FAQer plugin', // Text to show on the menu link
         'manage_options', // Capability requirement to see the link
-        'includes/fqr-primera-pagina.php' // The 'slug' - file to display when clicking the link
+        'includes/fqr-primera-pagina.php', // The 'slug' - file to display when clicking the link
+        'mi_plugin_pagina'
     );
 }
 
@@ -21,4 +23,19 @@ add_shortcode('fqr_shortcode', 'fqr_shortcode_function');
 
 function fqr_shortcode_function() {
     return '<p>Este es un shortcode de FQR Plugin.</p>';
+}
+function mi_plugin_pagina() {
+    ?>
+    <div class="wrap">
+        <h1>Bienvenido a Mi Plugin</h1>
+        <p>Esta es la página de configuración de tu plugin personalizado.</p>
+        <form method="post" action="options.php">
+            <?php
+            settings_fields('mi_plugin_opciones'); // Asegúrate de usar un nombre único para las opciones
+            do_settings_sections('mi-plugin'); // Registrar la sección de tu plugin si la necesitas
+            ?>
+            <input type="submit" value="Guardar Cambios" class="button-primary">
+        </form>
+    </div>
+    <?php
 }
