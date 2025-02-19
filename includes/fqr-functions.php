@@ -13,8 +13,10 @@ function mfp_Add_My_Admin_Link()
         'Miau Primera Pagina', // Title of the page
         'FAQer plugin', // Text to show on the menu link
         'manage_options', // Capability requirement to see the link
-        'includes/fqr-primera-pagina.php', // The 'slug' - file to display when clicking the link
-        'mi_plugin_pagina'
+        'mi-plugin', // Slug del menú (URL amigable)
+        'mi_plugin_pagina', // Función que mostrará el contenido de la página
+        'dashicons-admin-plugins', // Icono del menú (puedes usar uno de los iconos predeterminados de WordPress)
+        4 // Posición en el menú de administración
     );
 }
 
