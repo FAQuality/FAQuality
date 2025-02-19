@@ -1,2 +1,2 @@
 # FAQer
-Plug-in fro wordpress 
+Plug-in for wordpress 
