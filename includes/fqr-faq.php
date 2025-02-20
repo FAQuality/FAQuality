@@ -38,14 +38,14 @@ class FAQ_List_Table extends WP_List_Table {
     }
 
 //Generamos hueco para titulo (nombre) con enlace externo y le da el efecto cliqueable
-    function column_nombre($item) {
+    function column_ID_nuevo($item) {
         $edit_link = '?page=FAQ&action=edit&id=' . $item['ID'];
-        return sprintf('<strong><a href="%s">%s</a></strong>', $edit_link, esc_html($item['nombre']));
+        return sprintf('<strong><a href="%s">%s</a></strong>', $edit_link, esc_html($item['id_nuevo']));
     }
 
 //Generamos hueco para el nuevo ID   
-    function column_ID_nuevo($item) {
-        return esc_html($item['id_nuevo']);  
+    function column_nombre($item) {
+        return esc_html($item['nombre']);  
     }
 
 //Generamos hueco para pregunta    
