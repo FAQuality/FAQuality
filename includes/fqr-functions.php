@@ -1,9 +1,4 @@
 <?php
-/*
-Plugin Name: FAQer
-Description: FAQ ur mom
-Author: Valentina System
-*/
 add_action( 'admin_menu', 'fqr_Add_My_Admin_Link' );
 
 // Add a new top level menu link to the ACP
@@ -41,3 +36,6 @@ function mi_plugin_pagina() {
     </div>
     <?php
 }
+
+!%*^Ien12k1ZR5E6
+V41ent!naSi0QU3

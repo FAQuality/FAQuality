@@ -1,6 +1,8 @@
 <?php
 /*
-Plugin Name: My First Plugin
+Plugin Name: FAQer
 Description: This is my first plugin! It makes a new admin menu link!
-Author: Your Name
+Author: yo
 */
+
+require_once plugin_dir_path( __FILE__ )  . 'includes/fqr-functions.php';
