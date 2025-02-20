@@ -4,6 +4,9 @@ function faqer_new_categoria_page() {
    <div class="wrap">
     <h1>Crear Nueva Categoría</h1>
     <form method="post" action="">
+        <!-- Campo para el título -->
+        <label for="titulo_categoria"><strong>Título de la Categoría:</strong></label><br>
+        <input type="text" id="titulo_categoria" name="titulo_categoria" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el título aquí">
         <?php
         // Configuración del editor
         $contenido_por_defecto = ''; 
