@@ -19,7 +19,7 @@ function crear_tabla_faq() { // Aqui se guardan las preguntas con sus respuestas
                     respuesta TEXT NOT NULL,
                     FK_idcat INT,
                     FK_idpadre INT,
-                    FOREIGN KEY (FK_idcat) REFERENCES $prefijo categoria(id),
+                    FOREIGN KEY (FK_idcat) REFERENCES $PK_categoria,
                     FOREIGN KEY (FK_idpadre) REFERENCES 
     "
 }
