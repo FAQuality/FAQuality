@@ -36,6 +36,3 @@ function mi_plugin_pagina() {
     </div>
     <?php
 }
-
-!%*^Ien12k1ZR5E6
-V41ent!naSi0QU3
