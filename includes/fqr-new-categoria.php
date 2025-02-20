@@ -23,5 +23,5 @@ function faqer_new_categoria_page() {
         <input type="submit" value="Guardar Categoría" class="button button-primary">
     </form>
 </div>
-    <?php
+<?php
 }

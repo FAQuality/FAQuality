@@ -23,5 +23,5 @@ function faqer_new_faq_page() {
         <input type="submit" value="Guardar FAQ" class="button button-primary">
     </form>
 </div>
-    <?php
+<?php
 }
