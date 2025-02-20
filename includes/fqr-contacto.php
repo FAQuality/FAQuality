@@ -2,7 +2,7 @@
 function faqer_contact_page() {
     ?> 
     <div class="wrap">
-        <h1>Bienvenido al apartado para contactarnos</h1>
+        <h1>Bienvenido al apartado de contacto</h1>
         <p>Esta es la página para contactarnos por si tienes algun error</p>
         <form method="post" action="">
             <p>Ahora no hace nada, solo testing</p>
