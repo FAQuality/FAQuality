@@ -1,6 +1,4 @@
-<?php
-function faqer_page() {
-    ?> 
+
     <div class="wrap">
         <h1>Bienvenido a Mi Plugin</h1>
         <p>Esta es la página de configuración de tu plugin personalizado.</p>
@@ -9,5 +7,3 @@ function faqer_page() {
             <input type="submit" value="Guardar Cambios" class="button-primary">
         </form>
     </div>
-    <?php
-}
