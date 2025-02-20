@@ -1,6 +1,6 @@
 <?php
 add_action( 'admin_menu', 'fqr_Add_My_Admin_Link' );
-include 'fqr-primera-pagina.php'
+include 'fqr-primera-pagina.php';
 // Add a new top level menu link to the ACP
 function fqr_Add_My_Admin_Link()
 {
