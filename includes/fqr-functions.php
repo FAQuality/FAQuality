@@ -2,7 +2,7 @@
 /*
 Plugin Name: FAQer
 Description: FAQ ur mom
-Author: Your Name
+Author: Valentina System
 */
 add_action( 'admin_menu', 'fqr_Add_My_Admin_Link' );
 
@@ -13,8 +13,8 @@ function fqr_Add_My_Admin_Link()
         'Miau Primera Pagina', // Title of the page
         'FAQer plugin', // Text to show on the menu link
         'manage_options', // Capability requirement to see the link
-        'mi-plugin', // Slug del menú (URL amigable)
-        'mi_plugin_pagina', // Función que mostrará el contenido de la página
+        'FAQer', // Slug del menú (URL amigable)
+        'FAQer_pagina', // Función que mostrará el contenido de la página
         'dashicons-admin-plugins', // Icono del menú (puedes usar uno de los iconos predeterminados de WordPress)
         4 // Posición en el menú de administración
     );
