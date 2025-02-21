@@ -96,7 +96,7 @@ function faq_create_table(){
         PRIMARY KEY (id)
     ) $charset_collate;";
 
-    //Buscamos la herramienta dbdelta para evitar el duplicado de tablas.
+    //Buscamos la herramienta dbdelta y la importa para evitar el duplicado de tablas.
      require_once ABSPATH . 'wp-admin/includes/upgrade.php';
      dbDelta($sql);
  }
