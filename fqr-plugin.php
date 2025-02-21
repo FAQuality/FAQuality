@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: FAQer_raul
+Plugin Name: FAQer
 Description: This is my first plugin! It makes a new admin menu link!
 Author: yo
 */
