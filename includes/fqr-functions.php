@@ -1,5 +1,5 @@
 <?php
-//Globalizamos el uso de los prefijos para sql(fqr_categorias)
+//Globalizamos el uso de los prefijos para sql("fqr_" "categorias")
 $prefijo = $wpdb->prefix ."fqr_";
 $tabla_categoria = $prefijo."categoria";
 
