@@ -1,4 +1,8 @@
 <?php
+$prefijo = $wpdb->prefix ."fqr_";
+$tabla_categoria = $prefijo."categoria";
+
+
 add_action( 'admin_menu', 'fqr_Add_My_Admin_Link' );
 include 'fqr-primera-pagina.php';
 include 'fqr-categoria.php';
@@ -20,7 +24,6 @@ function fqr_Add_My_Admin_Link()
         'dashicons-format-status', // Icono del menú (puedes usar uno de los iconos predeterminados de WordPress)
         8 // Posición en el menú de administración
     );
-
 
     add_submenu_page( //Menu categoria
         'FAQer',           // El slug del menú principal al que pertenece
@@ -79,4 +82,20 @@ function fqr_shortcode_function() {
     return '<p>Este es un shortcode de FQR Plugin.</p>';
 }
 
+function faq_create_table(){
+    global $wpdb;
+    global $prefijo;
+    global $tabla_categoria;
+
+    $sql = "CREATE TABLE $tabla_categoria (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        nombre varchar(255) NOT NULL,
+        descripcion text NOT NULL,
+        PRIMARY KEY (id)
+    ) $charset_collate;";
+
+     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+     dbDelta($sql);
+ }
+register_activation_hook(__FILE__, 'faq_create_table');
 
