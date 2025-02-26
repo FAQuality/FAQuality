@@ -1,14 +1,13 @@
 <?php
 function faqer_new_categoria_page() {
 global $wpdb;
-$prefijo = $wpdb->prefix . "fqr_";
-$table_categoria = $prefijo . "categoria";
+$tabla_categoria = $wpdb->prefix . 'categoria'; 
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = sanitize_text_field($_POST['nombre']);
     $descripcion = wp_kses_post($_POST['descripcion']);
     
-    $wpdb->insert($table_categoria, ['nombre' => $nombre, 'descripcion' => $descripcion]);    
+    $wpdb->insert($tabla_categoria, ['nombre' => $nombre, 'descripcion' => $descripcion]);    
      wp_redirect(admin_url('admin.php?page=FAQ_Categoria'));
     exit;
 }
