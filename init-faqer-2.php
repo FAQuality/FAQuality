@@ -92,10 +92,6 @@ function crear_trigger_al_marcar_borrado_pregunta() {
             IF @disable_trigger = 0 AND NEW.borrado = 1 THEN
                 SET @disable_trigger = 1;
 
-                UPDATE $tabla_faq
-                SET borrado = 1
-                WHERE FK_idfaq = OLD.id;
-
                 UPDATE $tabla_contacto
                 SET borrado = 1
                 WHERE FK_idfaq = OLD.id;
