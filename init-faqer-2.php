@@ -89,7 +89,9 @@ function crear_trigger_al_marcar_borrado_pregunta() {
         AFTER UPDATE ON $tabla_faq
         FOR EACH ROW
         BEGIN
-            IF NEW.borrado = 1 THEN
+            IF @disable_trigger = 0 AND NEW.borrado = 1 THEN
+                SET @disable_trigger = 1;
+
                 UPDATE $tabla_faq
                 SET borrado = 1
                 WHERE FK_idfaq = OLD.id;
@@ -97,55 +99,47 @@ function crear_trigger_al_marcar_borrado_pregunta() {
                 UPDATE $tabla_contacto
                 SET borrado = 1
                 WHERE FK_idfaq = OLD.id;
+
+                SET @disable_trigger = 0;
             END IF;
         END;";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql_query);
-
-    $resultado = $wpdb->query('SHOW TRIGGERS LIKE after_update_faq_trigger');
-    if ($resultado === false) {
-        error_log('Error al crear el trigger after_update_faq_trigger: ' . $wpdb->last_error);
-    } else {
-        error_log('Trigger after_update_faq_trigger creado correctamente.');
-    }
+    $resultadoquery = $wpdb->query($sql_query);
 }
 
 // Al "eliminar" una categoria, las preguntas con esa categoría, se "eliminan"
 function crear_trigger_al_marcar_borrado_categoria() {
     global $wpdb;
+
     $prefijo = $wpdb->prefix . 'fqr_';
     $tabla_categoria = $prefijo . 'categoria';
     $tabla_faq = $prefijo . 'faq';
 
-
     $sql_query = "CREATE TRIGGER after_update_categoria_trigger
-        AFTER UPDATE ON $tabla_categoria
+        AFTER UPDATE ON nphT7_fqr_categoria
         FOR EACH ROW
         BEGIN
-            IF NEW.borrado = 1 THEN
-                UPDATE $tabla_faq
+            IF @disable_trigger = 0 AND NEW.borrado = 1 THEN
+                SET @disable_trigger = 1;
+        
+                UPDATE nphT7_fqr_faq
                 SET borrado = 1
                 WHERE FK_idcat = OLD.id;
+        
+                SET @disable_trigger = 0;
             END IF;
         END;";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql_query);
+    $resultadoquery = $wpdb->query($sql_query);
 
-    $resultado = $wpdb->query("SHOW TRIGGERS LIKE 'after_update_categoria_trigger'");
-    if ($resultado === false) {
-        error_log('Error al crear el trigger after_update_categoria_trigger: ' . $wpdb->last_error);
-    } else {
-        error_log('Trigger after_update_categoria_trigger creado correctamente.');
-    }
 }
 
 function activation() {
-    
     crear_tabla_categoria();
     crear_tabla_faq();
     crear_tabla_contacto();
-    // crear_trigger_al_marcar_borrado_pregunta();
-    // crear_trigger_al_marcar_borrado_categoria();
+    crear_trigger_al_marcar_borrado_pregunta();
+    crear_trigger_al_marcar_borrado_categoria();
 }
