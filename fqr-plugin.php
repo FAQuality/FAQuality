@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: FAQer_raul
-Description: This is my first plugin! It makes a new admin menu link!
-Author: yo
+Description: Que vuelva la mili
+Author: Alguien muy guapo
 */
 
 // Evita el acceso directo

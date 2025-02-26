@@ -1,4 +1,5 @@
 <?php
+ob_start();
 function faqer_new_categoria_page() {
 global $wpdb;
 $tabla_categoria = $wpdb->prefix . 'categoria'; 
@@ -8,7 +9,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $descripcion = wp_kses_post($_POST['descripcion']);
     
     $wpdb->insert($tabla_categoria, ['nombre' => $nombre, 'descripcion' => $descripcion]);    
-     wp_redirect(admin_url('admin.php?page=FAQ_Categoria'));
+     wp_safe_redirect(admin_url('admin.php?page=FAQ_Categoria'));
     exit;
 }
 
