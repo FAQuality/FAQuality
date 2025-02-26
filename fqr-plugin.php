@@ -1,12 +1,17 @@
 <?php
 /*
-Plugin Name: FAQer
-Description: The best FAQ plugin! It allows you to create hierarchical questions and answers
-Author: Los mejores programadores del mundo
+Plugin Name: FAQer_raul
+Description: Que vuelva la mili
+Author: Alguien muy guapo
 */
-
 
 require_once plugin_dir_path(__FILE__) . 'includes/fqr-functions.php'; // Importar los menús del plugin
 require_once plugin_dir_path(__FILE__) . 'init-faqer.php'; // Importar las funciones que se deben de ejecutar al iniciarse el plugin
 
 register_activation_hook(__FILE__,"activation"); // Función que se ejecuta al activar el plugin
+// Evita el acceso directo
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+
