@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: FAQer Fenrando
-Description: Ooo
-Author: yo
+Plugin Name: FAQer
+Description: The best FAQ plugin! It allows you to create hierarchical questions and answers
+Author: Los mejores programadores del mundo
 */
 
 
