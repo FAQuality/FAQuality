@@ -143,8 +143,6 @@ function faqer_edit_categoria_page() {
             wp_safe_redirect(admin_url('admin.php?page=FAQ_Categoria'));
             exit;
         }
-        // Redirigir después de la actualización
-       
-        
+               
     }
 }
