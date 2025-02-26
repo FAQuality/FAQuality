@@ -22,7 +22,8 @@ class Categoria_List_Table extends WP_List_Table {
    //Obtiene los datos de la base de datos 
    function get_categorias() {
     global $wpdb;
-    $tabla_categoria = $wpdb->prefix . 'categoria'; // Usa el prefijo correcto
+    $prefijo = $wpdb->prefix . 'fqr_';    
+    $tabla_categoria = $prefijo . 'categoria'; // Usa el prefijo correcto
     return $wpdb->get_results("SELECT id, nombre, descripcion FROM $tabla_categoria", ARRAY_A);
 } 
 
