@@ -1,8 +1,12 @@
 <?php
 /*
-Plugin Name: FAQer
-Description: This is my first plugin! It makes a new admin menu link!
+Plugin Name: FAQer Fenrando
+Description: Ooo
 Author: yo
 */
 
-require_once plugin_dir_path(__FILE__) . 'includes/fqr-functions.php';
+
+require_once plugin_dir_path(__FILE__) . 'includes/fqr-functions.php'; // Importar los menús del plugin
+require_once plugin_dir_path(__FILE__) . 'init-faqer.php'; // Importar las funciones que se deben de ejecutar al iniciarse el plugin
+
+register_activation_hook(__FILE__,"activation"); // Función que se ejecuta al activar el plugin
