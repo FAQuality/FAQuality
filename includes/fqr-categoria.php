@@ -1,6 +1,7 @@
 <?php
 // Añadimos la clase wp_list_table de wordpress y pedimos que sea requerido ya que no es publico
 // (se recoge de otro enlace dentro del mismo wordpress).
+
 if (!class_exists('WP_List_Table')) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php'; //ABSPATH es ruta absoluta
 }
@@ -37,10 +38,10 @@ class Categoria_List_Table extends WP_List_Table {
 //Creamos nuestras columnas (indicamos el tipo de columna que queremos y despues le ponemos nombre)    
     function get_columns() {
         return [
-            'cb' => '<input type="checkbox" />',
-            'id' => 'ID',
+            'cb' => '<input type="checkbox" />',            
             'nombre'   => 'Nombre',
-            'descripcion'  => 'Descripción'
+            'descripcion'  => 'Descripción',
+            'acciones' => 'Acciones'
             
         ];
     }
@@ -67,6 +68,18 @@ class Categoria_List_Table extends WP_List_Table {
         return esc_html($item['id']);  
     }  
 
+    /** Agrega botones de acción en la columna "Acciones" */
+    function column_acciones($item) {
+        $edit_link = '?page=FAQ_New_Categoria&action=edit&id=' . $item['id'];
+        $delete_link = '?page=FAQ_New_Categoria&action=delete&id=' . $item['id'];
+
+        return sprintf(
+            '<a href="%s">✏️ Editar</a> | <a href="%s" onclick="return confirm(\'¿Estás seguro?\')">❌ Eliminar</a>',
+            esc_url($edit_link),
+            esc_url($delete_link)
+        );
+    }
+
 } 
 
 //Muestra la tabla en la pagina con los datos que agregamos anteriormente
@@ -77,3 +90,5 @@ function faqer_categoria_page() {
     $categoria_table->display();
     echo '</div>';
 }
+
+
