@@ -1,8 +1,4 @@
 <?php
-//Globalizamos el uso de los prefijos para sql("fqr_" "categorias")
-// $prefijo = $wpdb->prefix ."fqr_";
-// $tabla_categoria = $prefijo."categoria";
-
 //Insertamos los contenidos de los archivos
 add_action( 'admin_menu', 'fqr_Add_My_Admin_Link' );
 include 'fqr-primera-pagina.php';
@@ -82,24 +78,4 @@ add_shortcode('fqr_shortcode', 'fqr_shortcode_function');
 function fqr_shortcode_function() {
     return '<p>Este es un shortcode de FQR Plugin.</p>';
 }
-
-//Funcion para crear tabla en sql
-// function faq_create_table(){    
-//     global $wpdb;
-//     global $prefijo;
-//     global $tabla_categoria;
-// //Crreamos la tabla con comando SQL y sus caracteristicas
-//     $sql = "CREATE TABLE $tabla_categoria (
-//         id mediumint(9) NOT NULL AUTO_INCREMENT,
-//         nombre varchar(255) NOT NULL,
-//         descripcion text NOT NULL,
-//         PRIMARY KEY (id)
-//     ) $charset_collate;";
-
-//     //Buscamos la herramienta dbdelta y la importa para evitar el duplicado de tablas.
-//      require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-//      dbDelta($sql);
-//  }
-// //Con un hook obligamos a que cuando se abra este archivo cree la tabla, es decir, al inicio del plugin
-// register_activation_hook(__FILE__, 'faq_create_table');
 

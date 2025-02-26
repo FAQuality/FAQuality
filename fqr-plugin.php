@@ -12,16 +12,18 @@ if (!defined('ABSPATH')) {
 
 require_once plugin_dir_path(__FILE__) . 'includes/fqr-functions.php';
 
+//Obligamos a que cuando se abra plugin cree las tablas necesarias
 register_activation_hook(__FILE__, 'crear_tabla_categorias');
 
+//Funcion que va a crear el plugin
 function crear_tabla_categorias(){    
     global $wpdb;
 
-    $tabla_categoria = $wpdb->prefix . 'categoria'; 
-    $charset_collate = $wpdb->get_charset_collate();
+//Asingamos el prefijo categoria
+    $tabla_categoria = $wpdb->prefix . 'categoria';   
    
     
-//Crreamos la tabla con comando SQL y sus caracteristicas
+//Creamos la tabla con comando SQL y sus caracteristicas
     $sql = "CREATE TABLE $tabla_categoria (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         nombre varchar(255) NOT NULL,
