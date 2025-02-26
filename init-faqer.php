@@ -30,7 +30,14 @@ function crear_tabla_faq() { // Aqui se guardan las preguntas con sus respuestas
     ";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql_query);
+    $wpdb->query($sql_query);
+
+    $resultado = $wpdb->query($sql_query);
+    if ($resultado === false) {
+        error_log("Error al crear la tabla faq: " . $wpdb->last_error);
+    } else {
+        error_log("Tabla faq creada correctamente.");
+    }
 }
 
 // Categoria, descripcion, borrado?
@@ -49,7 +56,7 @@ function crear_tabla_categoria() { // Aqui se guardan las categorias
     ";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql_query);
+    $wpdb->query($sql_query);
 }
 
 // Nombre, email, fecha, pregunta, atendido?, borrado?
@@ -75,7 +82,7 @@ function crear_tabla_contacto() { // Tabla en la que se guarda la información d
     ";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql_query);
+    $wpdb->query($sql_query);
 }
 
 // Si se "elimina" algo, comprueba en contacto y faq que los que lo tuvieran como FK se marquen como borrados
@@ -101,7 +108,7 @@ function crear_trigger_al_marcar_borrado_pregunta() { // Crea el trigger para ma
                     ;";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql_query);
+    $wpdb->query($sql_query);
 }
 
 // Al "eliminar" una categoria, las preguntas con esa categoría, se "eliminan"
@@ -110,7 +117,7 @@ function crear_trigger_al_marcar_borrado_categoria() {
     global $tabla_categoria;
     global $tabla_faq;
 
-    $sql_query = "CREATE TRIGGER after_update_faq
+    $sql_query = "CREATE TRIGGER after_update_categoria
                     AFTER UPDATE ON $tabla_categoria -- Despues de actualizar cualquier registro de categoria
                     FOR EACH ROW -- Cada fila ACTUALIZADA
                         BEGIN
@@ -123,16 +130,8 @@ function crear_trigger_al_marcar_borrado_categoria() {
                     ;";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql_query);
+    $wpdb->query($sql_query);
 }
 
 
-function activation() {
-    crear_tabla_categoria();
-    crear_tabla_contacto();
-    crear_tabla_faq();
-    crear_trigger_al_marcar_borrado_pregunta();
-    crear_trigger_al_marcar_borrado_categoria();
-}
 
-register_activation_hook(__FILE__,"activation");
