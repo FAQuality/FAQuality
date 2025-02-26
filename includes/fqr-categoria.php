@@ -39,10 +39,9 @@ class Categoria_List_Table extends WP_List_Table {
     function get_columns() {
         return [
             'cb' => '<input type="checkbox" />',            
-            'nombre'   => 'Nombre',
+            'categoria'   => 'Nombre',
             'descripcion'  => 'Descripción',
             'acciones' => 'Acciones'
-            
         ];
     }
 
@@ -68,10 +67,10 @@ class Categoria_List_Table extends WP_List_Table {
         return esc_html($item['id']);  
     }  
 
-    /** Agrega botones de acción en la columna "Acciones" */
+    // Agrega botones de acción en la columna "Acciones"
     function column_acciones($item) {
-        $edit_link = '?page=FAQ_New_Categoria&action=edit&id=' . $item['id'];
-        $delete_link = '?page=FAQ_New_Categoria&action=delete&id=' . $item['id'];
+        $edit_link = '?page=FAQ_Categoria&action=edit&id=' . $item['id'];
+        $delete_link = '?page=FAQ_Categoria&action=delete&id=' . $item['id'];
 
         return sprintf(
             '<a href="%s">✏️ Editar</a> | <a href="%s" onclick="return confirm(\'¿Estás seguro?\')">❌ Eliminar</a>',
@@ -79,13 +78,12 @@ class Categoria_List_Table extends WP_List_Table {
             esc_url($delete_link)
         );
     }
-
 } 
 
 //Muestra la tabla en la pagina con los datos que agregamos anteriormente
 function faqer_categoria_page() {
     echo '<div class="wrap"><h1>Categorías</h1>';
-    $categoria_table = new Categoria_List_Table();
+    $categoria_table = new Categoria_List_Table(); // FIXME: Externalizar o algo para que no se cree uno nuevo cada vez que se llama a la funcion
     $categoria_table->prepare_items();
     $categoria_table->display();
     echo '</div>';

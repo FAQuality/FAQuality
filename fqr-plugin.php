@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: FAQer_raul
-Description: Que vuelva la mili
-Author: Alguien muy guapo
+Plugin Name: FAQer Fernando
+Description: Miau
+Author: Un gato
 */
 
 require_once plugin_dir_path(__FILE__) . 'includes/fqr-functions.php'; // Importar los menús del plugin

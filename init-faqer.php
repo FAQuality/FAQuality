@@ -6,8 +6,8 @@ global $wpdb;
 
 // Variables principales
 $prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
-$tabla_faq = $prefijo . 'faq'; // Nombre de la tabla faq
 $tabla_categoria = $prefijo . 'categoria'; // Nombre de la tabla categoria
+$tabla_faq = $prefijo . 'faq'; // Nombre de la tabla faq
 $tabla_contacto = $prefijo . 'contacto'; // Nombre de la tabla contacto
 $PK_categoria = $tabla_categoria . '(id)'; // Clave primaria de la tabla categoria
 $PK_faq = $tabla_faq . '(id)'; // Clave primaria de la tabla faq
