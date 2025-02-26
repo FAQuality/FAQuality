@@ -1,137 +1,162 @@
 <?php
+
+require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
 global $wpdb;
-$prefijo = $wpdb->prefix . 'fqr_'; //
-$tabla_faq = $prefijo . 'faq';
-$tabla_categoria = $prefijo . 'categoria';
-$tabla_contacto = $prefijo . 'contacto';
-$PK_categoria = $tabla_categoria . '(id)';
-$PK_faq = $tabla_faq . '(id)';
-$PK_contacto = $tabla_contacto . '(id)';
 
-// Pregunta, respuesta, categoria, padre, borrado?
-function crear_tabla_faq() { // Aqui se guardan las preguntas con sus respuestas
+// Variables principales
+$prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
+$tabla_faq = $prefijo . 'faq'; // Nombre de la tabla faq
+$tabla_categoria = $prefijo . 'categoria'; // Nombre de la tabla categoria
+$tabla_contacto = $prefijo . 'contacto'; // Nombre de la tabla contacto
+$PK_categoria = $tabla_categoria . '(id)'; // Clave primaria de la tabla categoria
+$PK_faq = $tabla_faq . '(id)'; // Clave primaria de la tabla faq
+$PK_contacto = $tabla_contacto . '(id)'; // Clave primaria de la tabla contacto
+
+// Funcion que crea la tabla FAQ
+function crear_tabla_faq() {
     global $wpdb;
-    global $tabla_faq;
-    global $PK_faq;
-    global $PK_categoria;
+    // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
+    $prefijo = $wpdb->prefix . 'fqr_';
+    $tabla_faq = $prefijo . 'faq';
+    $PK_faq = $tabla_faq . '(id)';
+    $tabla_categoria = $prefijo . 'categoria';
+    $PK_categoria = $tabla_categoria . '(id)';
 
+    // Consulta para crear la tabla 
     $sql_query = " CREATE TABLE $tabla_faq (
-                    id INT PRIMARY KEY AUTO_INCREMENT,
-                    pregunta VARCHAR(255) NOT NULL,
-                    respuesta TEXT NOT NULL,
-                    FK_idcat INT,
-                    FK_idpadre INT,
-                    borrado TINYINT(1) DEFAULT 0 NOT NULL,
-                    CHECK (borrado = 0 OR borrado = 1),
-                    FOREIGN KEY (FK_idcat) REFERENCES $PK_categoria,
-                    FOREIGN KEY (FK_idpadre) REFERENCES $PK_faq 
-                    ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-                    ;
-    ";
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        pregunta VARCHAR(255) NOT NULL,
+        respuesta TEXT NOT NULL,
+        FK_idcat INT, -- ID de categoría
+        FK_idpadre INT, -- ID de pregunta padre
+        borrado TINYINT(1) DEFAULT 0 NOT NULL CHECK (borrado = 0 OR borrado = 1),
+        FOREIGN KEY (FK_idcat) REFERENCES $PK_categoria,
+        FOREIGN KEY (FK_idpadre) REFERENCES $PK_faq
+        );";
 
+    // Manda la consulta contra la base de datos
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    $wpdb->query($sql_query);
-
-    $resultado = $wpdb->query($sql_query);
-    if ($resultado === false) {
-        error_log("Error al crear la tabla faq: " . $wpdb->last_error);
-    } else {
-        error_log("Tabla faq creada correctamente.");
-    }
+    $resultadodbdelta = dbDelta($sql_query);
 }
 
-// Categoria, descripcion, borrado?
-function crear_tabla_categoria() { // Aqui se guardan las categorias
+// Funcion que crea la tabla categoria
+function crear_tabla_categoria() {
     global $wpdb;
-    global $tabla_categoria;
 
-    $sql_query = " CREATE TABLE $tabla_categoria (
-                    id INT PRIMARY KEY AUTO_INCREMENT,
-                    categoria VARCHAR(255) NOT NULL,
-                    descripcion TEXT,
-                    borrado TINYINT(1) DEFAULT 0 NOT NULL,
-                    CHECK (borrado = 0 OR borrado = 1)
-                    ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-                    ;
-    ";
+    // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
+    $prefijo = $wpdb->prefix . 'fqr_';
+    $tabla_categoria = $prefijo . 'categoria';
 
+    // Consulta para crear la tabla 
+    $sql_query = "CREATE TABLE $tabla_categoria (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        categoria VARCHAR(255) NOT NULL,
+        descripcion TEXT,
+        borrado TINYINT(1) DEFAULT 0 NOT NULL CHECK (borrado = 0 OR borrado = 1)
+        );";
+
+    // Manda la consulta contra la base de datos
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    $wpdb->query($sql_query);
-}
+    $resultadodbdelta = dbDelta($sql_query);
 
-// Nombre, email, fecha, pregunta, atendido?, borrado?
-function crear_tabla_contacto() { // Tabla en la que se guarda la información del formulario de contacto del final
-    global $wpdb;
-    global $tabla_contacto;
-    global $PK_faq;
     
-
-    $sql_query = " CREATE TABLE $tabla_contacto (
-                    id INT PRIMARY KEY AUTO_INCREMENT,
-                    fecha DATE DEFAULT CURDATE(),
-                    nombre VARCHAR(255) NOT NULL,
-                    email VARCHAR(255),
-                    FK_idfaq INT,
-                    estado_atendido TINYINT(1) DEFAULT 0 NOT NULL,
-                    borrado TINYINT(1) DEFAULT 0 NOT NULL,
-                    CHECK (borrado = 0 OR borrado = 1),
-                    CHECK (estado = 0 OR estado = 1),
-                    FOREIGN KEY (FK_idfaq) REFERENCES $PK_faq 
-                    ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-                    ;
-    ";
-
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    $wpdb->query($sql_query);
 }
 
-// Si se "elimina" algo, comprueba en contacto y faq que los que lo tuvieran como FK se marquen como borrados
-function crear_trigger_al_marcar_borrado_pregunta() { // Crea el trigger para marcar como borrado las preguntas hijas cuando el padre es marcado
+// Funcion que crea la tabla contacto
+function crear_tabla_contacto() {
     global $wpdb;
-    global $tabla_faq;
-    global $tabla_contacto;
 
-    $sql_query = "CREATE TRIGGER after_update_faq
-                    AFTER UPDATE ON $tabla_faq -- Despues de actualizar cualquier registro de faq
-                    FOR EACH ROW -- Cada fila ACTUALIZADA
-                        BEGIN
-                            IF NEW.borrado = 1 THEN -- Si se actualiza a borrado 1
-                                UPDATE $tabla_faq -- Actualiza la tabla contacto
-                                SET borrado = 1 -- Pone borrado 1
-                                WHERE FK_idfaq = OLD.id;  -- Donde la pregunta padre sea el ID de la pregunta marcada
-                            
-                                UPDATE $tabla_contacto  -- Actualiza la tabla contacto
-                                SET borrado = 1
-                                WHERE FK_idfaq = OLD.id;
-                            END IF;
-                    END
-                    ;";
+    // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
+    $prefijo = $wpdb->prefix . 'fqr_';
+    $tabla_contacto = $prefijo . 'contacto';
+    $tabla_faq = $prefijo . 'faq';
+    $PK_faq = $tabla_faq . '(id)';
 
+    // Consulta para crear la tabla 
+    $sql_query = " CREATE TABLE $tabla_contacto (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        fecha DATE DEFAULT CURDATE(),
+        nombre VARCHAR(255) NOT NULL,
+        email VARCHAR(255),
+        FK_idfaq INT,
+        estado_atendido TINYINT(1) DEFAULT 0 NOT NULL CHECK (estado_atendido = 0 OR estado_atendido = 1),
+        borrado TINYINT(1) DEFAULT 0 NOT NULL CHECK (borrado = 0 OR borrado = 1),
+        FOREIGN KEY (FK_idfaq) REFERENCES $PK_faq 
+        );";
+
+    // Manda la consulta contra la base de datos
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    $wpdb->query($sql_query);
+    $resultadodbdelta = dbDelta($sql_query);
+}
+
+// Si se "elimina" una pregunta, comprueba en contacto que los que la tuvieran como 
+// clave foránea se marquen como borrados
+function crear_trigger_al_marcar_borrado_pregunta() {
+    global $wpdb;
+
+    // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
+    $prefijo = $wpdb->prefix . 'fqr_';
+    $tabla_contacto = $prefijo . 'contacto';
+    $tabla_faq = $prefijo . 'faq';
+
+    // Consulta para crear el trigger  
+    $sql_query = "CREATE TRIGGER after_update_faq_trigger -- Crea un auto-actualizador de datos
+        AFTER UPDATE ON $tabla_faq -- se actualizan cuando haya una actualización en esta tabla
+        FOR EACH ROW -- lee cada fila
+        BEGIN
+            IF @disable_trigger = 0 AND NEW.borrado = 1 THEN -- si en esa fila se cambia el dato de borrado a 1
+                SET @disable_trigger = 1; -- desactiva que se pueda reactivar el trigger
+
+                UPDATE $tabla_contacto
+                SET borrado = 1 -- cambia a borrado el contacto 
+                WHERE FK_idfaq = OLD.id; -- de los usuarios que hayan rellenado el formulario en una pregunta eliminada
+
+                SET @disable_trigger = 0; -- activa que se pueda reactivar el trigger
+            END IF;
+        END;";
+
+    // Manda la consulta contra la base de datos
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    $resultadoquery = $wpdb->query($sql_query);
 }
 
 // Al "eliminar" una categoria, las preguntas con esa categoría, se "eliminan"
 function crear_trigger_al_marcar_borrado_categoria() {
     global $wpdb;
-    global $tabla_categoria;
-    global $tabla_faq;
 
-    $sql_query = "CREATE TRIGGER after_update_categoria
-                    AFTER UPDATE ON $tabla_categoria -- Despues de actualizar cualquier registro de categoria
-                    FOR EACH ROW -- Cada fila ACTUALIZADA
-                        BEGIN
-                            IF NEW.borrado = 1 THEN -- Si se actualizan los registros a borrado 1
-                                UPDATE $tabla_faq -- Actualiza la tabla faq
-                                SET borrado = 1 -- Pone borrado 1
-                                WHERE FK_idcat = OLD.id; -- Donde la categoria de la pregunta sea la que sea ha marcado
-                            END IF;
-                    END
-                    ;";
+    // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
+    $prefijo = $wpdb->prefix . 'fqr_';
+    $tabla_categoria = $prefijo . 'categoria';
+    $tabla_faq = $prefijo . 'faq';
 
+    // Consulta para crear el trigger 
+    $sql_query = "CREATE TRIGGER after_update_categoria_trigger -- Crea un auto-actualizador de datos
+        AFTER UPDATE ON $tabla_categoria -- se actualizan cuando haya una actualización en esta tabla
+        FOR EACH ROW -- lee cada fila
+        BEGIN
+            IF @disable_trigger = 0 AND NEW.borrado = 1 THEN -- si en esa fila se cambia el dato de borrado a 1
+                SET @disable_trigger = 1; -- desactiva que se pueda reactivar el trigger
+        
+                UPDATE $tabla_faq
+                SET borrado = 1 -- cambia a borrado la pregunta 
+                WHERE FK_idcat = OLD.id; -- en las preguntas cuya categoría sea borrada
+        
+                SET @disable_trigger = 0; -- activa que se pueda reactivar el trigger
+            END IF;
+        END;";
+
+    // Manda la consulta contra la base de datos
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    $wpdb->query($sql_query);
+    $resultadoquery = $wpdb->query($sql_query);
+
 }
 
-
-
+// Funcion que se ejecuta al iniciar el plugin
+function activation() {
+    crear_tabla_categoria();
+    crear_tabla_faq();
+    crear_tabla_contacto();
+    crear_trigger_al_marcar_borrado_pregunta();
+    crear_trigger_al_marcar_borrado_categoria();
+}
