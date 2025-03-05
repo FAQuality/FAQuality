@@ -1,9 +1,9 @@
 <?php
 /*
 
-Plugin Name: FAQer Beta 0.1
-Description: Beta 01
-Author: Los betas
+Plugin Name: FAQer Fernando Plus Prime Apocalipsis
+Description: Prime
+Author: El gato negro
 
 */
 

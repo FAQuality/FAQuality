@@ -36,8 +36,8 @@ class Categoria_List_Table_F extends WP_List_Table {
         $columns = $this->get_columns();  // Obtiene las columnas definidas antes
         $hidden  = [];                    // Columnas ocultas (vacío porque mostramos todas)
         $sortable = [];                    // Columnas ordenables (no usamos ordenamiento)
-            $this->_column_headers = [$columns, $hidden, $sortable];   
-     }
+        $this->_column_headers = [$columns, $hidden, $sortable];   
+    }
 
 //Creamos nuestras columnas (indicamos el tipo de columna que queremos y despues le ponemos nombre)    
     function get_columns() {
