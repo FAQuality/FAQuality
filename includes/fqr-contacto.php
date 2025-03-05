@@ -73,8 +73,27 @@ class Categoria_List_Contacto extends WP_List_Table {
 
 //Generamos hueco para la clave foranea
 function column_FK_idfaq($item) {
-    return esc_html($item['FK_idfaq']);  
-}      
+    global $wpdb;
+    $prefijo = $wpdb->prefix . 'fqr_';  // Asegúrate de que este prefijo es correcto
+    $tabla_faq = $prefijo . 'faq';  // Nombre de la tabla que contiene las preguntas
+    $fkidfaq = $item['FK_idfaq'];  // Obtenemos el valor de la ID de la pregunta
+
+    // Hacemos la consulta para obtener la pregunta relacionada con esta ID
+    $pregunta = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT pregunta FROM $tabla_faq WHERE id = %d", 
+            $fkidfaq
+        )
+    );
+
+    // Verificamos si hemos obtenido una pregunta
+    if ($pregunta) {
+        return esc_html($pregunta);  // Devolvemos la pregunta con seguridad (escapada para evitar XSS)
+    } else {
+        return 'Pregunta no encontrada';  // En caso de que no haya una pregunta asociada
+    }
+}
+
 
     /** Agrega botones de acción en la columna "Acciones" */
     function column_acciones($item) {       
