@@ -25,7 +25,7 @@ $wpdb->insert($tabla_faq, ['pregunta' => $pregunta, 'respuesta' => $respuesta ,'
     exit;
 }
 
-$categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria");
+$categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHERE borrado=0");
 
 //HTML para la base de pagina web con herramientas de wordpress
     ?> 
