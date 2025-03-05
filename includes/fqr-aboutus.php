@@ -2,12 +2,16 @@
 function faqer_aboutus_page() {
     ?> 
     <div class="wrap">
+    <div class="content">
         <h1>About Us</h1>
-        <p>Esta es la página para conocernos</p>
-        <form method="post" action="">
-            <p>Ahora no hace nada, solo testing</p>
-            <input type="submit" value="Guardar Cambios" class="button-primary">
-        </form>
+        <h2>¿Quiénes somos?</h2>
+        <p>Somos dos estudiantes con ganas de aprender y, modestia aparte, increíblemente guapos 
+            (o eso nos decimos para motivarnos). Este plugin es nuestro campo de entrenamiento, 
+            un proyecto en constante evolución donde ponemos a prueba lo que vamos aprendiendo. 
+            No esperes una versión final pronto, porque seguiremos mejorándolo mientras sigamos 
+            descubriendo cosas nuevas. ¡Esperamos que te sea útil tanto como a nosotros nos está 
+            sirviendo para aprender! </p>
+    </div>
     </div>
     <?php
 }
