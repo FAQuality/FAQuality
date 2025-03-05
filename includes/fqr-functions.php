@@ -86,3 +86,5 @@ function fqr_shortcode_function() {
     return '<p>Este es un shortcode de FQR Plugin.</p>';
 }
 
+
+

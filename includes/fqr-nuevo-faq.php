@@ -9,17 +9,23 @@ global $wpdb;
 //Asignamos nombre y prefijo a la tabla
 $prefijo = $wpdb->prefix . 'fqr_';
 $tabla_faq = $prefijo . 'faq';
+$tabla_categoria = $prefijo . 'categoria';
 
   //Si mandamos un request(enviar) limpiamos codigo con sanitize y wp_kses_post
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pregunta = sanitize_text_field($_POST['pregunta']);
     $respuesta = wp_kses_post($_POST['respuesta']);
-    
+    $FK_idpadre = sanitize_text_field($_POST['id_padre']);
+    $FK_idcat = sanitize_text_field($_POST['id_cat']);
+
     //Insertamos en la tabla los datos y hacemos redirect a la lista principal
-    $wpdb->insert($tabla_faq, ['pregunta' => $pregunta, 'respuesta' => $respuesta]);    
+$wpdb->insert($tabla_faq, ['pregunta' => $pregunta, 'respuesta' => $respuesta ,'FK_idpadre'=>$FK_idpadre, 
+             'FK_idcat'=>$FK_idcat]);    
      wp_safe_redirect(admin_url('admin.php?page=FAQ'));
     exit;
 }
+
+$categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria");
 
 //HTML para la base de pagina web con herramientas de wordpress
     ?> 
@@ -30,9 +36,27 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- Insertamos los datos con el nombre   -->
         <label for="titulo_faq"><strong>Pregunta:</strong></label><br>
         <input type="text" id="pregunta" name="pregunta" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el título aquí">
+        <!-- Lista dinamica -->
+        <label for="id_cat">Selecciona una categoria:</label>        
+            <select name="id_cat" id="id_cat">
+                <?php
+                //Comprueba si existe categoria alguna
+                if ($categorias) {
+                    //Reproduce en bucle las categorias existentes
+                    foreach ($categorias as $categoria) {
+                        echo '<option value="' . esc_attr($categoria->id) . '">' . esc_html($categoria->categoria) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay categorías disponibles</option>';
+                }
+                ?>
+            </select><br>
+        <!-- Id pregunta padre -->
         <label for="id_padre"><strong>Id de la pregunta Padre:</strong></label><br>
         <input type="number" pattern="\d*" inputmode="numeric" id="id_padre" name="id_padre" style="width: 5%; font-size: 18px; padding: 10px; margin-bottom: 10px;"><br>
+        <!-- Respuesta -->
         <label for="respuesta"><strong>Respuesta:</strong></label><br>
+        
        <?php
         //Se empieza uso de php en el html
         // Configuración del editor
