@@ -77,9 +77,6 @@ function fqr_Add_My_Admin_Link()
 // En fqr-functions.php
 add_shortcode('fqr_shortcode', 'fqr_shortcode_function');
 
-function fqr_shortcode_function() {
-    return '<p>Este es un shortcode de FQR Plugin.</p>';
-}
 
 
 
