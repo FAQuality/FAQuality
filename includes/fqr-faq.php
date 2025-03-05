@@ -7,7 +7,7 @@ if (!class_exists('WP_List_Table')) {
 
 //Creamos la clase categoria_list_table que al extender de wp_list_table, cogemos lo que realiza la funcion
 //wp_list_table y la personalizamos 
-class FAQ_List_Table extends WP_List_Table {
+class FAQ_List_Tablef extends WP_List_Table {
 
 //Creamos un constructor con la informacion principal (ajax desactivado por ahora)
     function __construct() {
@@ -79,7 +79,7 @@ class FAQ_List_Table extends WP_List_Table {
 //Muestra la tabla en la pagina con los datos que agregamos anteriormente
 function faqer_FAQ_page() {
     echo '<div class="wrap"><h1>Frequetly Answered Questionss</h1>';
-    $table = new FAQ_List_Table();
+    $table = new FAQ_List_Tablef();
     $table->prepare_items();
     $table->display();
     echo '</div>';

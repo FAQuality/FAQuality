@@ -6,15 +6,15 @@ global $wpdb;
 
 // Variables principales
 $prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
-$tabla_faq = $prefijo . 'faq'; // Nombre de la tabla faq
 $tabla_categoria = $prefijo . 'categoria'; // Nombre de la tabla categoria
+$tabla_faq = $prefijo . 'faq'; // Nombre de la tabla faq
 $tabla_contacto = $prefijo . 'contacto'; // Nombre de la tabla contacto
 $PK_categoria = $tabla_categoria . '(id)'; // Clave primaria de la tabla categoria
 $PK_faq = $tabla_faq . '(id)'; // Clave primaria de la tabla faq
 $PK_contacto = $tabla_contacto . '(id)'; // Clave primaria de la tabla contacto
 
 // Funcion que crea la tabla FAQ
-function crear_tabla_faq() {
+function crear_tabla_faqf() {
     global $wpdb;
     // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
     $prefijo = $wpdb->prefix . 'fqr_';
@@ -41,7 +41,7 @@ function crear_tabla_faq() {
 }
 
 // Funcion que crea la tabla categoria
-function crear_tabla_categoria() {
+function crear_tabla_categoriaf() {
     global $wpdb;
 
     // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
@@ -64,7 +64,7 @@ function crear_tabla_categoria() {
 }
 
 // Funcion que crea la tabla contacto
-function crear_tabla_contacto() {
+function crear_tabla_contactof() {
     global $wpdb;
 
     // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
@@ -92,7 +92,7 @@ function crear_tabla_contacto() {
 
 // Si se "elimina" una pregunta, comprueba en contacto que los que la tuvieran como 
 // clave foránea se marquen como borrados
-function crear_trigger_al_marcar_borrado_pregunta() {
+function crear_trigger_al_marcar_borrado_preguntaf() {
     global $wpdb;
 
     // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
@@ -122,7 +122,7 @@ function crear_trigger_al_marcar_borrado_pregunta() {
 }
 
 // Al "eliminar" una categoria, las preguntas con esa categoría, se "eliminan"
-function crear_trigger_al_marcar_borrado_categoria() {
+function crear_trigger_al_marcar_borrado_categoriaf() {
     global $wpdb;
 
     // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
@@ -154,9 +154,9 @@ function crear_trigger_al_marcar_borrado_categoria() {
 
 // Funcion que se ejecuta al iniciar el plugin
 function activation() {
-    crear_tabla_categoria();
-    crear_tabla_faq();
-    crear_tabla_contacto();
-    crear_trigger_al_marcar_borrado_pregunta();
-    crear_trigger_al_marcar_borrado_categoria();
+    crear_tabla_categoriaf();
+    crear_tabla_faqf();
+    crear_tabla_contactof();
+    crear_trigger_al_marcar_borrado_preguntaf();
+    crear_trigger_al_marcar_borrado_categoriaf();
 }

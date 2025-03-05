@@ -1,8 +1,10 @@
 <?php
 /*
-Plugin Name: FAQer_Raul_elMamasLokas
-Description: Que vuelva la mili
-Author: Alguien no muy del betis
+
+Plugin Name: FAQer Beta 0.1
+Description: Beta 01
+Author: Los betas
+
 */
 
 require_once plugin_dir_path(__FILE__) . 'includes/fqr-functions.php'; // Importar los menús del plugin
