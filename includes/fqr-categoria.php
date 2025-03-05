@@ -22,8 +22,9 @@ class Categoria_List_Table extends WP_List_Table {
    //Obtiene los datos de la base de datos 
    function get_categorias() {
     global $wpdb;
-    $tabla_categoria = $wpdb->prefix . 'categoria'; // Usa el prefijo correcto
-    return $wpdb->get_results("SELECT id, nombre, descripcion FROM $tabla_categoria", ARRAY_A);
+    $prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
+    $tabla_categoria = $prefijo . 'categoria';
+    return $wpdb->get_results("SELECT id, nombre, descripcion FROM $tabla_categoria WHERE borrado = 0", ARRAY_A);
 } 
 
 //Cargamos datos en las columnas
@@ -39,7 +40,7 @@ class Categoria_List_Table extends WP_List_Table {
     function get_columns() {
         return [
             'cb' => '<input type="checkbox" />',            
-            'categoria'   => 'Nombre',
+            'categoria'   => 'Categoría',
             'descripcion'  => 'Descripción',
             'acciones' => 'Acciones'
         ];
@@ -54,7 +55,7 @@ class Categoria_List_Table extends WP_List_Table {
 //Generamos hueco para nombre con enlace externo y le da el efecto cliqueable
     function column_nombre($item) {
         $edit_link = '?page=FAQ_Categoria&action=edit&id=' . $item['ID'];
-        return sprintf('<strong><a href="%s">%s</a></strong>', $edit_link, esc_html($item['nombre']));
+        return sprintf('<strong><a href="%s">%s</a></strong>', $edit_link, esc_html($item['categoria']));
     }
 
 //Generamos hueco para descripcion     
