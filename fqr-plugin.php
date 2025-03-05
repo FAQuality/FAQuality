@@ -1,9 +1,9 @@
 <?php
 /*
 
-Plugin Name: FAQer Beta 0.1
-Description: Beta 01
-Author: Los betas
+Plugin Name: FAQer Beta_Raul
+Description: Beta 02
+Author: Los REALES HASTA LA MUERTE BRR
 
 */
 
