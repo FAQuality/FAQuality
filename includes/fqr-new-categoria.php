@@ -29,7 +29,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- Campo para el título -->      
         <!-- Insertamos los datos con el nombre   -->
         <label for="titulo_categoria"><strong>Título de la Categoría:</strong></label><br>
-        <input type="text" id="categoria" name="nombre" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el título aquí">
+        <input type="text" id="categoria" name="categoria" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el título aquí">
         <?php
         //Se empieza uso de php en el html
         // Configuración del editor
