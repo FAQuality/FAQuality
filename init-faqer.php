@@ -152,6 +152,18 @@ function crear_trigger_al_marcar_borrado_categoriaf() {
 
 }
 
+//Introduce una categoria vacia siempre que se ejecuta el plugin
+function categoria_none() {
+    global $wpdb;
+    $prefijo = $wpdb->prefix . 'fqr_';
+    $tabla_categoria = $prefijo . 'categoria';
+
+    $sql_query = "INSERT INTO $tabla_categoria (categoria) VALUES ('NONE')";
+    
+    $wpdb->query($sql_query);
+}
+
+
 // Funcion que se ejecuta al iniciar el plugin
 function activation() {
     crear_tabla_categoriaf();
@@ -159,4 +171,6 @@ function activation() {
     crear_tabla_contactof();
     crear_trigger_al_marcar_borrado_preguntaf();
     crear_trigger_al_marcar_borrado_categoriaf();
+    categoria_none();
 }
+
