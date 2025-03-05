@@ -25,7 +25,7 @@ function faqer_edit_categoria_page() {
       // Si la acción es editar, mostramos el formulario con los datos actuales
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
         $id = intval($_GET['id']);
-        $categoria = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tabla_categoria WHERE id = %d", $id));
+        $categoria = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tabla_categoria WHERE id = $id AND borrado = 0"));
     
         if ($categoria) {
             // Mostrar formulario de edición con los datos actuales
@@ -64,25 +64,27 @@ function faqer_edit_categoria_page() {
             </form>            
             </div>
          <?php
-        }
+        } 
+    } else {
+        $action = $_GET['action'];
+        $id = $_GET['id'];
+        $categoria = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tabla_categoria WHERE id = $id AND borrado = 0"));
+        wp_die("No se ha podido editar. Action -> $action. ID -> $id. Consulta-> $categoria");
     }
+
+    
     
     // Verificar si se ha enviado el formulario de actualización
     if (isset($_POST['update_categoria'])) {
         $id = intval($_POST['id']);
-        $nombre = sanitize_text_field($_POST['nombre']);
+        $categoria = sanitize_text_field($_POST['categoria']);
         $descripcion = wp_kses_post($_POST['descripcion']);      
     
         // Actualizar la categoría en la base de datos
-        $wpdb->update(
-            $tabla_categoria,
-            ['nombre' => $nombre, 'descripcion' => $descripcion],
-            ['id' => $id]
-        );
         
         $resultado = $wpdb->update(
             $tabla_categoria,
-            ['nombre' => $nombre, 'descripcion' => $descripcion],
+            ['categoria' => $categoria, 'descripcion' => $descripcion],
             ['id' => $id]
         );
         
@@ -93,6 +95,5 @@ function faqer_edit_categoria_page() {
             wp_safe_redirect(admin_url('admin.php?page=FAQ_Categoria'));
             exit;
         }
-               
     }
 }

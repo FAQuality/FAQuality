@@ -30,20 +30,14 @@ function fqr_Add_My_Admin_Link()
         'FAQ_Categoria',   // Slug único para la página del submenú
         'faqer_categoria_page' // Función que renderiza la página del submenú
     );
-    function faqer_selection_new_categoria_page() {
-        if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
-            faqer_edit_categoria_page();
-        } else {
-            faqer_new_categoria_page();
-        }
-    }
+    
     add_submenu_page( //Menu crear categorias
         'FAQerF',           // El slug del menú principal al que pertenece
         'Nueva_Categoria', // Título de la página del submenú
         'Nueva Categoria',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'FAQ_New_Categoria',   // Slug único para la página del submenú
-        'faqer_selection_new_categoria_page' // Función que renderiza la página del submenú
+        'faqer_new_categoria_page' // Función que renderiza la página del submenú
     );
     add_submenu_page( //Menu FAQ
         'FAQerF',   // El slug del menú principal al que pertenece
