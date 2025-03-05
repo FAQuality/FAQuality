@@ -24,3 +24,4 @@ function dbMarkAsDeletedFAQ($id) {
 
     dbDelta($sql_query);
 }
+
