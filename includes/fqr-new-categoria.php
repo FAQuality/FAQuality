@@ -7,27 +7,16 @@ function faqer_new_categoria_page() {
 global $wpdb;
 
 //Asignamos nombre y prefijo a la tabla
-$tabla_categoria = $wpdb->prefix . 'categoria'; 
-
-// Verifica si la acción es "delete" y si el ID de la categoría está definido
-  if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
-     $id = intval($_GET['id']); // Asegúrate de que el ID sea un número válido
-
-     // Eliminar la categoría de la base de datos
-     $wpdb->delete($tabla_categoria, ['id' => $id]);
-
-     // Redirigir para evitar que la acción se repita al recargar la página
-     wp_safe_redirect(admin_url('admin.php?page=FAQ_Categoria'));
-     exit;
- }
+$prefijo = $wpdb->prefix . 'fqr_';
+$tabla_categoria = $prefijo . 'categoria';
 
 //Si mandamos un request(enviar) limpiamos codigo con sanitize y wp_kses_post
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nombre = sanitize_text_field($_POST['nombre']);
+    $categoria = sanitize_text_field($_POST['categoria']);
     $descripcion = wp_kses_post($_POST['descripcion']);
     
     //Insertamos en la tabla los datos y hacemos redirect a la lista principal
-    $wpdb->insert($tabla_categoria, ['nombre' => $nombre, 'descripcion' => $descripcion]);    
+    $wpdb->insert($tabla_categoria, ['categoria' => $categoria, 'descripcion' => $descripcion]);    
      wp_safe_redirect(admin_url('admin.php?page=FAQ_Categoria'));
     exit;
 }
@@ -40,7 +29,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- Campo para el título -->      
         <!-- Insertamos los datos con el nombre   -->
         <label for="titulo_categoria"><strong>Título de la Categoría:</strong></label><br>
-        <input type="text" id="nombre" name="nombre" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el título aquí">
+        <input type="text" id="categoria" name="nombre" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el título aquí">
         <?php
         //Se empieza uso de php en el html
         // Configuración del editor
@@ -66,6 +55,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php
 }
 
+
+
+//Edicion de new_categoria wordpress: Actualemnte obsoleto
 function faqer_edit_categoria_page() {
     global $wpdb;
     
