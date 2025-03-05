@@ -24,6 +24,7 @@ class Categoria_List_Table_F extends WP_List_Table {
    //Obtiene los datos de la base de datos 
    function get_categorias() {
     global $wpdb;
+
     $prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
     $tabla_categoria = $prefijo . 'categoria';
     return $wpdb->get_results("SELECT id, categoria, descripcion FROM $tabla_categoria WHERE borrado = 0", ARRAY_A);
