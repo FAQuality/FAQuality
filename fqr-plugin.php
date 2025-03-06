@@ -2,9 +2,9 @@
 /*
 
 
-Plugin Name: FAQer Beta 0.1
-Description: 02
-Author: El gato negro y el aguila calva
+Plugin Name: FAQer MAIN plugin
+Description: Plugin para hacer FAQs jerárquicos.
+Author: Fernando y Raul
 
 */
 
