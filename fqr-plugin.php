@@ -1,10 +1,9 @@
 <?php
 /*
 
-
-Plugin Name: FAQer Beta 0.3_Raul
-Description: 02
-Author: El gato negro y el aguila calva
+Plugin Name: FAQer MAIN plugin
+Description: Plugin para hacer FAQs jerárquicos.
+Author: Fernando y Raul
 
 */
 
@@ -19,7 +18,3 @@ add_shortcode('mi_shortcode', 'frontend_shortcode');
 if (!defined('ABSPATH')) {
     exit;
 }
- 
-
-// Arreglar Nuevo FAQ
-

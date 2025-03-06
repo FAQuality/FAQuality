@@ -10,10 +10,14 @@ function faqer_edit_faq_page() {
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
         $id = intval($_GET['id']);
         $faq = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tabla_faq WHERE id = $id AND borrado = 0"));
-        
+        $id_padre_actual = $wpdb->get_var($wpdb->prepare("SELECT FK_idpadre FROM $tabla_faq WHERE id = $id"));
+        $id_categoria_actual = $wpdb->get_var($wpdb->prepare("SELECT FK_idcat FROM $tabla_faq WHERE id = $id"));
+
         if ($faq) {
             $tabla_categoria = $prefijo . 'categoria';
             $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHERE borrado=0");
+            $id_padre = $wpdb->get_results("SELECT id, pregunta FROM $tabla_faq WHERE borrado=0 OR id=1");
+
             // Mostrar formulario de edición con los datos actuales
             ?>
            <div class="wrap">
@@ -34,7 +38,8 @@ function faqer_edit_faq_page() {
                     if ($categorias) {
                         //Reproduce en bucle las categorias existentes
                         foreach ($categorias as $categoria) {
-                            echo '<option value="' . esc_attr($categoria->id) . '">' . esc_html($categoria->categoria) . '</option>';
+                            $cat_selected = ($categoria->id == $id_categoria_actual) ? 'selected="selected"' : '';
+                            echo '<option value="' . esc_attr($categoria->id) . '"' . $cat_selected . '>' . esc_html($categoria->categoria) . '</option>';
                         }
                     } else {
                         echo '<option value="">No hay ninguna categoria disponible</option>';
@@ -42,9 +47,21 @@ function faqer_edit_faq_page() {
                     ?>
                 </select><br>
         <!-- Id pregunta padre -->
-        <label for="id_padre"><strong>Id de la pregunta Padre:</strong></label><br>
-        <input type="number" pattern="\d*" inputmode="numeric" id="id_padre" name="id_padre" style="width: 5%; font-size: 18px; padding: 10px; margin-bottom: 10px;"><br>
-                
+        <label for="id_padre"><strong>Pregunta Padre:</strong></label>
+        <select name="id_padre" id="id_padre">
+                <?php
+                //Comprueba si existe categoria alguna
+                if ($id_padre) {
+                    //Reproduce en bucle las categorias existentes
+                    foreach ($id_padre as $id_pregunta) {
+                        $selected = ($id_pregunta->id == $id_padre_actual) ? 'selected="selected"' : '';
+                        echo '<option value="' . esc_attr($id_pregunta->id) . '"' . $selected . '>' . esc_html($id_pregunta->pregunta) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay preguntas padres todavia</option>';
+                }
+                ?>
+            </select><br>
                 <?php
                 //Se empieza uso de php en el html
                 // Configuración del editor
@@ -83,12 +100,15 @@ function faqer_edit_faq_page() {
     if (isset($_POST['update_faq'])) {
         $id = intval($_POST['id']);
         $faq = sanitize_text_field($_POST['pregunta']);
-        $respuesta = wp_kses_post($_POST['respuesta']);      
+        $respuesta = wp_kses_post($_POST['respuesta']);
+        $categoria = intval($_POST['id_cat']);
+        $id_padre = intval($_POST['id_padre']);
+        
     
         // Actualizar la categoría en la base de datos
         $resultado = $wpdb->update(
             $tabla_faq,
-            ['pregunta' => $faq, 'respuesta' => $respuesta],
+            ['pregunta' => $faq, 'respuesta' => $respuesta, 'FK_idcat' => $categoria, 'FK_idpadre' => $id_padre],
             ['id' => $id]
         );
         
