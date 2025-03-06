@@ -14,7 +14,7 @@ $PK_faq = $tabla_faq . '(id)'; // Clave primaria de la tabla faq
 $PK_contacto = $tabla_contacto . '(id)'; // Clave primaria de la tabla contacto
 
 // Funcion que crea la tabla FAQ
-function crear_tabla_faqf() {
+function crear_tabla_faq() {
     global $wpdb;
     // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
     $prefijo = $wpdb->prefix . 'fqr_';
@@ -29,7 +29,7 @@ function crear_tabla_faqf() {
         pregunta VARCHAR(255) NOT NULL,
         respuesta TEXT NOT NULL,
         FK_idcat INT, -- ID de categoría
-        FK_idpadre INT DEFAULT NULL, -- ID de pregunta padre
+        FK_idpadre INT DEFAULT 1, -- ID de pregunta padre
         borrado TINYINT(1) DEFAULT 0 NOT NULL CHECK (borrado = 0 OR borrado = 1),
         FOREIGN KEY (FK_idcat) REFERENCES $PK_categoria,
         FOREIGN KEY (FK_idpadre) REFERENCES $PK_faq
@@ -41,7 +41,7 @@ function crear_tabla_faqf() {
 }
 
 // Funcion que crea la tabla categoria
-function crear_tabla_categoriaf() {
+function crear_tabla_categoria() {
     global $wpdb;
 
     // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
@@ -64,7 +64,7 @@ function crear_tabla_categoriaf() {
 }
 
 // Funcion que crea la tabla contacto
-function crear_tabla_contactof() {
+function crear_tabla_contacto() {
     global $wpdb;
 
     // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
@@ -92,7 +92,7 @@ function crear_tabla_contactof() {
 
 // Si se "elimina" una pregunta, comprueba en contacto que los que la tuvieran como 
 // clave foránea se marquen como borrados
-function crear_trigger_al_marcar_borrado_preguntaf() {
+function crear_trigger_al_marcar_borrado_pregunta() {
     global $wpdb;
 
     // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
@@ -122,7 +122,7 @@ function crear_trigger_al_marcar_borrado_preguntaf() {
 }
 
 // Al "eliminar" una categoria, las preguntas con esa categoría, se "eliminan"
-function crear_trigger_al_marcar_borrado_categoriaf() {
+function crear_trigger_al_marcar_borrado_categoria() {
     global $wpdb;
 
     // FIXME: Se redeclaran las variables porque al hacer las consultas usando global no se leen con el contenido
@@ -159,7 +159,18 @@ function categoria_none() {
     
     $tabla_categoria = $prefijo . 'categoria';
 
-    $sql_query = "INSERT INTO $tabla_categoria (categoria) VALUES ('NONE')";
+    $sql_query = "INSERT INTO $tabla_categoria (id,categoria) VALUES ('1','Sin categoria')";
+    
+    $wpdb->query($sql_query);
+}
+
+//Introduce una pregunta FAQ vacia siempre que se ejecuta el plugin
+function faq_none() {
+    global $wpdb;
+    $prefijo = $wpdb->prefix . 'fqr_';
+    $tabla_faq = $prefijo . 'faq';
+
+    $sql_query = "INSERT INTO $tabla_faq (id,pregunta,respuesta,borrado) VALUES (1,'Sin padre','Sin Madre',1)";
     
     $wpdb->query($sql_query);
 }
@@ -167,12 +178,13 @@ function categoria_none() {
 
 // Funcion que se ejecuta al iniciar el plugin
 function activation() {
-    crear_tabla_categoriaf();
-    crear_tabla_faqf();
-    crear_tabla_contactof();
-    crear_trigger_al_marcar_borrado_preguntaf();
-    crear_trigger_al_marcar_borrado_categoriaf();
+    crear_tabla_categoria();
+    crear_tabla_faq();
+    crear_tabla_contacto();
+    crear_trigger_al_marcar_borrado_pregunta();
+    crear_trigger_al_marcar_borrado_categoria();
     categoria_none();
+    faq_none();
 }
 
 

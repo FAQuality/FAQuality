@@ -14,8 +14,7 @@ function fqr_Add_My_Admin_Link()
 {
     add_menu_page( //Menu principal
         'Mi plugin a caraperro', // Title of the page
-        'FAQ Beta 0.1', // Text to show on the menu link
-
+        'FAQer Beta_Raul', // Text to show on the menu link
         'manage_options', // Capability requirement to see the link
         'FAQerF', // Slug del menú (URL amigable)
         'faqer_page', // Función que mostrará el contenido de la página
