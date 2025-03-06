@@ -13,6 +13,7 @@ $tabla_categoria = $prefijo . 'categoria';
 
   //Si mandamos un request(enviar) limpiamos codigo con sanitize y wp_kses_post
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // $FK_idpadre=isset($_POST['id_padre']) == false ? 'NULL' : $_POST['id_padre'];        
     $pregunta = sanitize_text_field($_POST['pregunta']);
     $respuesta = wp_kses_post($_POST['respuesta']);
     $FK_idpadre = sanitize_text_field($_POST['id_padre']);
@@ -21,11 +22,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     //Insertamos en la tabla los datos y hacemos redirect a la lista principal
 $wpdb->insert($tabla_faq, ['pregunta' => $pregunta, 'respuesta' => $respuesta ,'FK_idpadre'=>$FK_idpadre, 
              'FK_idcat'=>$FK_idcat]);    
-     wp_safe_redirect(admin_url('admin.php?page=FAQ'));
+     wp_safe_redirect(admin_url('admin.php?page=FAQ'));    
     exit;
 }
 
 $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHERE borrado=0");
+$id_padre = $wpdb->get_results("SELECT id, pregunta FROM $tabla_faq WHERE borrado=0 OR id=1");
 
 //HTML para la base de pagina web con herramientas de wordpress
     ?> 
@@ -52,10 +54,22 @@ $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHE
                 ?>
             </select><br>
         <!-- Id pregunta padre -->
-        <label for="id_padre"><strong>Id de la pregunta Padre:</strong></label><br>
-        <input type="number" pattern="\d*" inputmode="numeric" id="id_padre" name="id_padre" style="width: 5%; font-size: 18px; padding: 10px; margin-bottom: 10px;"><br>
+        <label for="id_padre"><strong>Pregunta Padre:</strong></label>
+        <select name="id_padre" id="id_padre">
+                <?php
+                //Comprueba si existe categoria alguna
+                if ($id_padre) {
+                    //Reproduce en bucle las categorias existentes
+                    foreach ($id_padre as $id_pregunta) {
+                        echo '<option value="' . esc_attr($id_pregunta->id) . '">' . esc_html($id_pregunta->pregunta) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay preguntas padres todavia</option>';
+                }
+                ?>
+            </select><br>
         <!-- Respuesta -->
-        <label for="respuesta"><strong>Respuesta:</strong></label><br>
+       <label for="respuesta"><strong>Respuesta:</strong></label><br>
         
        <?php
         //Se empieza uso de php en el html
@@ -76,8 +90,12 @@ $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHE
         ?>
         <br>
         <!-- Boton de enviar -->
-        <input type="submit" value="Guardar Pregunta" class="button button-primary">
+        <input name="Guardar_Pregunta" type="submit" value="Guardar Pregunta" class="button button-primary">
     </form>
 </div>
 <?php
+// if(isset($_POST['Guardar_Pregunta'])) {
+//     $FK_idpadre=isset($_POST['id_padre']) == false ? 'NULL' : $_POST['id_padre'];
+//     wp_die(''. $FK_idpadre .'');
+// }
 }
