@@ -19,7 +19,3 @@ add_shortcode('mi_shortcode', 'frontend_shortcode');
 if (!defined('ABSPATH')) {
     exit;
 }
- 
-
-// Arreglar Nuevo FAQ
-
