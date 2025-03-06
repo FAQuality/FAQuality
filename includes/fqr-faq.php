@@ -68,12 +68,47 @@ class FAQ_List_Table extends WP_List_Table {
 
 //Generamos hueco para categoria 
     function column_FK_idcat($item) {
-        return esc_html($item['FK_idcat']);  
+        global $wpdb;
+        $prefijo = $wpdb->prefix . 'fqr_';   // Asegúrate de que este prefijo es correcto      
+        $tabla_categoria = $prefijo . 'categoria'; // Nombre de la tabla que contiene las preguntas
+        $fkidcat = $item['FK_idcat']; // Obtenemos el valor de la ID de la pregunta
+ 
+        // Hacemos la consulta para obtener la pregunta relacionada con esta ID
+        $pregunta = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT categoria FROM $tabla_categoria WHERE id = %d", 
+                $fkidcat
+            )
+        );    
+        // Verificamos si hemos obtenido una pregunta
+        if ($pregunta) {
+            return esc_html($pregunta);  // Devolvemos la pregunta con seguridad (escapada para evitar XSS)
+        } else {
+            return 'Categoria no encontrada';  // En caso de que no haya una pregunta asociada
+        }
     }
 
-
     function column_FK_idpadre($item) {
-        return esc_html($item['FK_idpadre']);  
+        global $wpdb;
+        $prefijo = $wpdb->prefix . 'fqr_';  // Asegúrate de que este prefijo es correcto
+        $tabla_faq = $prefijo . 'faq';  // Nombre de la tabla que contiene las preguntas
+        $fkidfaq = $item['FK_idpadre'];  // Obtenemos el valor de la ID de la pregunta
+    
+        // Hacemos la consulta para obtener la pregunta relacionada con esta ID
+        $pregunta = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT pregunta FROM $tabla_faq WHERE id = %d", 
+                $fkidfaq
+            )
+        );
+              
+        // Verificamos si hemos obtenido una pregunta
+        if ($pregunta) {
+            return esc_html($pregunta);  // Devolvemos la pregunta con seguridad (escapada para evitar XSS)
+        } else {
+            return 'Pregunta no encontrada';  // En caso de que no haya una pregunta asociada
+        }
+
     }
    
     function column_acciones($item) {
