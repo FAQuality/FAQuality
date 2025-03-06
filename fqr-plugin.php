@@ -2,7 +2,7 @@
 /*
 
 
-Plugin Name: FAQer Beta 0.1
+Plugin Name: FAQer Beta 0.3_Raul
 Description: 02
 Author: El gato negro y el aguila calva
 
