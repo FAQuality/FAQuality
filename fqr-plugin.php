@@ -1,9 +1,9 @@
 <?php
 /*
 
-Plugin Name: FAQer Fernando Plus Prime Apocalipsis
-Description: Prime
-Author: El gato negro
+Plugin Name: FAQer Beta 0.2
+Description: 02
+Author: El gato negro y el aguila calva
 
 */
 
@@ -21,5 +21,7 @@ function fqr_shortcode_function() {
 if (!defined('ABSPATH')) {
     exit;
 }
+ 
 
+// Arreglar Nuevo FAQ
 

@@ -12,6 +12,8 @@ function faqer_edit_faq_page() {
         $faq = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tabla_faq WHERE id = $id AND borrado = 0"));
         
         if ($faq) {
+            $tabla_categoria = $prefijo . 'categoria';
+            $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHERE borrado=0");
             // Mostrar formulario de edición con los datos actuales
             ?>
            <div class="wrap">
@@ -24,6 +26,25 @@ function faqer_edit_faq_page() {
                 <label for="pregunta"><strong>Pregunta:</strong></label><br>
                 <input type="text" id="pregunta" name="pregunta" value="<?php echo esc_attr($faq->pregunta); ?>"
                 style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe la pregunta aquí">
+                <!-- Lista dinamica -->
+                <label for="id_cat"><strong>Selecciona una categoria:</strong></label>        
+                <select name="id_cat" id="id_cat">
+                    <?php
+                    //Comprueba si existe categoria alguna
+                    if ($categorias) {
+                        //Reproduce en bucle las categorias existentes
+                        foreach ($categorias as $categoria) {
+                            echo '<option value="' . esc_attr($categoria->id) . '">' . esc_html($categoria->categoria) . '</option>';
+                        }
+                    } else {
+                        echo '<option value="">No hay ninguna categoria disponible</option>';
+                    }
+                    ?>
+                </select><br>
+        <!-- Id pregunta padre -->
+        <label for="id_padre"><strong>Id de la pregunta Padre:</strong></label><br>
+        <input type="number" pattern="\d*" inputmode="numeric" id="id_padre" name="id_padre" style="width: 5%; font-size: 18px; padding: 10px; margin-bottom: 10px;"><br>
+                
                 <?php
                 //Se empieza uso de php en el html
                 // Configuración del editor

@@ -40,6 +40,23 @@ function faqer_edit_categoria_page() {
                 <label for="titulo_categoria"><strong>Título de la Categoría:</strong></label><br>
                 <input type="text" id="categoria" name="categoria" value="<?php echo esc_attr($categoria->categoria); ?>"
                 style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el nombre de la categoría aquí">
+                <label for="id_cat"><strong>Selecciona una categoria:</strong></label>        
+                <select name="id_cat" id="id_cat">
+                <?php
+                //Comprueba si existe categoria alguna
+                if ($categorias) {
+                    //Reproduce en bucle las categorias existentes
+                    foreach ($categorias as $categoria) {
+                        echo '<option value="' . esc_attr($categoria->id) . '">' . esc_html($categoria->categoria) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay categorías disponibles</option>';
+                }
+                ?>
+            </select><br>
+        <!-- Id pregunta padre -->
+        <label for="id_padre"><strong>Id de la pregunta Padre:</strong></label><br>
+        <input type="number" pattern="\d*" inputmode="numeric" id="id_padre" name="id_padre" style="width: 5%; font-size: 18px; padding: 10px; margin-bottom: 10px;"><br>
                 <?php
                 //Se empieza uso de php en el html
                 // Configuración del editor

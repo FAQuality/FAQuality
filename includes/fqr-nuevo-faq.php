@@ -37,7 +37,7 @@ $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHE
         <label for="titulo_faq"><strong>Pregunta:</strong></label><br>
         <input type="text" id="pregunta" name="pregunta" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el título aquí">
         <!-- Lista dinamica -->
-        <label for="id_cat"><strong>Selecciona una categoria:</strong></label>        
+        <label for="id_cat">Selecciona una categoria:</label>        
             <select name="id_cat" id="id_cat">
                 <?php
                 //Comprueba si existe categoria alguna

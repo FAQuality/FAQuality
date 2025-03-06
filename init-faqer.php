@@ -29,7 +29,7 @@ function crear_tabla_faqf() {
         pregunta VARCHAR(255) NOT NULL,
         respuesta TEXT NOT NULL,
         FK_idcat INT, -- ID de categoría
-        FK_idpadre INT, -- ID de pregunta padre
+        FK_idpadre INT DEFAULT NULL, -- ID de pregunta padre
         borrado TINYINT(1) DEFAULT 0 NOT NULL CHECK (borrado = 0 OR borrado = 1),
         FOREIGN KEY (FK_idcat) REFERENCES $PK_categoria,
         FOREIGN KEY (FK_idpadre) REFERENCES $PK_faq
@@ -156,6 +156,7 @@ function crear_trigger_al_marcar_borrado_categoriaf() {
 function categoria_none() {
     global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_';
+    
     $tabla_categoria = $prefijo . 'categoria';
 
     $sql_query = "INSERT INTO $tabla_categoria (categoria) VALUES ('NONE')";
