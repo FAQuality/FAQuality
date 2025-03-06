@@ -1,9 +1,10 @@
 <?php
 /*
 
-Plugin Name: FAQer Beta_Raul
-Description: Beta 02
-Author: Los REALES HASTA LA MUERTE BRR
+
+Plugin Name: FAQer Beta 0.1
+Description: 02
+Author: El gato negro y el aguila calva
 
 */
 
@@ -18,5 +19,7 @@ add_shortcode('mi_shortcode', 'frontend_shortcode');
 if (!defined('ABSPATH')) {
     exit;
 }
+ 
 
+// Arreglar Nuevo FAQ
 

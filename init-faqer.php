@@ -156,6 +156,7 @@ function crear_trigger_al_marcar_borrado_categoria() {
 function categoria_none() {
     global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_';
+    
     $tabla_categoria = $prefijo . 'categoria';
 
     $sql_query = "INSERT INTO $tabla_categoria (id,categoria) VALUES ('1','Sin categoria)";
