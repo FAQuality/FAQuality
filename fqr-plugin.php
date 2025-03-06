@@ -2,9 +2,9 @@
 /*
 
 
-Plugin Name: FAQer MAIN plugin
-Description: Plugin para hacer FAQs jerárquicos.
-Author: Fernando y Raul
+Plugin Name: FAQer Apocalipsis Prime 2
+Description: Miau. Versión mejorada del FAQer Prime Apocalipsis
+Author: El gato más bonito de España
 
 */
 
@@ -19,7 +19,3 @@ add_shortcode('mi_shortcode', 'frontend_shortcode');
 if (!defined('ABSPATH')) {
     exit;
 }
- 
-
-// Arreglar Nuevo FAQ
-

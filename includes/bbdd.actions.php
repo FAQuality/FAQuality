@@ -25,3 +25,16 @@ function dbMarkAsDeletedFAQ($id) {
     dbDelta($sql_query);
 }
 
+function dbMarkAsDeletedContact($id) {
+    global $wpdb;
+    $prefijo = $wpdb->prefix . 'fqr_';
+    $tabla_contacto = $prefijo . 'contacto';
+
+    $sql_query = "SET @disable_trigger = 0;
+        UPDATE $tabla_contacto
+        SET borrado = 1
+        WHERE id = $id;";
+
+    dbDelta($sql_query);
+}
+
