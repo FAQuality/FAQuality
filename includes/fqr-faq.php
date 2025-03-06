@@ -5,9 +5,11 @@ if (!class_exists('WP_List_Table')) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php'; //ABSPATH es ruta absoluta
 }
 
+include_once 'faq.act.php';
+
 //Creamos la clase categoria_list_table que al extender de wp_list_table, cogemos lo que realiza la funcion
 //wp_list_table y la personalizamos 
-class FAQ_List_Tablef extends WP_List_Table {
+class FAQ_List_Table extends WP_List_Table {
 
 //Creamos un constructor con la informacion principal (ajax desactivado por ahora)
     function __construct() {
@@ -22,64 +24,97 @@ class FAQ_List_Tablef extends WP_List_Table {
     function get_columns() {
         return [
         'cb'         => '<input type="checkbox" />', // Checkbox para seleccionar filas
-        'id_nuevo'   => 'ID Nuevo',                 // Nueva columna para el ID
-        'nombre'     => 'Nombre',                   // Nombre de la persona o categoría
-        'pregunta'   => 'Pregunta',                 // Resumen de la pregunta
-        'respuesta'  => 'Respuesta',                // Respuesta relacionada
-        
+        'id'         => 'ID',                        // Nueva columna para el ID                
+        'pregunta'   => 'Pregunta',                 // Pregunta
+        'respuesta'  => 'Respuesta',                // Respuesta a la pregunta
+        'FK_idcat'  => 'Categoria',                // Categoria de la pregunta
+        'FK_idpadre'    => 'ID Pregunta padre',         // ID de la pregunta padre
+        'acciones' => 'Acciones'
     ];
     }
 
-//Agregamos contenido a las columnas
+    //Obtiene los datos de la base de datos 
+    function get_preguntas() {
+        global $wpdb;
+    
+        $prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
+        $tabla_faq = $prefijo . 'faq';
+        $tabla_categoria = $prefijo . 'categoria';
+        //return $wpdb->get_results("SELECT `$tabla_faq`.id, pregunta, respuesta, categoria, fk_idpadre from $tabla_faq JOIN $tabla_categoria ON `$tabla_faq`.FK_idcat = `$tabla_categoria`.id WHERE `$tabla_faq`.borrado = 0", ARRAY_A);
+        return $wpdb->get_results("SELECT `$tabla_faq`.id, pregunta, respuesta, FK_idcat, FK_idpadre from $tabla_faq WHERE `$tabla_faq`.borrado = 0", ARRAY_A);
+        //wp_die($wpdb->get_results("SELECT `$tabla_faq`.id, pregunta, respuesta, FK_idcat, FK_idpadre from $tabla_faq WHERE `$tabla_faq`.borrado = 0", ARRAY_A));
+    } 
 
 //Generamos hueco para checkbox indicando que el valor de cada checbox es igual a su id
     function column_cb($item) {
-        return sprintf('<input type="checkbox" name="registro[]" value="%s" />', $item['ID']);
+        return sprintf('<input type="checkbox" name="registro[]" value="%s" />', $item['id']);
     }
 
-//Generamos hueco para titulo (nombre) con enlace externo y le da el efecto cliqueable
-    function column_ID_nuevo($item) {
-        $edit_link = '?page=FAQ&action=edit&id=' . $item['ID'];
-        return sprintf('<strong><a href="%s">%s</a></strong>', $edit_link, esc_html($item['id_nuevo']));
+//Generamos hueco para ID que al clickear el texto se pueda editar la pregunta
+    function column_id($item) {
+        $edit_link = '?page=FAQ&action=edit&id=' . $item['id'];
+        return sprintf('<strong><a href="%s">%s</a></strong>', $edit_link, esc_html($item['id']));
     }
 
-//Generamos hueco para el nuevo ID   
-    function column_nombre($item) {
-        return esc_html($item['nombre']);  
-    }
-
-//Generamos hueco para pregunta    
+//Generamos hueco para la nueva pregunta  
     function column_pregunta($item) {
         return esc_html($item['pregunta']);  
     }
 
-//Generamos hueco para respuesta 
+//Generamos hueco para respuesta    
     function column_respuesta($item) {
         return esc_html($item['respuesta']);  
     }
+
+//Generamos hueco para categoria 
+    function column_FK_idcat($item) {
+        return esc_html($item['FK_idcat']);  
+    }
+
+
+    function column_FK_idpadre($item) {
+        return esc_html($item['FK_idpadre']);  
+    }
    
+    function column_acciones($item) {
+        $edit_link = '?page=FAQ&action=edit&id=' . $item['id'];
+        $delete_link = '?page=FAQ&action=delete&id=' . $item['id'];
+
+        return sprintf( // Esta f no es mia, es del nombre de la funcion de php
+            '<a href="%s">✏️ Editar</a> | <a href="%s" onclick="return confirm(\'¿Estás seguro?\')">❌ Eliminar</a>',
+            esc_url($edit_link),
+            esc_url($delete_link)
+        );
+    }
     
 //Cargamos datos en las columnas
     function prepare_items() {
-    $columns = $this->get_columns();  // Obtiene las columnas definidas antes
-    $hidden  = [];                    // Columnas ocultas (vacío porque mostramos todas)
-    $sortable = [];                    // Columnas ordenables (no usamos ordenamiento)
-        $this->_column_headers = [$columns, $hidden, $sortable];
-
- // Ingresamos los datos que queramos
-        $this->items = [
-        ['ID' => 1, 'id_nuevo' => 'Pregunta 1', 'nombre' => 'Raul', 'pregunta' => '¿?',
-         'respuesta'=> 'Si'],
-         ['ID' => 2, 'id_nuevo' => 'Pregunta 2', 'nombre' => 'Fernando', 'pregunta' => '¿?',
-         'respuesta'=> 'No'],
-        ];
+        $this->items = $this->get_preguntas(); //Insertamos los datos de la tabla de sql
+        $columns = $this->get_columns();  // Obtiene las columnas definidas antes
+        $hidden  = [];                    // Columnas ocultas (vacío porque mostramos todas)
+        $sortable = [];                    // Columnas ordenables (no usamos ordenamiento)
+        $this->_column_headers = [$columns, $hidden, $sortable];   
     }
 }
 
 //Muestra la tabla en la pagina con los datos que agregamos anteriormente
 function faqer_FAQ_page() {
+    function faqer_selection_faq_page() {
+        require_once 'faq.act.php';
+        require_once 'bbdd.actions.php';
+
+        if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
+            faqer_edit_faq_page();
+
+        } else if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
+            dbMarkAsDeletedFAQ($_GET['id']);
+        }
+    }
+
+    faqer_selection_faq_page();
+
     echo '<div class="wrap"><h1>Frequetly Answered Questionss</h1>';
-    $table = new FAQ_List_Tablef();
+    $table = new FAQ_List_Table();
     $table->prepare_items();
     $table->display();
     echo '</div>';
