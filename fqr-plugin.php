@@ -1,8 +1,8 @@
 <?php
 /*
 
-Plugin Name: FAQer MAIN plugin
-Description: Plugin para hacer FAQs jerárquicos.
+Plugin Name: FAQer_Raul_Follacamiones
+Description: Fernando pelao calletano
 Author: Fernando y Raul
 
 */
