@@ -2,9 +2,9 @@
 /*
 
 
-Plugin Name: FAQer MAIN plugin
-Description: Plugin para hacer FAQs jerárquicos.
-Author: Fernando y Raul
+Plugin Name: FAQer Max Apocalipsis 7000
+Description: FAQ para felinos. Si no eres felino deja de usar el plugin.
+Author: Gato apocalíptico
 
 */
 
