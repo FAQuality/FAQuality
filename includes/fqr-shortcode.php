@@ -19,8 +19,7 @@ function frontend_shortcode() {
                         <?php echo esc_html($fila->respuesta); ?><br>                        
                     </li>
                 <?php endforeach; ?>
-                <?php echo formulario_base(); ?>
-                <?php echo formulario_captcha(); ?>
+                <?php echo formulario_base(); ?>                
             </ul>
         <?php else: ?>
             <p>No hay categorias.</p>
@@ -29,7 +28,7 @@ function frontend_shortcode() {
     <?php
    
     return ob_get_clean(); // Devuelve el contenido almacenado en el búfer
-}add_shortcode('mi_shortcode', 'frontend_shortcode');
+}add_shortcode('shortcode', 'frontend_shortcode');
 
 function formulario_base() {
     ob_start();

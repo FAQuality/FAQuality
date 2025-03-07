@@ -46,6 +46,7 @@ class Categoria_List_Table_F extends WP_List_Table {
             'id' => 'ID',           
             'categoria'   => 'Categoría',
             'descripcion'  => 'Descripción',
+            'shortcode' => 'Shortcode',
             'acciones' => 'Acciones'
         ];
     }
@@ -84,6 +85,9 @@ class Categoria_List_Table_F extends WP_List_Table {
         return esc_html($item['id']);  
     }  
 
+    function column_shortcode($item){
+        return esc_html('[shortcode categoria="'. $item['categoria'] . '"]');
+    }
 } 
 
 //Muestra la tabla en la pagina con los datos que agregamos anteriormente
