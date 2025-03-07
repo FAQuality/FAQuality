@@ -159,7 +159,7 @@ function categoria_none() {
     
     $tabla_categoria = $prefijo . 'categoria';
 
-    $sql_query = "INSERT INTO $tabla_categoria (id,categoria) VALUES ('1','Sin categoria')";
+    $sql_query = "INSERT INTO $tabla_categoria (id,categoria) VALUES ('1','Sin categoria)";
     
     $wpdb->query($sql_query);
 }

@@ -65,9 +65,9 @@ class Categoria_List_Contacto extends WP_List_Table {
             'fecha' => 'Fecha',        
             'nombre'   => 'Nombre',
             'email'  => 'Email',
-            'FK_idfaq' => 'ID Pregunta',
-            'acciones' => 'Acciones',
-            'estado' => 'Estado'
+            'FK_idfaq' => 'De la pregunta:',
+            'estado' => 'Estado',
+            'acciones' => 'Acciones'
             
         ];
     }
