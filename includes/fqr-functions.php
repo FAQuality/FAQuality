@@ -13,8 +13,8 @@ include 'fqr-aboutus.php';
 function fqr_Add_My_Admin_Link()
 {
     add_menu_page( //Menu principal
-        'FAQer Apocalipsis Prime 2', // Title of the page
-        'FAQer Apocalipsis Prime 2', // Text to show on the menu link
+        'FAQer plugin', // Title of the page
+        'FAQer plugin', // Text to show on the menu link
         'manage_options', // Capability requirement to see the link
         'FAQer', // Slug del menú (URL amigable)
         'faqer_page', // Función que mostrará el contenido de la página
