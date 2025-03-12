@@ -45,8 +45,7 @@ class Categoria_List_Table_F extends WP_List_Table {
             'cb' => '<input type="checkbox" />', 
             'id' => 'ID',           
             'categoria'   => 'Categoría',
-            'descripcion'  => 'Descripción',
-            'shortcode' => 'Shortcode',
+            'descripcion'  => 'Descripción',            
             'acciones' => 'Acciones'
         ];
     }
@@ -83,11 +82,7 @@ class Categoria_List_Table_F extends WP_List_Table {
 //Generamos hueco para la id
     function column_id($item) {
         return esc_html($item['id']);  
-    }  
-
-    function column_shortcode($item){
-        return esc_html('[shortcode categoria="'. $item['categoria'] . '"]');
-    }
+    }     
 } 
 
 //Muestra la tabla en la pagina con los datos que agregamos anteriormente

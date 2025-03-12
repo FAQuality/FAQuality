@@ -28,7 +28,7 @@ function frontend_shortcode() {
     <?php
    
     return ob_get_clean(); // Devuelve el contenido almacenado en el búfer
-}add_shortcode('shortcode', 'frontend_shortcode');
+}add_shortcode('FAQer', 'frontend_shortcode');
 
 function formulario_base() {
     ob_start();
@@ -72,6 +72,9 @@ function formulario_base() {
     </form>
     <?php
     return ob_get_clean();
+}
+
+function crear_shortcode(){   
 }
 ?>
 
