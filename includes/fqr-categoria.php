@@ -87,6 +87,10 @@ class Categoria_List_Table_F extends WP_List_Table {
 
 //Muestra la tabla en la pagina con los datos que agregamos anteriormente
 function faqer_categoria_page() {
+    global $wpdb;
+    $prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
+    $tabla_categoria = $prefijo . 'categoria';
+
     function faqer_selection_categoria_page() {
         require_once 'categoria.act.php';
         require_once 'bbdd.actions.php';
@@ -106,6 +110,84 @@ function faqer_categoria_page() {
     $categoria_table->prepare_items();
     $categoria_table->display();
     echo '</div>';
+
+    $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHERE borrado=0");
+    ?> 
+    <div class="wrap">
+     <h1>Generar shortcode</h1>     
+         <!-- Lista dinamica -->
+         <label for="id_cat"><strong>Categorias:</strong> </label>        
+             <select name="id_cat" id="id_cat">
+             <?php
+                //Comprueba si existe categoria alguna
+                if ($categorias) {
+                    //Reproduce en bucle las categorias existentes
+                    foreach ($categorias as $categoria) {
+                        echo '<option value="' . esc_attr($categoria->id) . '">' . esc_html($categoria->categoria) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay categorías disponibles</option>';
+                }
+                ?>
+            </select><br>                
+            <!-- Contenedor de etiquetas -->
+             <div id="tagContainer" style="margin-top: 10px;"></div>
+
+            <!-- Shortcode dinámico -->
+            <p><strong>Shortcode final: </strong><span id="shortcode">[FAQer categorias=""]</span></p>        
+            </div>
+            <script>
+            let categoriasSeleccionadas = []; // Almacena los IDs de las categorías seleccionadas
+
+            function actualizarShortcode() {
+                document.getElementById("shortcode").innerText = '[FAQer categorias="' + categoriasSeleccionadas.join(",") + '"]';
+            }
+
+            function agregarCategoria() {
+                let select = document.getElementById("id_cat");
+                let categoriaID = select.value;
+                let categoriaTexto = select.options[select.selectedIndex].text;
+
+                // Evitar agregar duplicados o una opción vacía
+                if (categoriaID && !categoriasSeleccionadas.includes(categoriaID)) {
+                    categoriasSeleccionadas.push(categoriaID);
+
+                    // Crear etiqueta visual
+                    let tagContainer = document.getElementById("tagContainer");
+                    let tag = document.createElement("span");
+                    tag.className = "tag";
+                    tag.style.cssText = "display: inline-block; background: #0073aa; color: white; padding: 5px 10px; margin: 5px; border-radius: 5px;";
+                    tag.innerHTML = categoriaTexto + ' <button onclick="eliminarCategoria(\'' + categoriaID + '\')" style="background: red; border: none; color: white; padding: 2px 5px; cursor: pointer;">X</button>';
+                    tag.setAttribute("data-id", categoriaID);
+                    tagContainer.appendChild(tag);
+
+                    // Actualizar shortcode
+                    actualizarShortcode();
+                }
+            }
+
+            function eliminarCategoria(id) {
+                // Remover la categoría del array
+                categoriasSeleccionadas = categoriasSeleccionadas.filter(categoria => categoria !== id);
+
+                // Eliminar la etiqueta visual
+                let tagContainer = document.getElementById("tagContainer");
+                let tags = tagContainer.getElementsByClassName("tag");
+                for (let tag of tags) {
+                    if (tag.getAttribute("data-id") === id) {
+                        tag.remove();
+                        break;
+                    }
+                }
+                // Actualizar shortcode
+                actualizarShortcode();
+            }
+            // Evento para detectar cambios en el <select>
+            document.getElementById("id_cat").addEventListener("change", agregarCategoria);
+        </script>
+ <?php   
 }
+
+
 
 

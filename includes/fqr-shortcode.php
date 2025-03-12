@@ -30,7 +30,7 @@ function frontend_shortcode($atts) {
    
     // Seleccionamos los id de la tabla faq que sus id padres coincidad con los id insertados en el placeholder
     $query = $wpdb->prepare(
-        "SELECT id FROM $tabla_faq WHERE FK_idcat IN ($placeholders) AND borrado = 0",
+        "SELECT id,pregunta,respuesta FROM $tabla_faq WHERE FK_idcat IN ($placeholders) AND borrado = 0",
         ...$categoria_ids
     );
 
