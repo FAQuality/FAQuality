@@ -1,61 +1,70 @@
 <?php
+// Función para mostrar el shortcode del FAQ
 function frontend_shortcode() {
-    ob_start(); // Inicia el almacenamiento en búfer de salida
-    global $wpdb;    
+    ob_start();
+    global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_';
-    $tabla_faq = $prefijo . 'faq';    
+    $tabla_faq = $prefijo . 'faq';
 
-    // Consulta para obtener preguntas y categorías    
-    $faq = $wpdb->get_results("SELECT id,pregunta,respuesta from $tabla_faq");
+    $id_seleccionada = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $ids_a_consultar = [1];
+
+    if ($id_seleccionada > 0) {
+        $ids_a_consultar[] = $id_seleccionada;
+        $hijas = $wpdb->get_col($wpdb->prepare("SELECT id FROM $tabla_faq WHERE FK_idpadre = %d and borrado=0", $id_seleccionada));
+        $ids_a_consultar = array_merge($ids_a_consultar, $hijas);
+    }
+
+    $ids_consulta = '(' . implode(',', $ids_a_consultar) . ')';
+    $faq = $wpdb->get_results("SELECT id,pregunta,respuesta,FK_idpadre from $tabla_faq where FK_idpadre IN $ids_consulta and borrado=0");
+
     ?>
-    <div>
+    <div class="faq-container">
         <?php if (!empty($faq)): ?>
-            <ul>
+            <ul class="faq-list">
                 <?php foreach ($faq as $fila): ?>
-                    <li>
-                        <strong><?php echo esc_html($fila->pregunta); ?></strong><br>
-                        <?php echo esc_html($fila->respuesta); ?><br>                        
+                    <li class="faq-item" data-padre="<?php echo esc_attr($fila->FK_idpadre); ?>" data-estado="cerrado">
+                        <strong class="faq-question" data-id="<?php echo esc_attr($fila->id); ?>">
+                            <?php echo esc_html($fila->pregunta); ?>
+                        </strong><br>
+                        <div class="faq-answer" style="display:none">
+                            <?php echo esc_html($fila->respuesta); ?><br>
+                        </div>
                     </li>
                 <?php endforeach; ?>
-                <?php echo formulario_base(); ?>
             </ul>
         <?php else: ?>
             <p>No hay categorias.</p>
-        <?php endif; ?>        
+        <?php endif; ?>
     </div>
     <?php
-    return ob_get_clean(); // Devuelve el contenido almacenado en el búfer
-}add_shortcode('mi_shortcode', 'frontend_shortcode');
+    return ob_get_clean();
+}
+add_shortcode('mi_shortcode', 'frontend_shortcode');
 
+// Función para mostrar el formulario de contacto
 function formulario_base() {
-    ob_start(); // Inicia el almacenamiento en búfer de salida
+    ob_start();
     global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_';
     $tabla_contacto = $prefijo . 'contacto';
     ?>
-    <form method="post">
+    <form method="post" class="formulario_base">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required>
 
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
-       
+
         <button type="submit" name="enviar_formulario">Enviar</button>
     </form>
-    <?php    
-    // Procesar el formulario si se ha enviado
+    <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["enviar_formulario"])) {
         $nombre = sanitize_text_field($_POST["nombre"]);
         $email = sanitize_email($_POST["email"]);
-        $wpdb->insert($tabla_contacto, ["nombre"=> $nombre,"email"=> $email]);
-
+        $wpdb->insert($tabla_contacto, ["nombre" => $nombre, "email" => $email]);
         echo "<p>Gracias, <strong>" . esc_html($nombre) . "</strong>. Hemos recibido tu mensaje.</p>";
     }
-    return ob_get_clean(); // Devuelve el contenido almacenado en el búfer
+    return ob_get_clean();
 }
 ?>
-
-
-
-
-
