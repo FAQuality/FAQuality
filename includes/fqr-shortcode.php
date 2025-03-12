@@ -32,45 +32,29 @@ function frontend_shortcode() {
                     </li>
                 <?php endforeach; ?>
             </ul>
-            <?php
-                if (empty($hijas) && $id_seleccionada > 0) {
-                    echo formulario_base($id_seleccionada);
-                }
-            ?>
         <?php else: ?>
             <p>No hay categorias.</p>
         <?php endif; ?>
     </div>
     <?php
+
+    formulario_base();
     return ob_get_clean();
 }
 add_shortcode('mi_shortcode', 'frontend_shortcode');
 
 // Función para mostrar el formulario de contacto
-function formulario_base($id_pregunta) {
+function formulario_base() {
     ob_start();
     global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_';
     $tabla_contacto = $prefijo . 'contacto';
-    ?>
-    <form method="post" class="formulario-base" data-padre-form="<?php echo esc_attr($id_pregunta); ?>">
-        <!-- Campo oculto para almacenar la ID -->
-        <input type="hidden" name="id_pregunta" value="<?php echo esc_attr($id_pregunta); ?>">
-        
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-
-        <button type="submit" name="enviar_formulario">Enviar</button>
-    </form>
-    <?php
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["enviar_formulario"])) {
         $nombre = sanitize_text_field($_POST["nombre"]);
         $email = sanitize_email($_POST["email"]);
         $id_pregunta = isset($_POST["id_pregunta"]) ? intval($_POST["id_pregunta"]) : 0;
-        
+                
         // Insertar incluyendo la ID de la pregunta
         $wpdb->insert($tabla_contacto, [
             "nombre" => $nombre,

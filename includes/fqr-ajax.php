@@ -27,7 +27,7 @@ function fqr_cargar_hijas_callback() {
                 <input type="hidden" name="id_pregunta" value="' . $id_padre . '">
                 <label>Nombre: <input type="text" name="nombre" required></label>
                 <label>Email: <input type="email" name="email" required></label>
-                <button type="submit">Enviar</button>
+                <button type="submit" name="enviar_formulario">Enviar</button>
             </form>
         </div>';
     }
