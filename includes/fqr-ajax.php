@@ -15,7 +15,7 @@ function fqr_cargar_hijas_callback() {
     if (!empty($hijas)) {
         foreach ($hijas as $hija) {
             $respuesta .= '<li class="faq-item" data-padre="' . esc_attr($id_padre) . '">';
-            $respuesta .= '<strong class="faq-question" data-id="' . esc_attr($hija->id) . '">' . esc_html($hija->pregunta) . '</strong><br>';
+            $respuesta .= '<strong class="faq-question" style="cursor: pointer;" data-id="' . esc_attr($hija->id) . '">' . esc_html($hija->pregunta) . '</strong><br>';
             $respuesta .= '<div class="faq-answer" style="display:none">' . esc_html($hija->respuesta) . '<br></div>';
             $respuesta .= '</li>';
         }
