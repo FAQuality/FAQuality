@@ -13,8 +13,8 @@ include 'fqr-aboutus.php';
 function fqr_Add_My_Admin_Link()
 {
     add_menu_page( //Menu principal
-        'FAQer_Raul_0.3', // Title of the page
-        'FAQer_Raul_0.3', // Text to show on the menu link
+        'FAQer PreRelease0.9', // Title of the page
+        'FAQer PreRelease0.9', // Text to show on the menu link
         'manage_options', // Capability requirement to see the link
         'FAQer', // Slug del menú (URL amigable)
         'faqer_page', // Función que mostrará el contenido de la página

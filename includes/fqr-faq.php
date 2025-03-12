@@ -16,7 +16,7 @@ class FAQ_List_Table extends WP_List_Table {
         parent::__construct([
             'singular' => 'FAQ',
             'plural'   => 'FAQs',
-            'ajax'     => false
+            'ajax'     => true
         ]);
     }
 

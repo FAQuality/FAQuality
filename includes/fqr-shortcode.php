@@ -1,77 +1,89 @@
 <?php
+// Función para mostrar el shortcode del FAQ
 function frontend_shortcode($atts) {
-    ob_start(); // Inicia el almacenamiento en búfer de salida
-    session_start();
-    global $wpdb;    
+    ob_start();
+    session_start(); // Inicia la sesión para el CAPTCHA
+    global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_';
-    $tabla_faq = $prefijo . 'faq';    
+    $tabla_faq = $prefijo . 'faq';
 
-    //Usamo las herramientas de shortcode pata obtener el parámetro categorias del shortcode
+    $id_seleccionada = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $ids_a_consultar = [1];
+
+    if ($id_seleccionada > 0) {
+        $ids_a_consultar[] = $id_seleccionada;
+        $hijas = $wpdb->get_col($wpdb->prepare("SELECT id FROM $tabla_faq WHERE FK_idpadre = %d and borrado=0", $id_seleccionada));
+        $ids_a_consultar = array_merge($ids_a_consultar, $hijas);
+    }
+
+    // Atributos del shortcode para filtrar por categorías
     $atts = shortcode_atts([
         'categorias' => '' // IDs de las categorías separados por comas
     ], $atts);
-    //Si no insertamos categorias mandamos mensaje
-    if (empty($atts['categorias'])) {
-        return '<p>No se especificaron categorías.</p>';
+
+    if (!empty($atts['categorias'])) {
+        $categoria_ids = array_map('intval', explode(',', $atts['categorias']));
+
+        if (!empty($categoria_ids) && $categoria_ids[0] != 0) {
+            $placeholders = implode(',', array_fill(0, count($categoria_ids), '%d'));
+
+            $query = $wpdb->prepare(
+                "SELECT id, pregunta, respuesta, FK_idpadre FROM $tabla_faq WHERE (FK_idpadre IN (" . implode(',', array_fill(0, count($ids_a_consultar), '%d')) . ") OR FK_idcat IN ($placeholders)) AND borrado = 0",
+                array_merge($ids_a_consultar, $categoria_ids)
+            );
+
+            $faq = $wpdb->get_results($query);
+        } else {
+            $faq = []; // No se encontraron categorías válidas
+        }
+    } else {
+        $ids_consulta = '(' . implode(',', $ids_a_consultar) . ')';
+        $faq = $wpdb->get_results("SELECT id,pregunta,respuesta,FK_idpadre from $tabla_faq where FK_idpadre IN $ids_consulta and borrado=0");
     }
-
-    // Pasamos las ids de arrays a strings con array_map con la funcion intval que transforma de string
-    // a int (numeor entero) y con explode indicamos los separadores del array (em ese caso la , )
-    $categoria_ids = array_map('intval', explode(',', $atts['categorias']));
-
-    // Si escribimos categoria inexistente mandamos mensaje
-    if (empty($categoria_ids) || $categoria_ids[0] == 0) {
-        return '<p>No se encontraron categorías seleccionadas.</p>';
-    }
-
-    // Crear placeholders para la consulta SQL pasando categoria_ids de array a una lista de marcadores de
-    // posicion (de [1,2,3] a %d,%d,%d)
-    $placeholders = implode(',', array_fill(0, count($categoria_ids), '%d'));
-   
-    // Seleccionamos los id de la tabla faq que sus id padres coincidad con los id insertados en el placeholder
-    $query = $wpdb->prepare(
-        "SELECT id,pregunta,respuesta FROM $tabla_faq WHERE FK_idcat IN ($placeholders) AND borrado = 0",
-        ...$categoria_ids
-    );
-
-    // Ejecuta la consulta y guardamos en la variable $faq los resultados
-    $faq = $wpdb->get_results($query);
-
     ?>
-    <div>
-        <?php if (!empty($faq)): ?> <!-- Comrpobamos que no este vacio la consulta -->
-            <ul>       
-                <?php foreach ($faq as $fila): ?>  <!-- Bucle para ir printeando las preguntas -->
-                    <li>
-                        <strong><?php echo esc_html($fila->pregunta); ?></strong><br>
-                        <?php echo esc_html($fila->respuesta); ?><br>                        
+    <div class="faq-container">
+        <?php if (!empty($faq)): ?>
+            <ul class="faq-list">
+                <?php foreach ($faq as $fila): ?>
+                    <li class="faq-item" data-padre="<?php echo esc_attr($fila->FK_idpadre); ?>" data-estado="cerrado">
+                        <strong class="faq-question" style="cursor: pointer;" data-id="<?php echo esc_attr($fila->id); ?>">
+                            <?php echo esc_html($fila->pregunta); ?>
+                        </strong><br>
+                        <div class="faq-answer" style="display:none">
+                            <?php echo esc_html($fila->respuesta); ?><br>
+                        </div>
                     </li>
                 <?php endforeach; ?>
-                <?php echo formulario_base(); ?>                
             </ul>
         <?php else: ?>
             <p>No hay preguntas en estas categorías.</p>
-        <?php endif; ?>         
+        <?php endif; ?>
     </div>
     <?php
+    formulario_base();
+    return ob_get_clean();
+}
+add_shortcode('mi_shortcode', 'frontend_shortcode');
 
-    return ob_get_clean(); // Devuelve el contenido almacenado en el búfer
-}add_shortcode('FAQer', 'frontend_shortcode');
-
-
+// Función para mostrar el formulario de contacto
 function formulario_base() {
     ob_start();
-    session_start(); //Empezamos sesion para mandar el resultado del captcha
+    session_start(); // Inicia la sesión para el CAPTCHA
     global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_';
     $tabla_contacto = $prefijo . 'contacto';
 
-    // Mensaje de validación
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["enviar_formulario"])) {
-        if ($_POST['captcha'] == $_SESSION['captcha']) { //Comprobamos si en el campo captcha es igual al captcha original con la sesion
+        if (isset($_POST['captcha']) && $_POST['captcha'] == $_SESSION['captcha']) {
             $nombre = sanitize_text_field($_POST["nombre"]);
             $email = sanitize_email($_POST["email"]);
-            $wpdb->insert($tabla_contacto, ["nombre" => $nombre, "email" => $email]);
+            $id_pregunta = isset($_POST["id_pregunta"]) ? intval($_POST["id_pregunta"]) : 0;
+
+            $wpdb->insert($tabla_contacto, [
+                "nombre" => $nombre,
+                "email" => $email,
+                "FK_idfaq" => $id_pregunta
+            ]);
 
             echo "<p style='color: green;'>Gracias, <strong>" . esc_html($nombre) . "</strong>. Hemos recibido tu mensaje ✅</p>";
         } else {
@@ -79,7 +91,6 @@ function formulario_base() {
         }
     }
     ?>
-    <!-- Insertamos el formulario -->
     <form method="post">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required>
@@ -91,11 +102,8 @@ function formulario_base() {
         <img src="<?php echo plugin_dir_url(__FILE__) . 'captcha.php'; ?>" alt="CAPTCHA" id="captcha-img">
         <input type="text" name="captcha" required>
 
-        <!-- Boton para generar de forma aleatoria el captcha -->
-        <button type="button" onclick="document.getElementById('captcha-img').
-                src='<?php echo plugin_dir_url(__FILE__) . 'captcha.php'; ?>?' + Math.random();
-                //Recarga de forma aleatorio el documento captcha para que genere mas captcha aleatorios">
-            Recargar CAPTCHA 🔄
+        <button type="button" onclick="document.getElementById('captcha-img').src='<?php echo plugin_dir_url(__FILE__) . 'captcha.php'; ?>?' + Math.random();">
+            Recargar CAPTCHA 
         </button>
         <button type="submit" name="enviar_formulario">Enviar</button>
     </form>
