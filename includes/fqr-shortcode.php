@@ -46,7 +46,7 @@ function frontend_shortcode($atts) {
             <ul class="faq-list">
                 <?php foreach ($faq as $fila): ?>
                     <li class="faq-item" data-padre="<?php echo esc_attr($fila->FK_idpadre); ?>" data-estado="cerrado">
-                        <strong class="faq-question" style="cursor: pointer;" data-id="<?php echo esc_attr($fila->id); ?>">
+                        <strong class="faq-question" data-id="<?php echo esc_attr($fila->id); ?>">
                             <?php echo esc_html($fila->pregunta); ?>
                         </strong><br>
                         <div class="faq-answer" style="display:none">
