@@ -1,10 +1,9 @@
 <?php
 /*
 
-
-Plugin Name: FAQer Max Apocalipsis 7000
-Description: FAQ para felinos. Si no eres felino deja de usar el plugin.
-Author: Gato apocalíptico
+Plugin Name: FAQer PreRelease0.9
+Description: Pua que maquinas somos
+Author: Fernando y Raul
 
 */
 
