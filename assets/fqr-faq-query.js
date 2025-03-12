@@ -15,6 +15,11 @@ jQuery(document).ready(function($) {
                     elemento_padre.nextAll('.faq-item[data-padre="' + id_padre + '"]').each(function() {
                         $(this).attr('data-estado', 'cerrado');
                     });
+
+                     // Verificar si la respuesta incluyó el formulario
+                    if ($(response).filter('.formulario-base').length === 0 && $(response).hasClass('formulario-base')) {
+                        elemento_padre.after(formulario_base(id_padre));
+                    }
                 }
             });
         }
@@ -23,29 +28,41 @@ jQuery(document).ready(function($) {
     // Función recursiva para cerrar preguntas descendientes
     function cerrarPreguntasDescendientes(id_padre) {
         $('.faq-item[data-padre="' + id_padre + '"]').each(function() {
-            var id = $(this).find('.faq-question').data('id');
-            $(this).find('.faq-answer').hide();
-            $(this).data('estado', 'cerrado');
+            const id = $(this).find('.faq-question').data('id');
+            
+            // Eliminar formulario asociado si existe
+            const formulario = $(this).nextAll('.formulario-base[data-padre-form="' + id + '"]');
+            if(formulario.length > 0) formulario.remove();
+            
+            // Cerrar y eliminar hijos
+            $(this).find('.faq-answer').hide().data('estado', 'cerrado');
             cerrarPreguntasDescendientes(id);
             $(this).remove();
         });
     }
 
-    // Delegación de eventos para preguntas
-    $('.faq-list').on('click', '.faq-question', function() {
-        // Seleccionar correctamente el elemento faq-item
-        var pregunta = $(this).closest('.faq-item');
-        var id = $(this).data('id');
-        var respuesta = pregunta.find('.faq-answer');
-        var estado = pregunta.data('estado');
+     // Delegación de eventos modificada
+     $('.faq-list').on('click', '.faq-question', function() {
+        const pregunta = $(this).closest('.faq-item');
+        const id = $(this).data('id');
+        const respuesta = pregunta.find('.faq-answer');
+        const estado = pregunta.data('estado');
 
         if (estado === 'abierto') {
             respuesta.hide();
             pregunta.data('estado', 'cerrado');
             cerrarPreguntasDescendientes(id);
-            // Eliminar el formulario si la pregunta no tiene hijos
-            if (pregunta.nextAll('.faq-item[data-padre="' + id + '"]').length === 0) {
-                $('.formulario-base').remove();
+            
+            // Verificación precisa de hijos después de cerrar
+            const tieneHijos = pregunta.nextAll('.faq-item[data-padre="' + id + '"]').length > 0;
+            pregunta.nextAll('.formulario-base[data-padre-form="' + id + '"]').remove();
+            
+            if (!tieneHijos) {
+                // Eliminar específicamente el formulario asociado a esta pregunta
+                const formulario = pregunta.nextAll('.formulario-base[data-padre-form="' + id + '"]');
+                if (formulario.length > 0) { // ← Uso de .length para comprobar existencia[1][6]
+                    formulario.remove();
+                }
             }
         } else {
             respuesta.show();

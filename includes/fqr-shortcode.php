@@ -17,7 +17,6 @@ function frontend_shortcode() {
 
     $ids_consulta = '(' . implode(',', $ids_a_consultar) . ')';
     $faq = $wpdb->get_results("SELECT id,pregunta,respuesta,FK_idpadre from $tabla_faq where FK_idpadre IN $ids_consulta and borrado=0");
-
     ?>
     <div class="faq-container">
         <?php if (!empty($faq)): ?>
@@ -33,6 +32,11 @@ function frontend_shortcode() {
                     </li>
                 <?php endforeach; ?>
             </ul>
+            <?php
+                if (empty($hijas) && $id_seleccionada > 0) {
+                    echo formulario_base($id_seleccionada);
+                }
+            ?>
         <?php else: ?>
             <p>No hay categorias.</p>
         <?php endif; ?>
@@ -43,13 +47,16 @@ function frontend_shortcode() {
 add_shortcode('mi_shortcode', 'frontend_shortcode');
 
 // Función para mostrar el formulario de contacto
-function formulario_base() {
+function formulario_base($id_pregunta) {
     ob_start();
     global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_';
     $tabla_contacto = $prefijo . 'contacto';
     ?>
-    <form method="post" class="formulario_base">
+    <form method="post" class="formulario-base" data-padre-form="<?php echo esc_attr($id_pregunta); ?>">
+        <!-- Campo oculto para almacenar la ID -->
+        <input type="hidden" name="id_pregunta" value="<?php echo esc_attr($id_pregunta); ?>">
+        
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required>
 
@@ -62,7 +69,15 @@ function formulario_base() {
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["enviar_formulario"])) {
         $nombre = sanitize_text_field($_POST["nombre"]);
         $email = sanitize_email($_POST["email"]);
-        $wpdb->insert($tabla_contacto, ["nombre" => $nombre, "email" => $email]);
+        $id_pregunta = isset($_POST["id_pregunta"]) ? intval($_POST["id_pregunta"]) : 0;
+        
+        // Insertar incluyendo la ID de la pregunta
+        $wpdb->insert($tabla_contacto, [
+            "nombre" => $nombre,
+            "email" => $email,
+            "FK_idfaq" => $id_pregunta  // Asegúrate que este campo existe en tu tabla
+        ]);
+        
         echo "<p>Gracias, <strong>" . esc_html($nombre) . "</strong>. Hemos recibido tu mensaje.</p>";
     }
     return ob_get_clean();
