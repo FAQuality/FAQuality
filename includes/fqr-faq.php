@@ -26,9 +26,9 @@ class FAQ_List_Table extends WP_List_Table {
         'cb'         => '<input type="checkbox" />', // Checkbox para seleccionar filas
         'id'         => 'ID',                        // Nueva columna para el ID                
         'pregunta'   => 'Pregunta',                 // Pregunta
-        'respuesta'  => 'Respuesta',                // Respuesta a la pregunta
-        'FK_idcat'  => 'Categoria',                // Categoria de la pregunta
-        'FK_idpadre'    => 'ID Pregunta padre',         // ID de la pregunta padre
+        'FK_idcat'   => 'Categoria',                // Categoria de la pregunta
+        'FK_idpadre' => 'ID Pregunta padre',         // ID de la pregunta padre
+        'prioridad'  => 'Prioridad',
         'acciones' => 'Acciones'
     ];
     }
@@ -41,7 +41,7 @@ class FAQ_List_Table extends WP_List_Table {
         $tabla_faq = $prefijo . 'faq';
         $tabla_categoria = $prefijo . 'categoria';
         //return $wpdb->get_results("SELECT `$tabla_faq`.id, pregunta, respuesta, categoria, fk_idpadre from $tabla_faq JOIN $tabla_categoria ON `$tabla_faq`.FK_idcat = `$tabla_categoria`.id WHERE `$tabla_faq`.borrado = 0", ARRAY_A);
-        return $wpdb->get_results("SELECT `$tabla_faq`.id, pregunta, respuesta, FK_idcat, FK_idpadre from $tabla_faq WHERE `$tabla_faq`.borrado = 0", ARRAY_A);
+        return $wpdb->get_results("SELECT `$tabla_faq`.id, pregunta, respuesta, prioridad, FK_idcat, FK_idpadre from $tabla_faq WHERE `$tabla_faq`.borrado = 0", ARRAY_A);
         //wp_die($wpdb->get_results("SELECT `$tabla_faq`.id, pregunta, respuesta, FK_idcat, FK_idpadre from $tabla_faq WHERE `$tabla_faq`.borrado = 0", ARRAY_A));
     } 
 
@@ -52,21 +52,31 @@ class FAQ_List_Table extends WP_List_Table {
 
 //Generamos hueco para ID que al clickear el texto se pueda editar la pregunta
     function column_id($item) {
-        return  esc_html($item['id']);
+        return esc_html($item['id']);
     }
 
 //Generamos hueco para la nueva pregunta  
     function column_pregunta($item) {
         $edit_link = '?page=FAQ&action=edit&id=' . $item['id'];
-        sprintf('<strong><a href="%s">%s</a></strong>', $edit_link, esc_html($item['pregunta'])); 
+        $pregunta = sprintf('<strong><a href="%s">%s</a></strong>', $edit_link, esc_html($item['pregunta'])); 
+        return $pregunta;
     }
 
 //Generamos hueco para respuesta    
     function column_respuesta($item) {
-        return esc_html($item['respuesta']);  
+        $respuesta = wp_kses_post($item['respuesta']);
+        return sprintf('<div class="texto-truncado">%s </div>', $respuesta);  
     }
 
-//Generamos hueco para categoria 
+    function column_prioridad($item) {
+        return sprintf(
+            '<div class="editable-priority" data-id="%d"><a>%s</a></div>',
+            $item['id'],
+            esc_html($item['prioridad'])
+        );
+    }
+
+    //Generamos hueco para categoria 
     function column_FK_idcat($item) {
         global $wpdb;
         $prefijo = $wpdb->prefix . 'fqr_';   // Asegúrate de que este prefijo es correcto      

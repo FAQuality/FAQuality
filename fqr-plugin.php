@@ -25,7 +25,28 @@ function fqr_enqueue_scripts() {
     wp_localize_script('fqr-js', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
 }
 
+add_action('admin_enqueue_scripts', function() {
+    wp_enqueue_style('faqer-backend', plugin_dir_url(__FILE__) . 'assets/faqer-backend.css');
+});
+
 add_action('wp_enqueue_scripts', 'fqr_enqueue_scripts');
 
+add_action('admin_enqueue_scripts', function($hook) {
+    if (!isset($_GET['page']) || $_GET['page'] !== 'FAQ') {
+        return;
+    } // Ajusta según el slug de tu página
+    
+    wp_enqueue_script(
+        'faq-admin-js', 
+        plugin_dir_url(__FILE__) . 'assets/faqer-admin.js', 
+        ['jquery'], 
+        '1.0', 
+        true
+    );
+    
+    wp_localize_script('faq-admin-js', 'faqVars', [
+        'nonce' => wp_create_nonce('faq_priority_nonce')
+    ]);
+});
+
 // https://github.com/orgs/ValentinaSystem-FAQ/projects/1/views/1
-// Problema de que el formulario se muestra varias veces. Eliminar formulario al cerrar pregunta.

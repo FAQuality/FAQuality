@@ -44,6 +44,26 @@ EOD;
     wp_die();
 }
 
+add_action('wp_ajax_actualizar_prioridad_faq', function() {
+    check_ajax_referer('faq_priority_nonce', 'security');
+    
+    global $wpdb;
+    $table = $wpdb->prefix . 'fqr_faq';
+    
+    $wpdb->update(
+        $table,
+        ['prioridad' => $_POST['prioridad']],
+        ['id' => $_POST['id']],
+        ['%d'],
+        ['%d']
+    );
+    
+    wp_die();
+});
+
+
+
+
 add_action('wp_ajax_fqr_cargar_hijas', 'fqr_cargar_hijas_callback');
 add_action('wp_ajax_nopriv_fqr_cargar_hijas', 'fqr_cargar_hijas_callback');
 ?>
