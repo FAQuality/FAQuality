@@ -50,7 +50,7 @@ function frontend_shortcode($atts) {
     </div>
     <?php
 
-    echo formulario_base();
+    formulario_base();
     return ob_get_clean();
 }
 add_shortcode('FAQer', 'frontend_shortcode');
@@ -80,24 +80,6 @@ function formulario_base() {
         }
     }
     ?>
-    <form method="post" class="formulario-base">
-        <input type="hidden" name="id_pregunta" value="<?php echo esc_attr($id_pregunta); ?>">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="captcha">Introduce el texto de la imagen:</label>
-        <img src="<?php echo plugin_dir_url(__FILE__) . 'captcha.php'; ?>" alt="CAPTCHA" id="captcha-img">
-        <input type="text" name="captcha" required>
-
-        <button type="button" onclick="document.getElementById('captcha-img').src='<?php echo plugin_dir_url(__FILE__) . 'captcha.php'; ?>?' + Math.random();">
-            Recargar CAPTCHA 🔄
-        </button>
-
-        <button type="submit" name="enviar_formulario">Enviar</button>
-    </form>
     <?php
     return ob_get_clean();
 }
