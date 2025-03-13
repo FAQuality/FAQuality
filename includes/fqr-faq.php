@@ -52,13 +52,13 @@ class FAQ_List_Table extends WP_List_Table {
 
 //Generamos hueco para ID que al clickear el texto se pueda editar la pregunta
     function column_id($item) {
-        $edit_link = '?page=FAQ&action=edit&id=' . $item['id'];
-        return sprintf('<strong><a href="%s">%s</a></strong>', $edit_link, esc_html($item['id']));
+        return  esc_html($item['id']);
     }
 
 //Generamos hueco para la nueva pregunta  
     function column_pregunta($item) {
-        return esc_html($item['pregunta']);  
+        $edit_link = '?page=FAQ&action=edit&id=' . $item['id'];
+        sprintf('<strong><a href="%s">%s</a></strong>', $edit_link, esc_html($item['pregunta'])); 
     }
 
 //Generamos hueco para respuesta    
