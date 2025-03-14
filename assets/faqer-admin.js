@@ -4,6 +4,10 @@ jQuery(document).ready(function($) {
         const cell = $(this);
         const id = cell.data('id');
         const originalValue = cell.text().trim();
+
+        if (cell.find('.priority-input').length > 0) {
+            return; // No hacer nada si ya hay un input activo
+        }
         
         // Crea input temporal
         const input = $('<input type="number" class="priority-input" required>')
@@ -26,9 +30,9 @@ jQuery(document).ready(function($) {
                 // Si no es un número válido, volver al valor original
                 cell.text(originalValue);
                 return; // No enviar la actualización al servidor
+            } else {
+                cell.text(newValue);
             }
-            
-            cell.text(newValue);
 
             // Envía datos a WordPress
             $.post(ajaxurl, {
