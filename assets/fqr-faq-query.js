@@ -16,57 +16,52 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    function cerrarPregunta(pregunta, ocultarRespuesta = true) {
+    function cerrarPregunta(pregunta, ocultarHijas = true) {
         const id = pregunta.find('.faq-question').data('id');
-
-        if (ocultarRespuesta) {
-            pregunta.find('.faq-answer').hide(); // Oculta la respuesta de la pregunta actual
-        }
-
-        pregunta.data('estado', 'cerrado'); // Marca como cerrada
+        pregunta.find('.faq-answer').hide();
+        pregunta.data('estado', 'cerrado');
 
         // Eliminar formulario asociado a esta pregunta
-        const formulario = pregunta.nextAll('.formulario-base[data-padre-form="' + id + '"]');
-        if (formulario.length > 0) {
-            formulario.remove();
-        }
+        $('.formulario-base[data-padre-form="' + id + '"]').remove();
 
-        // Ocultar y cerrar recursivamente las preguntas hijas
-        pregunta.nextAll('.faq-item[data-padre="' + id + '"]').each(function () {
-            cerrarPregunta($(this)); // Cierra las hijas recursivamente
-            $(this).hide(); // Oculta las hijas
-        });
+        if (ocultarHijas) {
+            pregunta.nextAll('.faq-item[data-padre="' + id + '"]').each(function () {
+                cerrarPregunta($(this), true);
+                $(this).hide();
+            });
+        }
     }
 
     function cerrarPreguntasMismoNivel(preguntaActual) {
-        const padreId = preguntaActual.attr('data-padre'); // ID del padre de la pregunta actual
+        const padreId = preguntaActual.attr('data-padre');
         $('.faq-item[data-padre="' + padreId + '"]').each(function () {
             if (!$(this).is(preguntaActual)) {
-                cerrarPregunta($(this)); // Cierra hermanas y sus descendientes
+                cerrarPregunta($(this), true);
             }
         });
     }
 
+    function eliminarTodosLosFormularios() {
+        $('.formulario-base').remove();
+    }
+
     $('.faq-list').on('click', '.faq-question', function () {
-        const pregunta = $(this).closest('.faq-item'); // La pregunta actual
-        const id = $(this).data('id'); // ID de la pregunta actual
-        const respuesta = pregunta.find('.faq-answer'); // Respuesta de la pregunta actual
-        const estado = pregunta.data('estado'); // Estado actual ("abierto" o "cerrado")
+        const pregunta = $(this).closest('.faq-item');
+        const id = $(this).data('id');
+        const respuesta = pregunta.find('.faq-answer');
+        const estado = pregunta.data('estado');
+
+        // Eliminar todos los formularios antes de cualquier acción
+        eliminarTodosLosFormularios();
 
         if (estado === 'abierto') {
-            // Si está abierta, cierra esta pregunta y sus descendientes pero deja visibles las hijas
             cerrarPregunta(pregunta, true);
         } else {
-            // Si está cerrada, cierra otras del mismo nivel y abre esta
             cerrarPreguntasMismoNivel(pregunta);
-
-            respuesta.show(); // Muestra la respuesta de la pregunta actual
-            pregunta.data('estado', 'abierto'); // Marca como abierta
-
-            // Muestra las hijas directas pero no carga nuevas si ya están visibles
+            respuesta.show();
+            pregunta.data('estado', 'abierto');
             pregunta.nextAll('.faq-item[data-padre="' + id + '"]').show();
-
-            cargarPreguntasHijas(id, pregunta); // Carga las preguntas hijas si es necesario
+            cargarPreguntasHijas(id, pregunta);
         }
     });
 });

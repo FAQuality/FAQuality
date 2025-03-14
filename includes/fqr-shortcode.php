@@ -48,6 +48,77 @@ function frontend_shortcode($atts) {
             <p>No hay preguntas en estas categorías.</p>
         <?php endif; ?>
     </div>
+    <script> 
+        document.addEventListener('DOMContentLoaded', function() {
+        function aplicarSangria() {
+            const items = document.querySelectorAll('.faq-item');
+            const itemMap = new Map();
+
+            // Crear un mapa de todos los items
+            items.forEach(item => {
+                const id = item.querySelector('.faq-question').getAttribute('data-id');
+                itemMap.set(id, item);
+            });
+
+            // Calcular y aplicar la sangría
+            items.forEach(item => {
+                let nivel = 0;
+                let currentItem = item;
+                while (currentItem) {
+                    const padreId = currentItem.getAttribute('data-padre');
+                    if (padreId === '1') break; // Detener en el nivel raíz
+                    currentItem = itemMap.get(padreId);
+                    if (currentItem) nivel++;
+                }
+                item.style.marginLeft = `${nivel * 20}px`;
+            });
+
+            // Aplicar sangría al formulario
+            const formulario = document.querySelector('.formulario-base');
+            if (formulario) {
+                const padreFormId = formulario.getAttribute('data-padre-form');
+                if (padreFormId) {
+                    const padrePregunta = itemMap.get(padreFormId);
+                    if (padrePregunta) {
+                        const nivelPadre = calcularNivel(padrePregunta, itemMap);
+                        formulario.style.marginLeft = `${(nivelPadre) * 20}px`;
+                    }
+                }
+            }
+        }
+
+        function calcularNivel(item, itemMap) {
+            let nivel = 0;
+            let currentItem = item;
+            while (currentItem) {
+                const padreId = currentItem.getAttribute('data-padre');
+                if (padreId === '1') break; // Detener en el nivel raíz
+                currentItem = itemMap.get(padreId);
+                if (currentItem) nivel++;
+            }
+            return nivel;
+        }
+
+            // Aplicar sangría inicial
+            aplicarSangria();
+
+            // Observar cambios en el DOM para aplicar sangría a nuevos elementos
+            const observer = new MutationObserver(aplicarSangria);
+            observer.observe(document.querySelector('.faq-container'), { childList: true, subtree: true });
+
+            // Manejar la apertura de preguntas y actualización del formulario
+            document.querySelector('.faq-list').addEventListener('click', function(e) {
+                if (e.target.classList.contains('faq-question')) {
+                    const preguntaId = e.target.getAttribute('data-id');
+                    const formulario = document.querySelector('.formulario-base');
+                    if (formulario) {
+                        formulario.setAttribute('data-padre-form', preguntaId);
+                        aplicarSangria();
+                    }
+                }
+            });
+        });
+    </script>
     <?php
 
     formulario_base();
