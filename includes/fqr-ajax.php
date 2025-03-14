@@ -8,7 +8,7 @@ function fqr_cargar_hijas_callback() {
     $tabla_faq = $prefijo . 'faq';
     
     $id_padre = intval($_POST['id_padre']);
-    $hijas = $wpdb->get_results($wpdb->prepare("SELECT id, pregunta, respuesta FROM $tabla_faq WHERE FK_idpadre = %d AND borrado = 0", $id_padre));
+    $hijas = $wpdb->get_results($wpdb->prepare("SELECT id, pregunta, respuesta FROM $tabla_faq WHERE FK_idpadre = %d AND borrado = 0 ORDER BY prioridad desc", $id_padre));
     
     $respuesta = '';
     

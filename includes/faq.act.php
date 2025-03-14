@@ -18,6 +18,31 @@ function faqer_edit_faq_page() {
             $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHERE borrado=0");
             $id_padre = $wpdb->get_results("SELECT id, pregunta FROM $tabla_faq WHERE borrado=0 OR id=1");
 
+            function mostrar_opciones_jerarquicas($preguntas, $padre_id = 1, $nivel = 0, $padre_actual = null) {
+                $html = '';
+                foreach ($preguntas as $pregunta) {
+                    if ($pregunta->FK_idpadre == $padre_id) {
+                        $selected = ($pregunta->id == $padre_actual) ? 'selected="selected"' : '';
+                        $sangria = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $nivel);
+                        $html .= sprintf(
+                            '<option value="%s" %s>%s%s</option>',
+                            esc_attr($pregunta->id),
+                            $selected,
+                            $sangria . ($nivel > 0 ? '&#8627; ' : ''),
+                            esc_html($pregunta->pregunta)
+                        );
+                        $html .= mostrar_opciones_jerarquicas($preguntas, $pregunta->id, $nivel + 1, $padre_actual);
+                    }
+                }
+                return $html;
+            }
+
+            $preguntas = $wpdb->get_results("
+                SELECT id, pregunta, FK_idpadre 
+                FROM $tabla_faq 
+                WHERE borrado = 0 
+                ORDER BY FK_idpadre, id
+                "); 
             // Mostrar formulario de edición con los datos actuales
             ?>
            <div class="wrap">
@@ -46,22 +71,19 @@ function faqer_edit_faq_page() {
                     }
                     ?>
                 </select><br>
-        <!-- Id pregunta padre -->
-        <label for="id_padre"><strong>Pregunta Padre:</strong></label>
-        <select name="id_padre" id="id_padre">
-                <?php
-                //Comprueba si existe categoria alguna
-                if ($id_padre) {
-                    //Reproduce en bucle las categorias existentes
-                    foreach ($id_padre as $id_pregunta) {
-                        $selected = ($id_pregunta->id == $id_padre_actual) ? 'selected="selected"' : '';
-                        echo '<option value="' . esc_attr($id_pregunta->id) . '"' . $selected . '>' . esc_html($id_pregunta->pregunta) . '</option>';
+
+                <!-- Id pregunta padre -->
+                <label for="id_padre"><strong>Pregunta Padre:</strong></label>
+                <select name="id_padre" id="id_padre">
+                    <option value="1" <?php echo ($id_padre_actual == 1) ? 'selected="selected"' : ''; ?>>Sin padre</option>
+                    <?php 
+                    if ($preguntas) {
+                        echo mostrar_opciones_jerarquicas($preguntas, 1, 0, $id_padre_actual);
+                    } else {
+                        echo '<option value="">No hay más preguntas disponibles</option>';
                     }
-                } else {
-                    echo '<option value="">No hay preguntas padres todavia</option>';
-                }
-                ?>
-            </select><br>
+                    ?>
+                </select>
                 <?php
                 //Se empieza uso de php en el html
                 // Configuración del editor

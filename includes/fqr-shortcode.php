@@ -23,7 +23,7 @@ function frontend_shortcode($atts) {
 
     $placeholders = implode(',', array_fill(0, count($categoria_ids), '%d'));
     $query = $wpdb->prepare(
-        "SELECT id, pregunta, respuesta, FK_idpadre FROM $tabla_faq WHERE FK_idcat IN ($placeholders) AND FK_idpadre=1 AND borrado = 0 order by prioridad asc, id desc",
+        "SELECT id, pregunta, respuesta, FK_idpadre FROM $tabla_faq WHERE FK_idcat IN ($placeholders) AND FK_idpadre=1 AND borrado = 0 order by prioridad desc",
         ...$categoria_ids
     );
 
