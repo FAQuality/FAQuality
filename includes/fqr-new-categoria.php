@@ -41,7 +41,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $configuracion_editor = array(
             'textarea_name' => 'descripcion', //Define el contenido del campo y se manda a la BD
             'media_buttons' => true, // Habilita el botón "Añadir medios"
-            'teeny' => false, // Usa la versión completa del editor
+            'teeny' => true, // Usa la versión completa del editor
             'quicktags' => true // Habilita etiquetas rápidas (negrita, cursiva, etc.)
         );
 

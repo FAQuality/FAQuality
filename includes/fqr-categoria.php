@@ -144,8 +144,9 @@ function faqer_categoria_page()
 
     faqer_selection_categoria_page();
 
-    echo '<div class="wrap"><h1>Categorías</h1>';
-    $categoria_table = new Categoria_List_Table_F(); // FIXME: Externalizar o algo para que no se cree uno nuevo cada vez que se llama a la funcion
+    echo '<div class="wrap"><div class="title-container"><h1 style="width: min-content;">Categorías</h1>';
+    echo '<a class="button nuevo" href="?page=FAQ_New_Categoria">Nueva categoría</a></div>';
+    $categoria_table = new Categoria_List_Table_F(); 
     $categoria_table->prepare_items();
     $categoria_table->display();
     echo '</div>';

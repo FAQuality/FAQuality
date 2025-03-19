@@ -137,11 +137,13 @@ function formulario_base() {
         if ($_POST['captcha'] == $_SESSION['captcha']) {
             $nombre = sanitize_text_field($_POST["nombre"]);
             $email = sanitize_email($_POST["email"]);
+            $mensaje = sanitize_text_field($_POST["mensaje"]);
             $id_pregunta = isset($_POST["id_pregunta"]) ? intval($_POST["id_pregunta"]) : 0;
 
             $wpdb->insert($tabla_contacto, [
                 "nombre" => $nombre,
                 "email" => $email,
+                "mensaje" => $mensaje,
                 "FK_idfaq" => $id_pregunta
             ]);
 

@@ -19,7 +19,7 @@ function fqr_Add_My_Admin_Link()
         'FAQer', // Slug del menú (URL amigable)
         'faqer_page', // Función que mostrará el contenido de la página
         'dashicons-format-status', // Icono del menú (puedes usar uno de los iconos predeterminados de WordPress)
-        8 // Posición en el menú de administración
+        65 // Posición en el menú de administración
     );
 
     add_submenu_page( //Menu categoria

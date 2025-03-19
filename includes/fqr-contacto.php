@@ -62,7 +62,7 @@ class Categoria_List_Contacto extends WP_List_Table
 
         return $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT id, fecha, nombre, email, FK_idfaq, estado_atendido FROM $tabla_contacto WHERE borrado=0 LIMIT %d OFFSET %d",
+                "SELECT id, fecha, nombre, email, mensaje, FK_idfaq, estado_atendido FROM $tabla_contacto WHERE borrado=0 LIMIT %d OFFSET %d",
                 $per_page,
                 $offset
             ),
@@ -98,6 +98,7 @@ class Categoria_List_Contacto extends WP_List_Table
             'nombre' => 'Nombre',
             'email' => 'Email',
             'FK_idfaq' => 'De la pregunta:',
+            'mensaje' => 'Mensaje',
             'estado' => 'Estado',
             'acciones' => 'Acciones'
         ];

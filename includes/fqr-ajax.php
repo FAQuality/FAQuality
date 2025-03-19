@@ -28,6 +28,7 @@ function fqr_cargar_hijas_callback() {
                 <input type="hidden" name="id_pregunta" value="{$id_padre}">
                 <label>Nombre: <input type="text" name="nombre" required></label>
                 <label>Email: <input type="email" name="email" required></label>
+                <label>Mensaje: <input type="text" name="mensaje" required></label>
                 <button type="submit" name="enviar_formulario">Enviar</button>
                 <label for="captcha">Introduce el texto de la imagen:</label>
                 <img src="{$plugin_url}captcha.php" alt="CAPTCHA" id="captcha-img">
