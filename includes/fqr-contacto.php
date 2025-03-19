@@ -131,8 +131,8 @@ class Categoria_List_Contacto extends WP_List_Table
 
     //Generamos hueco para la fecha
     function column_fecha($item)
-    {
-        return esc_html($item['fecha']);
+    {                                           //Cambiamos el formato de fecha 
+        return date("d-m-Y", strtotime($item['fecha']));
     }
 
     //Generamos hueco para la clave foranea

@@ -153,6 +153,7 @@ function faqer_categoria_page()
 
     $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHERE borrado=0");
     ?>
+    <!-- Creamos la lista con las categorias que queremos seleccionar -->
     <div class="wrap">
         <h1>Generar shortcode</h1>
         <!-- Lista dinamica -->
@@ -170,20 +171,20 @@ function faqer_categoria_page()
             }
             ?>
         </select><br>
-        <!-- Contenedor de etiquetas -->
+        <!-- Contenedor de etiquetas, actualmente vacio ya que no se han agregado ninguna -->
         <div id="tagContainer" style="margin-top: 10px;"></div>
 
         <!-- Shortcode dinámico -->
         <p><strong>Shortcode final: </strong><span id="shortcode">[FAQer categorias=""]</span></p>
     </div>
     <script>
-        let categoriasSeleccionadas = []; // Almacena los IDs de las categorías seleccionadas
+        let categoriasSeleccionadas = []; // Array que almacena los IDs de las categorías seleccionadas
 
-        function actualizarShortcode() {
+        function actualizarShortcode() { //Coge las categorias seleccionadas y las inserta en la base del shortcode
             document.getElementById("shortcode").innerText = '[FAQer categorias="' + categoriasSeleccionadas.join(",") + '"]';
         }
 
-        function agregarCategoria() {
+        function agregarCategoria() { //Llamamos a la funcion select para usarla
             let select = document.getElementById("id_cat");
             let categoriaID = select.value;
             let categoriaTexto = select.options[select.selectedIndex].text;
@@ -192,7 +193,7 @@ function faqer_categoria_page()
             if (categoriaID && !categoriasSeleccionadas.includes(categoriaID)) {
                 categoriasSeleccionadas.push(categoriaID);
 
-                // Crear etiqueta visual
+                // Crear etiqueta visual con css escrito en la misma linea
                 let tagContainer = document.getElementById("tagContainer");
                 let tag = document.createElement("span");
                 tag.className = "tag";

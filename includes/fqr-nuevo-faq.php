@@ -90,22 +90,21 @@ function mostrar_opciones_jerarquicas($preguntas, $padre_id = 1, $nivel = 0) {
             }
         ?>
         </select><br>
-        <!-- Respuesta -->
+        <!-- Respuesta -->       
        <label for="respuesta"><strong>Respuesta:</strong></label><br>
-        
+         
        <?php
-        //Se empieza uso de php en el html
-        // Configuración del editor
-        $contenido_por_defecto = ''; //Contenido que aparecera en el formulario ya escrito (vacio)
-        $editor_id = 'respuesta'; //Base e identificador del editor de wp 
+        //Se empieza uso de php en el html       
+         $contenido_por_defecto = ''; //Contenido que aparecera en el formulario ya escrito (vacio)
+         $editor_id = 'respuesta'; //Base e identificador del editor de wp 
 
         //Configuracion del editor
-        $configuracion_editor = array(
-            'textarea_name' => 'respuesta', //Define el contenido del campo y se manda a la BD
-            'media_buttons' => true, // Habilita el botón "Añadir medios"
-            'teeny' => false, // Usa la versión completa del editor
-            'quicktags' => true // Habilita etiquetas rápidas (negrita, cursiva, etc.)
-        );
+         $configuracion_editor = array(
+             'textarea_name' => 'respuesta', //Define el contenido del campo y se manda a la BD
+             'media_buttons' => true, // Habilita el botón "Añadir medios"
+             'teeny' => false, // Usa la versión completa del editor
+             'quicktags' => true // Habilita etiquetas rápidas (negrita, cursiva, etc.)
+         );
 
         // Muestra el editor en el formulario
         wp_editor($contenido_por_defecto, $editor_id, $configuracion_editor);

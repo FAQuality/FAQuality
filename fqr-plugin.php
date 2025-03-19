@@ -1,8 +1,8 @@
 <?php
 /*
 
-Plugin Name: FAQer PreRelease0.9
-Description: Pua que maquinas somos
+Plugin Name: FAQer PreRelease Raul Version
+Description: Fernando pirata somali
 Author: Fernando y Raul
 
 */
