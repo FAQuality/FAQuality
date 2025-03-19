@@ -29,6 +29,10 @@ add_action('admin_enqueue_scripts', function() {
     wp_enqueue_style('faqer-backend', plugin_dir_url(__FILE__) . 'assets/faqer-backend.css');
 });
 
+add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_style('faqer-frontend', plugin_dir_url(__FILE__) . 'assets/faqer-frontend.css');
+});
+
 add_action('wp_enqueue_scripts', 'fqr_enqueue_scripts');
 
 add_action('admin_enqueue_scripts', function($hook) {

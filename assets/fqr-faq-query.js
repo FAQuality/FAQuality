@@ -64,4 +64,26 @@ jQuery(document).ready(function ($) {
             cargarPreguntasHijas(id, pregunta);
         }
     });
+
+    $('.faq-list').on('submit', '.fqr-form', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var formData = form.serialize();
+
+        $.ajax({
+            url: ajax_object.ajax_url,
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    form.html('<p style="color: green;">' + response.message + '</p>');
+                } else {
+                    form.prepend('<p style="color: red;">' + response.message + '</p>');
+                }
+            },
+            error: function() {
+                form.prepend('<p style="color: red;">Hubo un error al enviar el formulario. Por favor, intenta de nuevo.</p>');
+            }
+        });
+    });
 });

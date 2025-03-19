@@ -123,6 +123,10 @@ class Categoria_List_Contacto extends WP_List_Table
         return esc_html($item['nombre']);
     }
 
+    function column_mensaje($item) {
+        return esc_html($item['mensaje']);
+    }
+
     //Generamos hueco para email    
     function column_email($item)
     {
