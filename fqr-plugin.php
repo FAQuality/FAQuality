@@ -3,7 +3,7 @@
 
 Plugin Name: FAQer PRERELEASE 0.99
 Description: Plugin de FAQ jerárquico clasificado por categorías con formulario de contacto. 
-Author: Fernando y Raul
+Author: Fernando de Cisneros González y José Raúl Sánchez Serena
 
 */
 

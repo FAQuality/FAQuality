@@ -3,7 +3,7 @@ function faqer_aboutus_page() {
     ?> 
     <div class="wrap">
     <div class="content">
-        <h1>About Us</h1>
+        <h1>Sobre nosotros</h1>
         <h2>¿Quiénes somos?</h2>
         <p>Somos dos estudiantes con ganas de aprender y, modestia aparte, increíblemente guapos 
             (o eso nos decimos para motivarnos). Este plugin es nuestro campo de entrenamiento, 
