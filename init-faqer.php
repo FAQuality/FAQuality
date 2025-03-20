@@ -30,6 +30,7 @@ function crear_tabla_faq() {
         respuesta TEXT NOT NULL,
         FK_idcat INT, -- ID de categoría
         FK_idpadre INT DEFAULT 1, -- ID de pregunta padre
+        prioridad INT(5) DEFAULT 0 NOT NULL CHECK (prioridad < 99999),
         borrado TINYINT(1) DEFAULT 0 NOT NULL CHECK (borrado = 0 OR borrado = 1),
         FOREIGN KEY (FK_idcat) REFERENCES $PK_categoria,
         FOREIGN KEY (FK_idpadre) REFERENCES $PK_faq
@@ -79,6 +80,7 @@ function crear_tabla_contacto() {
         fecha DATE DEFAULT CURDATE(),
         nombre VARCHAR(255) NOT NULL,
         email VARCHAR(255),
+        mensaje TEXT,
         FK_idfaq INT,
         estado_atendido TINYINT(1) DEFAULT 0 NOT NULL CHECK (estado_atendido = 0 OR estado_atendido = 1),
         borrado TINYINT(1) DEFAULT 0 NOT NULL CHECK (borrado = 0 OR borrado = 1),

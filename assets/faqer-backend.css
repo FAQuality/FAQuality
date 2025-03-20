@@ -1,0 +1,17 @@
+.wp-list-table .column-id, .wp-list-table .column-prioridad {
+    width: min-content;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+}
+
+.title-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.nuevo{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
