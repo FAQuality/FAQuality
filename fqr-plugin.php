@@ -1,8 +1,8 @@
 <?php
 /*
 
-Plugin Name: FAQer PreRelease Raul Version
-Description: Fernando pirata somali
+Plugin Name: FAQer PRERELEASE 0.99
+Description: Ojala funcione
 Author: Fernando y Raul
 
 */

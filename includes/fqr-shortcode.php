@@ -39,7 +39,7 @@ function frontend_shortcode($atts) {
                             <?php echo esc_html($fila->pregunta); ?>
                         </strong><br>
                         <div class="faq-answer" style="display:none">
-                            <?php echo wpautop(wp_kses_post($fila->respuesta)); ?><br>
+                            <?php echo wpautop(wp_kses_post($fila->respuesta)); ?>
                         </div>
                     </li>
                 <?php endforeach; ?>
