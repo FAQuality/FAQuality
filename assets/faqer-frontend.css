@@ -1,14 +1,14 @@
 .captcha {
     display: grid;
-    grid-template-columns: 2fr calc(1fr - .5rem);
+    grid-template-columns: 1fr auto;
     align-content: center;
     gap: .5rem;
     height: fit-content;
 }
 
 .captcha-button {
-    width: 230px;
-    max-width: 100%;
+    width: 100%;
+    max-width: 230px;
     height: fit-content;
     overflow: hidden;
     text-align: center;
@@ -16,14 +16,82 @@
     justify-content: center;
     align-items: center;
     opacity: 70%;
+}
 
-    img {
-        height: auto;
-        min-height: 1rem;
-        width: 100%;
-    }
+.captcha-button img {
+    height: auto;
+    min-height: 1rem;
+    width: 100%;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    width: 100%;
+}
+
+.faq-input {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+}
+
+.mensaje {
+    width: 100% !important;
+    min-height: 4.5rem;
+    resize: vertical;
 }
 
 .captcha-button:hover {
     opacity: 87%;
+}
+
+.faq-answer {
+    display: none;
+    overflow: hidden;
+}
+
+.faq-answer p {
+    margin-bottom: 0 !important;
+}
+
+.faq-answer.show {
+    max-height: 1000px;
+    transition: max-height 0.5s ease-in, opacity 0.5s ease-in;
+    opacity: 1;
+}
+
+.formulario-base {
+    display: none;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.formulario-base.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Estilos responsivos adicionales */
+@media (max-width: 600px) {
+    .row {
+        grid-template-columns: 1fr;
+        gap: .5rem;
+
+    }
+
+    .captcha {
+        grid-template-columns: 1fr;
+    }
+
+    .captcha-button {
+        max-width: 100%;
+    }
+
+    .fqr-form {
+        margin: 0 auto;
+    }
 }
