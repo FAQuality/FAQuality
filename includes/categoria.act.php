@@ -40,26 +40,11 @@ function faqer_edit_categoria_page() {
                 <label for="titulo_categoria"><strong>Título de la Categoría:</strong></label><br>
                 <input type="text" id="categoria" name="categoria" value="<?php echo esc_attr($categoria->categoria); ?>"
                 style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el nombre de la categoría aquí">   
-                
-        
-                <?php
-                //Se empieza uso de php en el html
-                // Configuración del editor
-                $contenido_por_defecto = $categoria->descripcion; //Contenido que aparecera en el formulario ya escrito (vacio)
-                $editor_id = 'descripcion'; //Base e identificador del editor de wp 
-
-                //Configuracion del editor
-                $configuracion_editor = array(
-                    'textarea_name' => 'descripcion', //Define el contenido del campo y se manda a la BD
-                    'media_buttons' => false, // Habilita el botón "Añadir medios"
-                    'teeny' => false, // Usa la versión completa del editor
-                    'quicktags' => true // Habilita etiquetas rápidas (negrita, cursiva, etc.)
-                );
-
-                // Muestra el editor en el formulario
-                wp_editor($contenido_por_defecto, $editor_id, $configuracion_editor);
-                ?>
-                <br>
+                <label for="titulo_descripcion"><strong>Descripción:</strong></label><br>
+                <textarea id="descripcion" name="descripcion"
+                style="width: 100%; height: 200px; min-height:48px; font-size: 16px; padding: 10px; 
+                    margin-bottom: 10px; resize: vertical;"
+                placeholder="Escribe la descripción aquí"></textarea><br>
                 <!-- Boton de enviar -->
                 <input type="submit" name="update_categoria" value="Actualizar" class="button button-primary">
 
