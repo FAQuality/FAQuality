@@ -225,7 +225,17 @@ function faqer_categoria_page()
         }
         // Evento para detectar cambios en el <select>
         document.getElementById("id_cat").addEventListener("change", agregarCategoria);
-    </script>
+        </script>
+        <div>            
+            <button onclick="copiarAlPortapapeles()">Copiar</button>
+        </div>
+        <script>
+            function copiarAlPortapapeles() {
+                actualizarShortcode(); // Asegura que el shortcode está actualizado antes de copiar
+                let texto = document.getElementById("shortcode").innerText; // Obtiene el shortcode dinámico
+                navigator.clipboard.writeText(texto) // Copia al portapapeles           
+            }
+        </script>
 <?php
 }
 
