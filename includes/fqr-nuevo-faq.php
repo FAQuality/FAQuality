@@ -63,9 +63,8 @@ function mostrar_opciones_jerarquicas($preguntas, $padre_id = 1, $nivel = 0) {
         <input type="text" id="pregunta" name="pregunta" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el título aquí">
         <p id="error-pregunta" style="color: red; display: none;">Por favor, ingrese una pregunta.</p>
         <!-- Lista dinamica -->
-        <label for="id_cat">Selecciona una categoria:</label>        
-            <select name="id_cat" id="id_cat">
-            
+        <label for="id_cat" style="margin-top: 30px;"><Strong>Selecciona una categoria:</Strong></label><br>       
+            <select name="id_cat" id="id_cat" style="margin-bottom: 10px;">            
             <?php
                 //Comprueba si existe categoria alguna
                 if ($categorias) {
@@ -79,8 +78,8 @@ function mostrar_opciones_jerarquicas($preguntas, $padre_id = 1, $nivel = 0) {
             ?>
             </select><br>
         <!-- Id pregunta padre -->
-        <label for="id_padre"><strong>Pregunta Padre:</strong></label>
-        <select name="id_padre" id="id_padre">
+        <label for="id_padre" style="margin-top: 30px !important;"><strong>Pregunta Padre:</strong></label><br>
+        <select name="id_padre" id="id_padre" style="margin-bottom: 10px;">
         <option value="1">Sin padre</option>
         <?php 
             if ($preguntas) {
