@@ -24,8 +24,8 @@ function fqr_Add_My_Admin_Link()
 
     add_submenu_page( //Menu categoria
         'FAQer',           // El slug del menú principal al que pertenece
-        'Categoria', // Título de la página del submenú
-        'Categoria',              // Nombre del submenú que aparecerá en el menú
+        'Categoría', // Título de la página del submenú
+        'Categoría',              // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'FAQ_Categoria',   // Slug único para la página del submenú
         'faqer_categoria_page' // Función que renderiza la página del submenú
@@ -33,8 +33,8 @@ function fqr_Add_My_Admin_Link()
     
     add_submenu_page( //Menu crear categorias
         'FAQer',           // El slug del menú principal al que pertenece
-        'Nueva_Categoria', // Título de la página del submenú
-        'Nueva Categoria',  // Nombre del submenú que aparecerá en el menú
+        'Nueva Categoría', // Título de la página del submenú
+        'Nueva Categoría',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'FAQ_New_Categoria',   // Slug único para la página del submenú
         'faqer_new_categoria_page' // Función que renderiza la página del submenú
@@ -65,7 +65,7 @@ function fqr_Add_My_Admin_Link()
     );
     add_submenu_page( //Menu ABOUT US
         'FAQer',  // El slug del menú principal al que pertenece
-        'About_Us', // Título de la página del submenú
+        'Sobre nosotros', // Título de la página del submenú
         'Sobre nosotros',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'aboutus',   // Slug único para la página del submenú
