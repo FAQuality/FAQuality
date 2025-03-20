@@ -26,7 +26,7 @@ function fqr_cargar_hijas_callback() {
         $nonce = wp_create_nonce('fqr_form_nonce');
         $plugin_url = plugin_dir_url(__FILE__) .'';
         $respuesta .= <<<EOD
-        <div class="formulario-base" data-padre-form="{$id_padre}">
+        <div class="formulario-base show" data-padre-form="{$id_padre}">
             <form method="post" class="fqr-form">
                 <input type="hidden" name="action" value="fqr_submit_form">
                 <input type="hidden" name="id_pregunta" value="{$id_padre}">

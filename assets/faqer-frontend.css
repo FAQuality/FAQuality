@@ -27,3 +27,25 @@
 .captcha-button:hover {
     opacity: 87%;
 }
+
+.faq-answer {
+    display: none; /* Importante para inicialización */
+    overflow: hidden;
+}
+
+.faq-answer.show {
+    max-height: 1000px; /* Ajusta este valor según sea necesario */
+    transition: max-height 0.5s ease-in, opacity 0.5s ease-in;
+    opacity: 1;
+}
+
+
+.formulario-base {
+    display: none;
+    transition: all 0.3s ease;
+}
+
+.formulario-base.show {
+    opacity: 1;
+    transform: translateY(0);
+}

@@ -1,4 +1,44 @@
 jQuery(document).ready(function ($) {
+    function eliminarTodosLosFormularios() {
+        $('.formulario-base').stop(true, true).slideUp(400, function() {
+            $(this).remove();
+        });
+    }
+
+    function cerrarPreguntasMismoNivel(preguntaActual) {
+        const padreId = preguntaActual.attr('data-padre');
+        $('.faq-item[data-padre="' + padreId + '"]').not(preguntaActual).each(function () {
+            cerrarPregunta($(this), true);
+        });
+    }
+
+    function abrirPregunta(pregunta) {
+        const respuesta = pregunta.find('.faq-answer');
+        pregunta.data('estado', 'abierto');
+        respuesta.stop(true, true).slideDown(300);
+        
+        const id = pregunta.find('.faq-question').data('id');
+        pregunta.nextAll('.faq-item[data-padre="' + id + '"]').slideDown(300);
+    }
+
+    function cerrarPregunta(pregunta, ocultarHijas = true) {
+        const id = pregunta.find('.faq-question').data('id');
+        const respuesta = pregunta.find('.faq-answer');
+        pregunta.data('estado', 'cerrado');
+        respuesta.stop(true, true).slideUp(300);
+
+        $('.formulario-base[data-padre-form="' + id + '"]').stop(true, true).slideUp(400, function() {
+            $(this).remove();
+        });
+
+        if (ocultarHijas) {
+            pregunta.nextAll('.faq-item[data-padre="' + id + '"]').each(function () {
+                cerrarPregunta($(this), true);
+                $(this).slideUp(300);
+            });
+        }
+    }
+
     function cargarPreguntasHijas(id_padre, elemento_padre) {
         if (elemento_padre.next('.faq-item[data-padre="' + id_padre + '"]').length === 0) {
             $.ajax({
@@ -10,80 +50,40 @@ jQuery(document).ready(function ($) {
                 },
                 success: function (response) {
                     elemento_padre.after(response);
-                    elemento_padre.nextAll('.faq-item[data-padre="' + id_padre + '"]').attr('data-estado', 'cerrado');
+                    mostrarPreguntasHijas(id_padre);
                 }
             });
+        } else {
+            mostrarPreguntasHijas(id_padre);
         }
     }
 
-    function cerrarPregunta(pregunta, ocultarHijas = true) {
-        const id = pregunta.find('.faq-question').data('id');
-        pregunta.find('.faq-answer').hide();
-        pregunta.data('estado', 'cerrado');
-
-        // Eliminar formulario asociado a esta pregunta
-        $('.formulario-base[data-padre-form="' + id + '"]').remove();
-
-        if (ocultarHijas) {
-            pregunta.nextAll('.faq-item[data-padre="' + id + '"]').each(function () {
-                cerrarPregunta($(this), true);
-                $(this).hide();
-            });
-        }
-    }
-
-    function cerrarPreguntasMismoNivel(preguntaActual) {
-        const padreId = preguntaActual.attr('data-padre');
-        $('.faq-item[data-padre="' + padreId + '"]').each(function () {
-            if (!$(this).is(preguntaActual)) {
-                cerrarPregunta($(this), true);
-            }
-        });
-    }
-
-    function eliminarTodosLosFormularios() {
-        $('.formulario-base').remove();
+    function mostrarPreguntasHijas(id_padre) {
+        $('.faq-item[data-padre="' + id_padre + '"]')
+            .attr('data-estado', 'cerrado')
+            .hide()
+            .slideDown(300);
+        
+        $('.formulario-base[data-padre-form="' + id_padre + '"]')
+            .hide()
+            .slideDown(400); // Duración aumentada para el formulario
     }
 
     $('.faq-list').on('click', '.faq-question', function () {
         const pregunta = $(this).closest('.faq-item');
         const id = $(this).data('id');
-        const respuesta = pregunta.find('.faq-answer');
         const estado = pregunta.data('estado');
+        
+        console.log('Estado actual:', estado); // Para depuración
 
-        // Eliminar todos los formularios antes de cualquier acción
         eliminarTodosLosFormularios();
 
         if (estado === 'abierto') {
             cerrarPregunta(pregunta, true);
         } else {
             cerrarPreguntasMismoNivel(pregunta);
-            respuesta.show();
-            pregunta.data('estado', 'abierto');
-            pregunta.nextAll('.faq-item[data-padre="' + id + '"]').show();
+            abrirPregunta(pregunta);
             cargarPreguntasHijas(id, pregunta);
         }
-    });
-
-    $('.faq-list').on('submit', '.fqr-form', function(e) {
-        e.preventDefault();
-        var form = $(this);
-        var formData = form.serialize();
-
-        $.ajax({
-            url: ajax_object.ajax_url,
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                if (response.success) {
-                    form.html('<p style="color: green;">' + response.message + '</p>');
-                } else {
-                    form.prepend('<p style="color: red;">' + response.message + '</p>');
-                }
-            },
-            error: function() {
-                form.prepend('<p style="color: red;">Hubo un error al enviar el formulario. Por favor, intenta de nuevo.</p>');
-            }
-        });
     });
 });
