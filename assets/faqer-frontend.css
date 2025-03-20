@@ -1,21 +1,29 @@
 .captcha {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 1rem;
+    grid-template-columns: 2fr calc(1fr - .5rem);
+    align-content: center;
+    gap: .5rem;
     height: fit-content;
 }
 
 .captcha-button {
+    width: 230px;
+    max-width: 100%;
     height: fit-content;
     overflow: hidden;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 70%;
 
     img {
         height: auto;
         min-height: 1rem;
         width: 100%;
     }
+}
+
+.captcha-button:hover {
+    opacity: 87%;
 }

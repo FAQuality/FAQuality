@@ -131,12 +131,11 @@ function faqer_categoria_page()
     {
         require_once 'categoria.act.php';
         require_once 'bbdd.actions.php';
-        require_once 'fqr-categorias-eliminadas.php';
 
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
             faqer_edit_categoria_page();
         } else if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
-            deleteCategoria();
+           deleteCategoria();
         }
     }
 

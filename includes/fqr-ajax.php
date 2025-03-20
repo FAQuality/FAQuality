@@ -35,13 +35,11 @@ function fqr_cargar_hijas_callback() {
                 <label>Email: <input type="email" name="email" required></label>
                 <label>Mensaje: <input type="text" name="mensaje" required></label>
                 <label for="captcha">Introduce el texto de la imagen:</label>
-                <img src="{$plugin_url}captcha.php" alt="CAPTCHA" id="captcha-img">
                 <div class="captcha">
-                    <input type="text" name="captcha" required>
-                    <button class="captcha-button" type="button" onclick="document.getElementById('captcha-img').src='{$plugin_url}captcha.php?' + Math.random();">
-                        🔄
-                    </button>
+                    <img src="{$plugin_url}captcha.php" alt="CAPTCHA" id="captcha-img">
+                    <button class="captcha-button" type="button" onclick="document.getElementById('captcha-img').src='{$plugin_url}captcha.php?' + Math.random();">Recargar captcha</button>
                 </div>
+                <input type="text" name="captcha" required>
                 <button type="submit" name="enviar_formulario">Enviar</button>
             </form>
         </div>
