@@ -31,15 +31,17 @@ function fqr_cargar_hijas_callback() {
                 <input type="hidden" name="action" value="fqr_submit_form">
                 <input type="hidden" name="id_pregunta" value="{$id_padre}">
                 <input type="hidden" name="fqr_nonce" value="{$nonce}">
-                <label>Nombre: <input type="text" name="nombre" required></label>
-                <label>Email: <input type="email" name="email" required></label>
-                <label>Mensaje: <input type="text" name="mensaje" required></label>
+                <div class="row">
+                    <label>Nombre: <input type="text" name="nombre" class="faq-input" required></label>
+                    <label>Email: <input type="email" name="email" class="faq-input" required></label>
+                </div>
+                <label>Mensaje: <textarea type="text" name="mensaje" class="faq-input mensaje"></textarea></label>
                 <label for="captcha">Introduce el texto de la imagen:</label>
                 <div class="captcha">
                     <img src="{$plugin_url}captcha.php" alt="CAPTCHA" id="captcha-img">
                     <button class="captcha-button" type="button" onclick="document.getElementById('captcha-img').src='{$plugin_url}captcha.php?' + Math.random();">Recargar captcha</button>
                 </div>
-                <input type="text" name="captcha" required>
+                <input type="text" name="captcha" class="faq-input" required>
                 <button type="submit" name="enviar_formulario">Enviar</button>
             </form>
         </div>
