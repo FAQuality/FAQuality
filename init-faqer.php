@@ -161,7 +161,7 @@ function categoria_none() {
     
     $tabla_categoria = $prefijo . 'categoria';
 
-    $sql_query = "INSERT INTO $tabla_categoria (id,categoria) VALUES ('1','Sin categoria)";
+    $sql_query = "INSERT INTO $tabla_categoria (id,categoria) VALUES ('1','Sin categoría')";
     
     $wpdb->query($sql_query);
 }
@@ -172,7 +172,7 @@ function faq_none() {
     $prefijo = $wpdb->prefix . 'fqr_';
     $tabla_faq = $prefijo . 'faq';
 
-    $sql_query = "INSERT INTO $tabla_faq (id,pregunta,respuesta,borrado) VALUES (1,'Sin padre','Sin Madre',1)";
+    $sql_query = "INSERT INTO $tabla_faq (id,pregunta,respuesta,borrado) VALUES (1,'Sin padre','Sin padre',1)";
     
     $wpdb->query($sql_query);
 }
