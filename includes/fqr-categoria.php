@@ -175,7 +175,31 @@ function faqer_categoria_page()
         <div id="tagContainer" style="margin-top: 10px;"></div>
 
         <!-- Shortcode dinámico -->
-        <p><strong>Shortcode final: </strong><span id="shortcode">[FAQer categorias=""]</span></p>
+        <!-- Contenedor del shortcode y botón -->       
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <p><strong>Shortcode final: </strong><span id="shortcode">[FAQer categorias=""]</span></p>
+            <button onclick="copiarAlPortapapeles()">Copiar</button>
+            <!-- Este span se mostrará después de copiar el texto -->
+            <span id="copiadoMensaje" style="display: none; color: green;">¡Copiado!</span>
+        </div>
+        <script>
+            function copiarAlPortapapeles() {
+                actualizarShortcode(); // Asegura que el shortcode esté actualizado antes de copiar
+
+                let texto = document.getElementById("shortcode").innerText; // Obtiene el shortcode dinámico
+                navigator.clipboard.writeText(texto) // Copia al portapapeles
+                    .then(() => { //El metodo writeText manda un promise (una funcion) que si se realiza ejecuta .then
+                        // Mostrar el mensaje de "Copiado" al lado del botón
+                        let mensaje = document.getElementById("copiadoMensaje");
+                        mensaje.style.display = 'inline'; // Muestra el mensaje
+                        setTimeout(() => {
+                            mensaje.style.display = 'none'; // Oculta el mensaje después de 2 segundos
+                        }, 2000);
+                    }) //Si ocurre cualquier error, manda mensaje de error
+                    .catch(err => console.error("Error al copiar: ", err)); // Manejo de errores
+            }
+        </script>
+
     </div>
     <script>
         let categoriasSeleccionadas = []; // Array que almacena los IDs de las categorías seleccionadas
@@ -225,17 +249,7 @@ function faqer_categoria_page()
         }
         // Evento para detectar cambios en el <select>
         document.getElementById("id_cat").addEventListener("change", agregarCategoria);
-        </script>
-        <div>            
-            <button onclick="copiarAlPortapapeles()">Copiar</button>
-        </div>
-        <script>
-            function copiarAlPortapapeles() {
-                actualizarShortcode(); // Asegura que el shortcode está actualizado antes de copiar
-                let texto = document.getElementById("shortcode").innerText; // Obtiene el shortcode dinámico
-                navigator.clipboard.writeText(texto) // Copia al portapapeles           
-            }
-        </script>
+        </script>       
 <?php
 }
 
