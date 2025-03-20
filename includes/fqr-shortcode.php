@@ -126,8 +126,8 @@ function frontend_shortcode($atts) {
 }
 add_shortcode('FAQer', 'frontend_shortcode');
 
-function formulario_base() {
-    ob_start();
+
+function procesar_formulario() {
     session_start();
     global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_';
@@ -147,13 +147,35 @@ function formulario_base() {
                 "FK_idfaq" => $id_pregunta
             ]);
 
-            echo "<p style='color: green;'>Gracias, <strong>" . esc_html($nombre) . "</strong>. Hemos recibido tu mensaje ✅</p>";
+            wp_safe_redirect(add_query_arg('form_status', 'success', wp_get_referer()));
+            exit;
         } else {
-            echo "<p style='color: red;'>Captcha incorrecto ❌, intenta de nuevo.</p>";
+            wp_safe_redirect(add_query_arg('form_status', 'error_captcha', wp_get_referer()));
+            exit;
         }
     }
-    ?>
-    <?php
+}
+
+add_action('admin_post_nopriv_fqr_form_submit', 'procesar_formulario');
+add_action('admin_post_fqr_form_submit', 'procesar_formulario');
+
+function formulario_base() {
+    ob_start();
+    session_start();
+    global $wpdb;
+    $prefijo = $wpdb->prefix . 'fqr_';
+    $tabla_contacto = $prefijo . 'contacto';
+
+    if (isset($_GET['form_status'])) {
+        switch ($_GET['form_status']) {
+            case 'success':
+                echo '<p style="color: green;">Mensaje enviado con éxito ✅</p>';
+                break;
+            case 'error_captcha':
+                echo '<p style="color: red;">Error en el CAPTCHA ❌</p>';
+                break;
+        }
+    }
     return ob_get_clean();
 }
 ?>

@@ -10,8 +10,7 @@ include_once './categoria.act.php';
 
 //Creamos la clase categoria_list_table que al extender de wp_list_table, cogemos lo que realiza la funcion
 //wp_list_table y la personalizamos 
-class Categoria_List_Table_F extends WP_List_Table
-{
+class Categoria_List_Table extends WP_List_Table {
 
     //Creamos un constructor con la informacion principal (ajax desactivado por ahora)
     function __construct()
@@ -32,8 +31,7 @@ class Categoria_List_Table_F extends WP_List_Table
     }
 
     //Obtiene los datos de la base de datos 
-    function get_categorias($per_page, $page_number)
-    {
+    function get_categorias($per_page, $page_number) {
         global $wpdb;
         $prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
         $tabla_categoria = $prefijo . 'categoria';
@@ -136,9 +134,8 @@ function faqer_categoria_page()
 
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
             faqer_edit_categoria_page();
-
         } else if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
-            dbMarkAsDeletedCategoria($_GET['id']);
+           deleteCategoria();
         }
     }
 
@@ -146,7 +143,7 @@ function faqer_categoria_page()
 
     echo '<div class="wrap"><div class="title-container"><h1 style="width: min-content;">Categorías</h1>';
     echo '<a class="button nuevo" href="?page=FAQ_New_Categoria">Nueva categoría</a></div>';
-    $categoria_table = new Categoria_List_Table_F(); 
+    $categoria_table = new Categoria_List_Table(); 
     $categoria_table->prepare_items();
     $categoria_table->display();
     echo '</div>';
