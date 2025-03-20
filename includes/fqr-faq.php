@@ -200,7 +200,7 @@ function faqer_FAQ_page()
     faqer_selection_faq_page();
 
     echo '<div class="wrap"><div class="title-container"><h1 style="width: min-content;">FAQs</h1>';
-    echo '<a class="button nuevo" href="?page=Nuevo_FAQ">Nueva categoría</a></div>';
+    echo '<a class="button nuevo" href="?page=Nuevo_FAQ">Nuevo FAQ</a></div>';
     $table = new FAQ_List_Table();
     $table->prepare_items();
     $table->display();
