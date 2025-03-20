@@ -174,7 +174,7 @@ function faqer_categoria_page()
         <!-- Shortcode dinámico -->
         <!-- Contenedor del shortcode y botón -->       
         <div style="display: flex; align-items: center; gap: 10px;">
-            <p class="shortcode"><strong>Shortcode final: </strong><span id="shortcode">[FAQer categorías="1"]</span></p>
+            <p class="shortcode"><strong>Shortcode final: </strong><span id="shortcode">[FAQer categorias="1"]</span></p>
             <button onclick="copiarAlPortapapeles()" class="button nuevo">Copiar</button>
             <!-- Este span se mostrará después de copiar el texto -->
             <span id="copiadoMensaje" style="display: none; color: green;">¡Copiado!</span>
@@ -202,7 +202,7 @@ function faqer_categoria_page()
         let categoriasSeleccionadas = []; // Array que almacena los IDs de las categorías seleccionadas
 
         function actualizarShortcode() { //Coge las categorias seleccionadas y las inserta en la base del shortcode
-            document.getElementById("shortcode").innerText = '[FAQer categorías="' + categoriasSeleccionadas.join(",") + '"]';
+            document.getElementById("shortcode").innerText = '[FAQer categorias="' + categoriasSeleccionadas.join(",") + '"]';
         }
 
         function agregarCategoria() { //Llamamos a la funcion select para usarla
