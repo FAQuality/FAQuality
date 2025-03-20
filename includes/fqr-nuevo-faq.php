@@ -60,7 +60,7 @@ function mostrar_opciones_jerarquicas($preguntas, $padre_id = 1, $nivel = 0) {
         <!-- Campo para el título -->      
         <!-- Insertamos los datos con el nombre   -->
         <label for="titulo_faq"><strong>Pregunta:</strong></label><br>
-        <input type="text" id="pregunta" name="pregunta" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe el título aquí">
+        <input type="text" id="pregunta" name="pregunta" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe la pregunta aquí">
         <p id="error-pregunta" style="color: red; display: none;">Por favor, ingrese una pregunta.</p>
         <!-- Lista dinamica -->
         <label for="id_cat" style="margin-top: 30px;"><Strong>Selecciona una categoria:</Strong></label><br>       

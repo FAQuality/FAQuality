@@ -46,7 +46,7 @@ function faqer_edit_faq_page() {
             // Mostrar formulario de edición con los datos actuales
             ?>
            <div class="wrap">
-            <h1>Editar Categoría</h1>
+            <h1>Editar FAQ</h1>
             <form method="post" action="">
                 <!-- Campo oculto para la ID -->
                 <input type="hidden" name="id" value="<?php echo esc_attr($id); ?>">
@@ -56,8 +56,8 @@ function faqer_edit_faq_page() {
                 <input type="text" id="pregunta" name="pregunta" value="<?php echo esc_attr($faq->pregunta); ?>"
                 style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe la pregunta aquí">
                 <!-- Lista dinamica -->
-                <label for="id_cat"><strong>Selecciona una categoria:</strong></label>        
-                <select name="id_cat" id="id_cat">
+                <label for="id_cat" style="margin-top: 30px;"><strong>Selecciona una categoria:</strong></label><br>        
+                <select name="id_cat" id="id_cat" style="margin-bottom: 10px;">
                     <?php
                     //Comprueba si existe categoria alguna
                     if ($categorias) {
@@ -73,8 +73,8 @@ function faqer_edit_faq_page() {
                 </select><br>
 
                 <!-- Id pregunta padre -->
-                <label for="id_padre"><strong>Pregunta Padre:</strong></label>
-                <select name="id_padre" id="id_padre">
+                <label for="id_padre" style="margin-top: 30px !important;"><strong>Pregunta Padre:</strong></label><br>
+                <select name="id_padre" id="id_padre" style="margin-bottom: 10px;">
                     <option value="1" <?php echo ($id_padre_actual == 1) ? 'selected="selected"' : ''; ?>>Sin padre</option>
                     <?php 
                     if ($preguntas) {
@@ -83,7 +83,8 @@ function faqer_edit_faq_page() {
                         echo '<option value="">No hay más preguntas disponibles</option>';
                     }
                     ?>
-                </select>
+                </select><br>
+                <label for="respuesta"><strong>Respuesta:</strong></label>
                 <?php
                 //Se empieza uso de php en el html
                 // Configuración del editor
@@ -93,7 +94,7 @@ function faqer_edit_faq_page() {
                 //Configuracion del editor
                 $configuracion_editor = array(
                     'textarea_name' => 'respuesta', //Define el contenido del campo y se manda a la BD
-                    'media_buttons' => false, // Habilita el botón "Añadir medios"
+                    'media_buttons' => true, // Habilita el botón "Añadir medios"
                     'teeny' => false, // Usa la versión completa del editor
                     'quicktags' => true // Habilita etiquetas rápidas (negrita, cursiva, etc.)
                 );
