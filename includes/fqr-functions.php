@@ -13,8 +13,8 @@ include 'fqr-aboutus.php';
 function fqr_Add_My_Admin_Link()
 {
     add_menu_page( //Menu principal
-        'FAQer PreRelease_Raul', // Title of the page
-        'FAQer PreRelease_Raul', // Text to show on the menu link
+        'FAQer', // Title of the page
+        'FAQer', // Text to show on the menu link
         'manage_options', // Capability requirement to see the link
         'FAQer', // Slug del menú (URL amigable)
         'faqer_page', // Función que mostrará el contenido de la página
@@ -60,13 +60,13 @@ function fqr_Add_My_Admin_Link()
         'Contacto', // Título de la página del submenú
         'Contacto',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
-        'Contacto',   // Slug único para la página del submenú
+        'Dudas',   // Slug único para la página del submenú
         'faqer_contact_page' // Función que renderiza la página del submenú
     );
     add_submenu_page( //Menu ABOUT US
         'FAQer',  // El slug del menú principal al que pertenece
         'About_Us', // Título de la página del submenú
-        'About Us',  // Nombre del submenú que aparecerá en el menú
+        'Sobre nosotros',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'aboutus',   // Slug único para la página del submenú
         'faqer_aboutus_page' // Función que renderiza la página del submenú

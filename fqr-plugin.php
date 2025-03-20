@@ -2,7 +2,7 @@
 /*
 
 Plugin Name: FAQer PRERELEASE 0.99
-Description: Ojala funcione
+Description: Plugin de FAQ jerárquico clasificado por categorías con formulario de contacto. 
 Author: Fernando y Raul
 
 */

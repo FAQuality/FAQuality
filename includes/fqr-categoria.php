@@ -154,7 +154,7 @@ function faqer_categoria_page()
     <div class="wrap">
         <h1>Generar shortcode</h1>
         <!-- Lista dinamica -->
-        <label for="id_cat"><strong>Categorias:</strong> </label>
+        <label for="id_cat" class="shortcode"><strong>Categorias:</strong> </label>
         <select name="id_cat" id="id_cat">
             <?php
             //Comprueba si existe categoria alguna
@@ -174,8 +174,8 @@ function faqer_categoria_page()
         <!-- Shortcode dinámico -->
         <!-- Contenedor del shortcode y botón -->       
         <div style="display: flex; align-items: center; gap: 10px;">
-            <p><strong>Shortcode final: </strong><span id="shortcode">[FAQer categorias=""]</span></p>
-            <button onclick="copiarAlPortapapeles()">Copiar</button>
+            <p class="shortcode"><strong>Shortcode final: </strong><span id="shortcode">[FAQer categorías="1"]</span></p>
+            <button onclick="copiarAlPortapapeles()" class="button nuevo">Copiar</button>
             <!-- Este span se mostrará después de copiar el texto -->
             <span id="copiadoMensaje" style="display: none; color: green;">¡Copiado!</span>
         </div>
@@ -202,7 +202,7 @@ function faqer_categoria_page()
         let categoriasSeleccionadas = []; // Array que almacena los IDs de las categorías seleccionadas
 
         function actualizarShortcode() { //Coge las categorias seleccionadas y las inserta en la base del shortcode
-            document.getElementById("shortcode").innerText = '[FAQer categorias="' + categoriasSeleccionadas.join(",") + '"]';
+            document.getElementById("shortcode").innerText = '[FAQer categorías="' + categoriasSeleccionadas.join(",") + '"]';
         }
 
         function agregarCategoria() { //Llamamos a la funcion select para usarla
@@ -226,6 +226,8 @@ function faqer_categoria_page()
                 // Actualizar shortcode
                 actualizarShortcode();
             }
+
+            
         }
 
         function eliminarCategoria(id) {
@@ -240,6 +242,10 @@ function faqer_categoria_page()
                     tag.remove();
                     break;
                 }
+            }
+
+            if (categoriasSeleccionadas == []) {
+                categoriasSeleccionadas == [1]
             }
             // Actualizar shortcode
             actualizarShortcode();
