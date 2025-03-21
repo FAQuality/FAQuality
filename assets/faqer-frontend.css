@@ -24,6 +24,10 @@
     width: 100%;
 }
 
+.captcha-button:hover {
+    opacity: 87%;
+}
+
 .row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -43,17 +47,36 @@
     resize: vertical;
 }
 
-.captcha-button:hover {
-    opacity: 87%;
+.faq-item {
+    list-style: none !important;
+    border: 1px solid rgb(0, 0, 0);
+    padding: .7rem !important;
+    font-size: 1rem !important;
+    margin-bottom: .8rem !important;
+    color: rgba(0, 0, 0, .8);
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: .3rem;
+    font-size: 1.1rem;
+    width: 100% !important;
+    box-sizing: border-box;
+    display: inline-block;
 }
 
 .faq-answer {
     display: none;
     overflow: hidden;
+    padding: .5rem !important;
 }
 
 .faq-answer p {
     margin-bottom: 0 !important;
+}
+
+.faq-item > *, .faq-item > * > *, .faq-item > * > * > *, .faq-item > * > * > * > *, .faq-item > * > * > * > * > * {
+    color: rgba(0, 0, 0, .8)
 }
 
 .faq-answer.show {
@@ -68,6 +91,10 @@
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
+    border: 1px solid rgb(0, 0, 0);
+    transition: all .3s fade-in;
+    padding: 1.2rem;
+    margin-bottom: .8rem;
 }
 
 .formulario-base.show {
