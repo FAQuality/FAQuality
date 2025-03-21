@@ -57,7 +57,7 @@
     overflow: hidden;
 }
 
-.faq-item:has(.faq-question:hover) {
+.faq-item:has(.faq-question:hover), .faq-item:has(.faq-answer.show) {
     filter: brightness(1.2);
     background-color: rgba(143, 143, 143, 0.342);
 }
@@ -95,7 +95,6 @@
     transition: all 0.3s ease;
     width: 100%;
     max-width: 500px;
-    margin: 0 auto;
     border: 1px solid rgb(0, 0, 0);
     transition: all .3s fade-in;
     padding: 1.2rem;
@@ -127,6 +126,14 @@
     }
 
     .formulario-base {
-        width: calc(100%-33px);
+        width: 89%;
+    }
+
+    .faq-input {
+        width: 80%;
+    }
+
+    .mensaje {
+        width: 80%;
     }
 }
