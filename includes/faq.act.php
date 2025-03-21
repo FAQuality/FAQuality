@@ -1,13 +1,14 @@
 <?php
-function faqer_edit_faq_page() {
+function faqer_edit_faq_page()
+{
     global $wpdb;
-    
+
     //Asignamos nombre y prefijo a la tabla
     $prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
     $tabla_faq = $prefijo . 'faq';
-    
-      // Si la acción es editar, mostramos el formulario con los datos actuales
-      if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
+
+    // Si la acción es editar, mostramos el formulario con los datos actuales
+    if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
         $id = intval($_GET['id']);
         $faq = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tabla_faq WHERE id = $id AND borrado = 0"));
         $id_padre_actual = $wpdb->get_var($wpdb->prepare("SELECT FK_idpadre FROM $tabla_faq WHERE id = $id"));
@@ -18,7 +19,8 @@ function faqer_edit_faq_page() {
             $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHERE borrado=0");
             $id_padre = $wpdb->get_results("SELECT id, pregunta FROM $tabla_faq WHERE borrado=0 OR id=1");
 
-            function mostrar_opciones_jerarquicas($preguntas, $padre_id = 1, $nivel = 0, $padre_actual = null) {
+            function mostrar_opciones_jerarquicas($preguntas, $padre_id = 1, $nivel = 0, $padre_actual = null)
+            {
                 $html = '';
                 foreach ($preguntas as $pregunta) {
                     if ($pregunta->FK_idpadre == $padre_id) {
@@ -42,21 +44,23 @@ function faqer_edit_faq_page() {
                 FROM $tabla_faq 
                 WHERE borrado = 0 
                 ORDER BY FK_idpadre, id
-                "); 
+                ");
             // Mostrar formulario de edición con los datos actuales
-            ?>
-           <div class="wrap">
-            <h1>Editar FAQ</h1>
-            <form method="post" action="">
-                <!-- Campo oculto para la ID -->
+?>
+            <div class="wrap">
+                <div class="boton-justify">
+                    <h1>Editar FAQ</h1>
+                    <form method="post" action="">
+                        <input type="submit" name="update_faq" value="Actualizar" class="button button-primary">
+                </div> <!-- Campo oculto para la ID -->
                 <input type="hidden" name="id" value="<?php echo esc_attr($id); ?>">
-                <!-- Campo para el título -->      
+                <!-- Campo para el título -->
                 <!-- Insertamos los datos con el nombre   -->
                 <label for="pregunta"><strong>Pregunta:</strong></label><br>
                 <input type="text" id="pregunta" name="pregunta" value="<?php echo esc_attr($faq->pregunta); ?>"
-                style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe la pregunta aquí">
+                    style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe la pregunta aquí">
                 <!-- Lista dinamica -->
-                <label for="id_cat" style="margin-top: 30px;"><strong>Selecciona una categoria:</strong></label><br>        
+                <label for="id_cat" style="margin-top: 30px;"><strong>Selecciona una categoria:</strong></label><br>
                 <select name="id_cat" id="id_cat" style="margin-bottom: 10px;">
                     <?php
                     //Comprueba si existe categoria alguna
@@ -76,7 +80,7 @@ function faqer_edit_faq_page() {
                 <label for="id_padre" style="margin-top: 30px !important;"><strong>Pregunta Padre:</strong></label><br>
                 <select name="id_padre" id="id_padre" style="margin-bottom: 10px;">
                     <option value="1" <?php echo ($id_padre_actual == 1) ? 'selected="selected"' : ''; ?>>Sin padre</option>
-                    <?php 
+                    <?php
                     if ($preguntas) {
                         echo mostrar_opciones_jerarquicas($preguntas, 1, 0, $id_padre_actual);
                     } else {
@@ -106,10 +110,10 @@ function faqer_edit_faq_page() {
                 <!-- Boton de enviar -->
                 <input type="submit" name="update_faq" value="Actualizar" class="button button-primary">
 
-            </form>            
+                </form>
             </div>
-         <?php
-        } 
+<?php
+        }
     } else {
         $action = $_GET['action'];
         $id = $_GET['id'];
@@ -117,8 +121,8 @@ function faqer_edit_faq_page() {
         wp_die("No se ha podido editar. Action -> $action. ID -> $id. Consulta-> $faq");
     }
 
-    
-    
+
+
     // Verificar si se ha enviado el formulario de actualización
     if (isset($_POST['update_faq'])) {
         $id = intval($_POST['id']);
@@ -126,15 +130,15 @@ function faqer_edit_faq_page() {
         $respuesta = wp_kses_post($_POST['respuesta']);
         $categoria = intval($_POST['id_cat']);
         $id_padre = intval($_POST['id_padre']);
-        
-    
+
+
         // Actualizar la categoría en la base de datos
         $resultado = $wpdb->update(
             $tabla_faq,
             ['pregunta' => $faq, 'respuesta' => $respuesta, 'FK_idcat' => $categoria, 'FK_idpadre' => $id_padre],
             ['id' => $id]
         );
-        
+
         // Forzar la redirección aunque no haya cambios
         if ($resultado === false) {
             die("Error en la actualización: " . $wpdb->last_error);

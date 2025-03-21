@@ -20,3 +20,8 @@
     font-size: 1rem;
     line-height: 1.5rem;
 }
+
+.boton-justify{
+    display: flex;
+    justify-content: space-between;
+}
