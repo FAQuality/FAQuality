@@ -37,9 +37,20 @@ function ajustes_page() {
                 min-height:2rem;" placeholder="Indica el asunto" value="<?php echo $asunto_actual; ?>">
             </div>
             <label for="mensaje_email"><strong>Mensaje por defecto:</strong></label>
-            <div style="display: flex; align-items:center; gap:8px; margin:6px 0;">
-                <textarea id="mensaje_email" name="mensaje" style="width: 40%; font-size: 16px; 
-                height:6rem; min-height:2rem;" placeholder="Escribe el mensaje aquí"><?php echo $mensaje_actual; ?></textarea>
+            <div style="margin:6px 0;">
+                <?php
+                // Mostrar el editor avanzado de WordPress (TinyMCE)
+                wp_editor(
+                    $mensaje_actual, // Contenido actual del mensaje
+                    'mensaje_email', // ID del editor
+                    [
+                        'textarea_name' => 'mensaje', // Nombre del campo en el formulario
+                        'textarea_rows' => 10, // Número de filas visibles en el editor
+                        'teeny' => false, // Editor completo (no simplificado)
+                        'media_buttons' => true, // Ocultar botones para agregar medios
+                    ]
+                );
+                ?>
             </div>
             <p>Para incluir el mensaje o el nombre del usuario en el CUERPO del correo, incluye <span class="llaves">{</span>nombre<span class="llaves">}</span> o <span class="llaves">{</span>mensaje<span class="llaves">}</span></p>
             <input type="submit" value="Guardar ajustes" style="margin-top: 10px;" class="button button-primary">
