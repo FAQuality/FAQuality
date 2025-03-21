@@ -8,6 +8,7 @@ include 'fqr-faq.php';
 include 'fqr-nuevo-faq.php';
 include 'fqr-contacto.php';
 include 'fqr-aboutus.php';
+include 'fqr-ajustes.php';
 
 // Add a new top level menu link to the ACP
 function fqr_Add_My_Admin_Link()
@@ -70,6 +71,15 @@ function fqr_Add_My_Admin_Link()
         'manage_options',       // Permiso requerido
         'aboutus',   // Slug único para la página del submenú
         'faqer_aboutus_page' // Función que renderiza la página del submenú
+    );
+
+    add_submenu_page( //Menu envio de Email
+        'FAQer',  // El slug del menú principal al que pertenece
+        'Ajustes', // Título de la página del submenú
+        'Ajustes',  // Nombre del submenú que aparecerá en el menú
+        'manage_options',       // Permiso requerido
+        'ajustes',   // Slug único para la página del submenú
+        'ajustes_page' // Función que renderiza la página del submenú
     );
 }
 
