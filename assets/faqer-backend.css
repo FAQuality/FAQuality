@@ -25,3 +25,12 @@
     display: flex;
     justify-content: space-between;
 }
+
+.editable-justify{
+    .editable-justify {
+        display: flex;
+        align-items: center; /* Alinea verticalmente */
+        gap: 30px; /* Espaciado entre elementos */
+        flex-wrap: wrap; /* Permite que se ajusten si no caben */
+    }
+}

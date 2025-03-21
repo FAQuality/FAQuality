@@ -70,36 +70,36 @@ function faqer_new_faq_page()
         <label for="titulo_faq"><strong>Pregunta:</strong></label><br>
         <input type="text" id="pregunta" name="pregunta" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe la pregunta aquí">
         <p id="error-pregunta" style="color: red; display: none;">Por favor, ingrese una pregunta.</p>
-        <!-- Lista dinamica -->
-        <label for="id_cat" style="margin-top: 30px;"><Strong>Selecciona una categoria:</Strong></label><br>
-        <select name="id_cat" id="id_cat" style="margin-bottom: 10px;">
-            <?php
-            //Comprueba si existe categoria alguna
-            if ($categorias) {
-                //Reproduce en bucle las categorias existentes
-                foreach ($categorias as $categoria) {
-                    echo '<option value="' . esc_attr($categoria->id) . '">' . esc_html($categoria->categoria) . '</option>';
+        <div class="editable-justify"> <!-- Lista dinamica -->
+            <label for="id_cat" style="margin-top: 30px;"><Strong>Selecciona una categoria:</Strong></label>
+            <select name="id_cat" id="id_cat" style="margin-bottom: 10px;">
+                <?php
+                //Comprueba si existe categoria alguna
+                if ($categorias) {
+                    //Reproduce en bucle las categorias existentes
+                    foreach ($categorias as $categoria) {
+                        echo '<option value="' . esc_attr($categoria->id) . '">' . esc_html($categoria->categoria) . '</option>';
+                    }
+                } else {
+                    echo '<option value="">No hay categorías disponibles</option>';
                 }
-            } else {
-                echo '<option value="">No hay categorías disponibles</option>';
-            }
-            ?>
-        </select><br>
-        <!-- Id pregunta padre -->
-        <label for="id_padre" style="margin-top: 30px !important;"><strong>Pregunta Padre:</strong></label><br>
-        <select name="id_padre" id="id_padre" style="margin-bottom: 10px;">
-            <option value="1">Sin padre</option>
-            <?php
-            if ($preguntas) {
-                echo mostrar_opciones_jerarquicas($preguntas);
-            } else {
-                echo '<option value="">No hay preguntas disponibles</option>';
-            }
-            ?>
-        </select><br>
+                ?>
+            </select>
+            <!-- Id pregunta padre -->
+            <label for="id_padre" style="margin-top: 30px !important;"><strong>Pregunta Padre:</strong></label>
+            <select name="id_padre" id="id_padre" style="margin-bottom: 10px;">
+                <option value="1">Sin padre</option>
+                <?php
+                if ($preguntas) {
+                    echo mostrar_opciones_jerarquicas($preguntas);
+                } else {
+                    echo '<option value="">No hay preguntas disponibles</option>';
+                }
+                ?>
+            </select>
+        </div>
         <!-- Respuesta -->
         <label for="respuesta"><strong>Respuesta:</strong></label><br>
-
         <?php
         //Se empieza uso de php en el html       
         $contenido_por_defecto = ''; //Contenido que aparecera en el formulario ya escrito (vacio)
