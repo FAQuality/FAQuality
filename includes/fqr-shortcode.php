@@ -127,40 +127,6 @@ function frontend_shortcode($atts)
 }
 add_shortcode('FAQer', 'frontend_shortcode');
 
-
-function procesar_formulario()
-{
-    session_start();
-    global $wpdb;
-    $prefijo = $wpdb->prefix . 'fqr_';
-    $tabla_contacto = $prefijo . 'contacto';
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["enviar_formulario"])) {
-        if ($_POST['captcha'] == $_SESSION['captcha']) {
-            $nombre = sanitize_text_field($_POST["nombre"]);
-            $email = sanitize_email($_POST["email"]);
-            $mensaje = sanitize_text_field($_POST["mensaje"]);
-            $id_pregunta = isset($_POST["id_pregunta"]) ? intval($_POST["id_pregunta"]) : 0;
-
-            $wpdb->insert($tabla_contacto, [
-                "nombre" => $nombre,
-                "email" => $email,
-                "mensaje" => $mensaje,
-                "FK_idfaq" => $id_pregunta
-            ]);
-
-            wp_safe_redirect(add_query_arg('form_status', 'success', wp_get_referer()));
-            exit;
-        } else {
-            wp_safe_redirect(add_query_arg('form_status', 'error_captcha', wp_get_referer()));
-            exit;
-        }
-    }
-}
-
-add_action('admin_post_nopriv_fqr_form_submit', 'procesar_formulario');
-add_action('admin_post_fqr_form_submit', 'procesar_formulario');
-
 function formulario_base()
 {
     ob_start();

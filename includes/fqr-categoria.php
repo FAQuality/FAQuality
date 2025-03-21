@@ -196,7 +196,6 @@ function faqer_categoria_page()
                     .catch(err => console.error("Error al copiar: ", err)); // Manejo de errores
             }
         </script>
-
     </div>
     <script>
         let categoriasSeleccionadas = []; // Array que almacena los IDs de las categorías seleccionadas
@@ -226,8 +225,6 @@ function faqer_categoria_page()
                 // Actualizar shortcode
                 actualizarShortcode();
             }
-
-            
         }
 
         function eliminarCategoria(id) {

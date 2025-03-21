@@ -2,16 +2,17 @@
 // Este archivo contiene la lógica AJAX para el plugin.
 
 // Función AJAX para cargar las preguntas hijas
-function fqr_cargar_hijas_callback() {
+function fqr_cargar_hijas_callback()
+{
     global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_';
     $tabla_faq = $prefijo . 'faq';
-    
+
     $id_padre = intval($_POST['id_padre']);
     $hijas = $wpdb->get_results($wpdb->prepare("SELECT id, pregunta, respuesta FROM $tabla_faq WHERE FK_idpadre = %d AND borrado = 0 ORDER BY prioridad desc", $id_padre));
-    
+
     $respuesta = '';
-    
+
 
     if (!empty($hijas)) {
         foreach ($hijas as $hija) {
@@ -24,10 +25,10 @@ function fqr_cargar_hijas_callback() {
     } else {
         // Insertar formulario directamente sin verificar BD
         $nonce = wp_create_nonce('fqr_form_nonce');
-        $plugin_url = plugin_dir_url(__FILE__) .'';
+        $plugin_url = plugin_dir_url(__FILE__) . '';
         $respuesta .= <<<EOD
         <div class="formulario-base show" data-padre-form="{$id_padre}">
-            <form method="post" class="fqr-form">
+            <form method="post" class="fqr-form" action="#">
                 <input type="hidden" name="action" value="fqr_submit_form">
                 <input type="hidden" name="id_pregunta" value="{$id_padre}">
                 <input type="hidden" name="fqr_nonce" value="{$nonce}">
@@ -47,17 +48,17 @@ function fqr_cargar_hijas_callback() {
         </div>
     EOD;
     }
-    
+
     echo $respuesta;
     wp_die();
 }
 
-add_action('wp_ajax_actualizar_prioridad_faq', function() {
+add_action('wp_ajax_actualizar_prioridad_faq', function () {
     check_ajax_referer('faq_priority_nonce', 'security');
-    
+
     global $wpdb;
     $table = $wpdb->prefix . 'fqr_faq';
-    
+
     $wpdb->update(
         $table,
         ['prioridad' => $_POST['prioridad']],
@@ -65,15 +66,17 @@ add_action('wp_ajax_actualizar_prioridad_faq', function() {
         ['%d'],
         ['%d']
     );
-    
+
     wp_die();
 });
 
 add_action('wp_ajax_fqr_cargar_hijas', 'fqr_cargar_hijas_callback');
 add_action('wp_ajax_nopriv_fqr_cargar_hijas', 'fqr_cargar_hijas_callback');
 
-function fqr_submit_form_callback() {
-    check_ajax_referer('fqr_form_nonce', 'fqr_nonce');
+
+function fqr_submit_form_callback()
+{
+    check_ajax_referer('fqr_form_nonce', 'fqr_nonce'); // Verificar nonce para seguridad
 
     session_start();
     global $wpdb;
@@ -82,27 +85,43 @@ function fqr_submit_form_callback() {
 
     $response = ['success' => false, 'message' => ''];
 
-    if ($_POST['captcha'] == $_SESSION['captcha']) {
-        $nombre = sanitize_text_field($_POST["nombre"]);
-        $email = sanitize_email($_POST["email"]);
-        $mensaje = sanitize_text_field($_POST["mensaje"]);
-        $id_pregunta = isset($_POST["id_pregunta"]) ? intval($_POST["id_pregunta"]) : 0;
+    // Validar CAPTCHA
+    if (!isset($_SESSION['captcha']) || $_POST['captcha'] != $_SESSION['captcha']) {
+        $response['message'] = "Captcha incorrecto ❌, intenta de nuevo.";
+        wp_send_json($response);
+    }
 
-        $wpdb->insert($tabla_contacto, [
-            "nombre" => $nombre,
-            "email" => $email,
-            "mensaje" => $mensaje,
-            "FK_idfaq" => $id_pregunta
-        ]);
+    // Validar campos requeridos
+    if (empty($_POST['nombre']) || empty($_POST['email']) || empty($_POST['mensaje'])) {
+        $response['message'] = "Todos los campos son obligatorios.";
+        wp_send_json($response);
+    }
 
+    // Insertar datos en la base de datos
+    $nombre = sanitize_text_field($_POST["nombre"]);
+    $email = sanitize_email($_POST["email"]);
+    $mensaje = sanitize_textarea_field($_POST["mensaje"]);
+    $id_pregunta = intval($_POST["id_pregunta"]);
+
+    $result = $wpdb->insert($tabla_contacto, [
+        "nombre" => $nombre,
+        "email" => $email,
+        "mensaje" => $mensaje,
+        "FK_idfaq" => $id_pregunta
+    ]);
+
+    if ($result) {
+        // Respuesta exitosa
         $response['success'] = true;
         $response['message'] = "Gracias, <strong>" . esc_html($nombre) . "</strong>. Hemos recibido tu mensaje ✅";
     } else {
-        $response['message'] = "Captcha incorrecto ❌, intenta de nuevo.";
+        // Error al insertar en la base de datos
+        $response['message'] = "Ocurrió un error al enviar tu mensaje. Intenta nuevamente.";
     }
 
     wp_send_json($response);
 }
+
 
 add_action('wp_ajax_fqr_submit_form', 'fqr_submit_form_callback');
 add_action('wp_ajax_nopriv_fqr_submit_form', 'fqr_submit_form_callback');
