@@ -118,7 +118,7 @@ function fqr_submit_form_callback()
         $asunto = 'Muchas gracias por enviar su mensaje ' . $nombre;
         $cuerpo = 'Hemos recibido exitosamente su mensaje: <br>' . $mensaje . '<br><br>Gracias por su interés. Le responderemos lo antes posible';
 
-        enviar_correo_personalizado($email, $asunto, $cuerpo);
+        enviar_correo_personalizado($email, ['nombre' => $nombre, 'mensaje' => $mensaje ]);
     } else {
         // Error al insertar en la base de datos
         $response['message'] = "Ocurrió un error al enviar tu mensaje. Intenta nuevamente.";
@@ -127,10 +127,24 @@ function fqr_submit_form_callback()
     wp_send_json($response);
 }
 
-function enviar_correo_personalizado($email, $asunto, $mensaje)
+function enviar_correo_personalizado($email, $datos_adicionales = [])
 {
+    // Obtener la configuración
+    $config = fqr_get_config();
+
     // Obtener el correo del administrador de WordPress
     $correo_remitente = get_option('admin_email');
+
+    // Usar el asunto de la configuración o un valor por defecto
+    $asunto = isset($config['email_asunto']) ? $config['email_asunto'] : 'Gracias por contactar con nosotros';
+
+    // Usar el mensaje de la configuración o un valor por defecto
+    $mensaje = isset($config['email_cuerpo']) ? $config['email_cuerpo'] : 'Le responderemos en breve';
+
+    // Reemplazar placeholders en el mensaje
+    foreach ($datos_adicionales as $key => $value) {
+        $mensaje = str_replace("{{$key}}", $value, $mensaje);
+    }
 
     // Encabezados del correo (asegurándonos de que sea contenido HTML)
     $headers = array(
@@ -144,6 +158,7 @@ function enviar_correo_personalizado($email, $asunto, $mensaje)
     // Verificar si el correo se envió correctamente
     return $enviado ? "Correo enviado con éxito" : "Error al enviar el correo";
 }
+
 
 add_action('wp_ajax_fqr_submit_form', 'fqr_submit_form_callback');
 add_action('wp_ajax_nopriv_fqr_submit_form', 'fqr_submit_form_callback');

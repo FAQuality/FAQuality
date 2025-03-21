@@ -1,24 +1,65 @@
 <?php
+function ajustes_page() {
+    // Cargar la configuración actual desde el archivo
+    $config = fqr_get_config();
 
-function ajustes_page()
-{
-?>
+    // Manejar el envío del formulario
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $nuevo_asunto = sanitize_text_field($_POST['asunto']);
+        $nuevo_mensaje = wp_kses_post($_POST['mensaje']);
+
+        $nueva_config = [
+            'email_asunto' => $nuevo_asunto,
+            'email_cuerpo' => $nuevo_mensaje
+        ];
+
+        // Guardar los nuevos ajustes en el archivo de configuración
+        fqr_update_config($nueva_config);
+
+        // Actualizar la configuración cargada con los nuevos valores
+        $config = $nueva_config;
+
+        echo '<div class="updated"><p><strong>Ajustes guardados correctamente.</strong></p></div>';
+    }
+
+    // Obtener los valores actuales para mostrar en el formulario
+    $asunto_actual = isset($config['email_asunto']) ? esc_attr($config['email_asunto']) : 'Gracias por contactar con nosotros';
+    $mensaje_actual = isset($config['email_cuerpo']) ? esc_textarea($config['email_cuerpo']) : 'Hemos recibido tu mensaje y contactaremos contigo en breve.';
+    ?>
+
     <div class="wrap">
-        <h1>Ajustes</h1>
+        <h1><strong>Ajustes</strong></h1>
+        <h2>Configuración del email por defecto</h2>
         <form method="post" action="">
-            <label for="email_emisor"><strong>Email como emisor:</strong></label>
-            <div style="display: flex; align-items:center; gap:8px; margin:6px 0px;">
-                <input type="text" id="email_emisor" name="email" style="width: 40%; font-size: 16px;"
-                    placeholder="Escribe el email aquí">
+            <label for="asunto"><strong>Asunto:</strong></label>
+            <div style="display: flex; align-items:center; gap:8px; margin:6px 0;">
+                <input type="text" id="asunto" name="asunto" style="width: 40%; font-size: 16px; 
+                min-height:2rem;" placeholder="Indica el asunto" value="<?php echo $asunto_actual; ?>">
             </div>
             <label for="mensaje_email"><strong>Mensaje por defecto:</strong></label>
-            <div style="display: flex; align-items:center; gap:8px; margin-top:6px;">
-                <textarea type="text" id="mensaje_email" name="mensaje" style="width: 40%; font-size: 16px; 
-                height:6rem; min-height:2rem;"
-                    placeholder="Escribe el mensaje aquí"></textarea>
+            <div style="display: flex; align-items:center; gap:8px; margin:6px 0;">
+                <textarea id="mensaje_email" name="mensaje" style="width: 40%; font-size: 16px; 
+                height:6rem; min-height:2rem;" placeholder="Escribe el mensaje aquí"><?php echo $mensaje_actual; ?></textarea>
             </div>
-            <input type="submit" value="Guardar" style="margin-top: 10px;" class="button button-primary">
-            <p style="opacity: 0.8;">Más ajustes proximamente...</p>
+            <p>Para incluir el mensaje o el nombre del usuario en el CUERPO del correo, incluye <span class="llaves">{</span>nombre<span class="llaves">}</span> o <span class="llaves">{</span>mensaje<span class="llaves">}</span></p>
+            <input type="submit" value="Guardar ajustes" style="margin-top: 10px;" class="button button-primary">
         </form>
+    </div>
+
+
     <?php
 }
+
+// Función para obtener la configuración desde el archivo
+function fqr_get_config() {
+    $config_file = plugin_dir_path(__FILE__) . 'fqr-config.php';
+    return file_exists($config_file) ? include $config_file : [];
+}
+
+// Función para guardar la configuración en el archivo
+function fqr_update_config($new_config) {
+    $config_file = plugin_dir_path(__FILE__) . 'fqr-config.php';
+    $config_content = "<?php\nreturn " . var_export($new_config, true) . ";\n";
+    return file_put_contents($config_file, $config_content);
+}
+
