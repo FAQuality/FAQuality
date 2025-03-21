@@ -121,25 +121,25 @@ class Categoria_List_Table extends WP_List_Table {
 }
 
 //Muestra la tabla en la pagina con los datos que agregamos anteriormente
-function faqer_categoria_page()
+function FAQuality_categoria_page()
 {
     global $wpdb;
     $prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
     $tabla_categoria = $prefijo . 'categoria';
 
-    function faqer_selection_categoria_page()
+    function FAQuality_selection_categoria_page()
     {
         require_once 'categoria.act.php';
         require_once 'bbdd.actions.php';
 
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
-            faqer_edit_categoria_page();
+            FAQuality_edit_categoria_page();
         } else if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
            deleteCategoria();
         }
     }
 
-    faqer_selection_categoria_page();
+    FAQuality_selection_categoria_page();
 
     echo '<div class="wrap"><div class="title-container"><h1 style="width: min-content;">Categorías</h1>';
     echo '<a class="button nuevo" href="?page=FAQ_New_Categoria">Nueva categoría</a></div>';
@@ -174,7 +174,7 @@ function faqer_categoria_page()
         <!-- Shortcode dinámico -->
         <!-- Contenedor del shortcode y botón -->       
         <div style="display: flex; align-items: center; gap: 10px;">
-            <p class="shortcode"><strong>Shortcode final: </strong><span id="shortcode">[FAQer categorias="1"]</span></p>
+            <p class="shortcode"><strong>Shortcode final: </strong><span id="shortcode">[FAQuality categorias="1"]</span></p>
             <button onclick="copiarAlPortapapeles()" class="button nuevo">Copiar</button>
             <!-- Este span se mostrará después de copiar el texto -->
             <span id="copiadoMensaje" style="display: none; color: green;">¡Copiado!</span>
@@ -201,7 +201,7 @@ function faqer_categoria_page()
         let categoriasSeleccionadas = []; // Array que almacena los IDs de las categorías seleccionadas
 
         function actualizarShortcode() { //Coge las categorias seleccionadas y las inserta en la base del shortcode
-            document.getElementById("shortcode").innerText = '[FAQer categorias="' + categoriasSeleccionadas.join(",") + '"]';
+            document.getElementById("shortcode").innerText = '[FAQuality categorias="' + categoriasSeleccionadas.join(",") + '"]';
         }
 
         function agregarCategoria() { //Llamamos a la funcion select para usarla

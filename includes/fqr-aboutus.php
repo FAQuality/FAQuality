@@ -1,5 +1,5 @@
 <?php
-function faqer_aboutus_page()
+function FAQuality_aboutus_page()
 {
 ?>
     <div class="wrap">

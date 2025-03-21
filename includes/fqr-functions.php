@@ -14,67 +14,67 @@ include 'fqr-ajustes.php';
 function fqr_Add_My_Admin_Link()
 {
     add_menu_page( //Menu principal
-        'FAQer', // Title of the page
-        'FAQer', // Text to show on the menu link
+        'FAQuality', // Title of the page
+        'FAQuality', // Text to show on the menu link
         'manage_options', // Capability requirement to see the link
-        'FAQer', // Slug del menú (URL amigable)
-        'faqer_page', // Función que mostrará el contenido de la página
+        'FAQuality', // Slug del menú (URL amigable)
+        'FAQuality_page', // Función que mostrará el contenido de la página
         'dashicons-format-status', // Icono del menú (puedes usar uno de los iconos predeterminados de WordPress)
         65 // Posición en el menú de administración
     );
 
     add_submenu_page( //Menu categoria
-        'FAQer',           // El slug del menú principal al que pertenece
+        'FAQuality',           // El slug del menú principal al que pertenece
         'Categoría', // Título de la página del submenú
         'Categoría',              // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'FAQ_Categoria',   // Slug único para la página del submenú
-        'faqer_categoria_page' // Función que renderiza la página del submenú
+        'FAQuality_categoria_page' // Función que renderiza la página del submenú
     );
     
     add_submenu_page( //Menu crear categorias
-        'FAQer',           // El slug del menú principal al que pertenece
+        'FAQuality',           // El slug del menú principal al que pertenece
         'Nueva Categoría', // Título de la página del submenú
         'Nueva Categoría',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'FAQ_New_Categoria',   // Slug único para la página del submenú
-        'faqer_new_categoria_page' // Función que renderiza la página del submenú
+        'FAQuality_new_categoria_page' // Función que renderiza la página del submenú
     );
     add_submenu_page( //Menu FAQ
-        'FAQer',   // El slug del menú principal al que pertenece
+        'FAQuality',   // El slug del menú principal al que pertenece
         'FAQ', // Título de la página del submenú
         'FAQ',  // Nombre del submenú que aparecerá en el menú
         'manage_options',  // Permiso requerido
         'FAQ',   // Slug único para la página del submenú
-        'faqer_faq_page' // Función que renderiza la página del submenú
+        'FAQuality_faq_page' // Función que renderiza la página del submenú
     );
     add_submenu_page( //Menu crear faqs
-        'FAQer',  // El slug del menú principal al que pertenece
+        'FAQuality',  // El slug del menú principal al que pertenece
         'Nuevo FAQ', // Título de la página del submenú
         'Nuevo FAQ',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'Nuevo_FAQ',   // Slug único para la página del submenú
-        'faqer_new_faq_page' // Función que renderiza la página del submenú
+        'FAQuality_new_faq_page' // Función que renderiza la página del submenú
     );
     add_submenu_page( //Menu contacto
-        'FAQer',  // El slug del menú principal al que pertenece
+        'FAQuality',  // El slug del menú principal al que pertenece
         'Contacto', // Título de la página del submenú
         'Contacto',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'Dudas',   // Slug único para la página del submenú
-        'faqer_contact_page' // Función que renderiza la página del submenú
+        'FAQuality_contact_page' // Función que renderiza la página del submenú
     );
     add_submenu_page( //Menu ABOUT US
-        'FAQer',  // El slug del menú principal al que pertenece
+        'FAQuality',  // El slug del menú principal al que pertenece
         'Sobre nosotros', // Título de la página del submenú
         'Sobre nosotros',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'aboutus',   // Slug único para la página del submenú
-        'faqer_aboutus_page' // Función que renderiza la página del submenú
+        'FAQuality_aboutus_page' // Función que renderiza la página del submenú
     );
 
     add_submenu_page( //Menu envio de Email
-        'FAQer',  // El slug del menú principal al que pertenece
+        'FAQuality',  // El slug del menú principal al que pertenece
         'Ajustes', // Título de la página del submenú
         'Ajustes',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido

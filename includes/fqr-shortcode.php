@@ -125,7 +125,7 @@ function frontend_shortcode($atts)
     formulario_base();
     return ob_get_clean();
 }
-add_shortcode('FAQer', 'frontend_shortcode');
+add_shortcode('FAQuality', 'frontend_shortcode');
 
 function formulario_base()
 {

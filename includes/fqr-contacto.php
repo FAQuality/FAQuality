@@ -178,9 +178,9 @@ class Categoria_List_Contacto extends WP_List_Table
 
 
 //Muestra la tabla en la pagina con los datos que agregamos anteriormente
-function faqer_contact_page()
+function FAQuality_contact_page()
 {
-    function faqer_selection_contact_page()
+    function FAQuality_selection_contact_page()
     {
         require_once 'bbdd.actions.php';
 
@@ -189,7 +189,7 @@ function faqer_contact_page()
         }
     }
 
-    faqer_selection_contact_page();
+    FAQuality_selection_contact_page();
 
     echo '<div class="wrap"><h1>Contactos</h1>';
     $categoria_table = new Categoria_List_Contacto();

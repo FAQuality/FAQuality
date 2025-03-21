@@ -1,9 +1,9 @@
 <?php
-function faqer_page()
+function FAQuality_page()
 {
     ?>
     <div class="wrap">
-        <h2>Guía del Plugin FAQer para WordPress</h2>
+        <h2>Guía del Plugin FAQuality para WordPress</h2>
         
         <div class="administracion">
             <h3>Administración</h3>
@@ -42,7 +42,7 @@ function faqer_page()
                 <!-- Shortcode dinámico -->
                 <!-- Contenedor del shortcode y botón -->
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <p><strong>Shortcode final: </strong><span id="shortcode">[FAQer
+                    <p><strong>Shortcode final: </strong><span id="shortcode">[FAQuality
                             categorias="1"]</span></p>
                     <button onclick="copiarAlPortapapeles()" class="button nuevo">Copiar</button>
                     <!-- Este span se mostrará después de copiar el texto -->
@@ -70,7 +70,7 @@ function faqer_page()
                 let categoriasSeleccionadas = []; // Array que almacena los IDs de las categorías seleccionadas
 
                 function actualizarShortcode() { //Coge las categorias seleccionadas y las inserta en la base del shortcode
-                    document.getElementById("shortcode").innerText = '[FAQer categorias="' + categoriasSeleccionadas.join(",") + '"]';
+                    document.getElementById("shortcode").innerText = '[FAQuality categorias="' + categoriasSeleccionadas.join(",") + '"]';
                 }
 
                 function agregarCategoria() { //Llamamos a la funcion select para usarla

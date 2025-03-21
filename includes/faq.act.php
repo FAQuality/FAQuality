@@ -1,5 +1,5 @@
 <?php
-function faqer_edit_faq_page()
+function FAQuality_edit_faq_page()
 {
     global $wpdb;
 

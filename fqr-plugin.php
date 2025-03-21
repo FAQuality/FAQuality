@@ -1,14 +1,14 @@
 <?php
 /*
 
-Plugin Name: FAQer PRERELEASE 0.99
+Plugin Name: FAQuality PRERELEASE 0.99
 Description: Plugin de FAQ jerárquico clasificado por categorías con formulario de contacto. 
 Author: Fernando de Cisneros González y José Raúl Sánchez Serena
 
 */
 
 require_once plugin_dir_path(__FILE__) . 'includes/fqr-functions.php'; // Importar los menús del plugin
-require_once plugin_dir_path(__FILE__) . 'init-faqer.php'; // Importar las funciones que se deben de ejecutar al iniciarse el plugin
+require_once plugin_dir_path(__FILE__) . 'init-FAQuality.php'; // Importar las funciones que se deben de ejecutar al iniciarse el plugin
 require_once plugin_dir_path(__FILE__) . 'includes/fqr-shortcode.php';
 include_once plugin_dir_path(__FILE__) . 'includes/fqr-ajax.php';
 register_activation_hook(__FILE__,"activation"); // Función que se ejecuta al activar el plugin
@@ -26,11 +26,11 @@ function fqr_enqueue_scripts() {
 }
 
 add_action('admin_enqueue_scripts', function() {
-    wp_enqueue_style('faqer-backend', plugin_dir_url(__FILE__) . 'assets/faqer-backend.css');
+    wp_enqueue_style('FAQuality-backend', plugin_dir_url(__FILE__) . 'assets/FAQuality-backend.css');
 });
 
 add_action('wp_enqueue_scripts', function() {
-    wp_enqueue_style('faqer-frontend', plugin_dir_url(__FILE__) . 'assets/faqer-frontend.css');
+    wp_enqueue_style('FAQuality-frontend', plugin_dir_url(__FILE__) . 'assets/FAQuality-frontend.css');
 });
 
 add_action('wp_enqueue_scripts', 'fqr_enqueue_scripts');
@@ -42,7 +42,7 @@ add_action('admin_enqueue_scripts', function($hook) {
     
     wp_enqueue_script(
         'faq-admin-js', 
-        plugin_dir_url(__FILE__) . 'assets/faqer-admin.js', 
+        plugin_dir_url(__FILE__) . 'assets/FAQuality-admin.js', 
         ['jquery'], 
         '1.0', 
         true

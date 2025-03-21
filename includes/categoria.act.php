@@ -15,7 +15,7 @@ function deleteCategoria() {
     }
 }
 
-function faqer_edit_categoria_page() {
+function FAQuality_edit_categoria_page() {
     global $wpdb;
     
     //Asignamos nombre y prefijo a la tabla

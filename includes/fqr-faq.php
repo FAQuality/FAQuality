@@ -182,22 +182,22 @@ class FAQ_List_Table extends WP_List_Table
 }
 
 //Muestra la tabla en la pagina con los datos que agregamos anteriormente
-function faqer_FAQ_page()
+function FAQuality_FAQ_page()
 {
-    function faqer_selection_faq_page()
+    function FAQuality_selection_faq_page()
     {
         require_once 'faq.act.php';
         require_once 'bbdd.actions.php';
 
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
-            faqer_edit_faq_page();
+            FAQuality_edit_faq_page();
 
         } else if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
             dbMarkAsDeletedFAQ($_GET['id']);
         }
     }
 
-    faqer_selection_faq_page();
+    FAQuality_selection_faq_page();
 
     echo '<div class="wrap"><div class="title-container"><h1 style="width: min-content;">FAQs</h1>';
     echo '<a class="button nuevo" href="?page=Nuevo_FAQ">Nuevo FAQ</a></div>';

@@ -3,7 +3,7 @@
 ob_start();
 
 //Funcion que pasamos al archivo fqr-function con todo el html y la inserccion de datos
-function faqer_new_categoria_page()
+function FAQuality_new_categoria_page()
 {
     global $wpdb;
 
