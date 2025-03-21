@@ -114,6 +114,11 @@ function fqr_submit_form_callback()
         // Respuesta exitosa
         $response['success'] = true;
         $response['message'] = "Gracias, <strong>" . esc_html($nombre) . "</strong>. Hemos recibido tu mensaje ✅";
+
+        $asunto = 'Muchas gracias por enviar su mensaje ' . $nombre;
+        $cuerpo = 'Hemos recibido exitosamente su mensaje: <br>' . $mensaje . '<br><br>Gracias por su interés. Le responderemos lo antes posible';
+
+        enviar_correo_personalizado($email, $asunto, $cuerpo);
     } else {
         // Error al insertar en la base de datos
         $response['message'] = "Ocurrió un error al enviar tu mensaje. Intenta nuevamente.";
@@ -122,7 +127,23 @@ function fqr_submit_form_callback()
     wp_send_json($response);
 }
 
+function enviar_correo_personalizado($email, $asunto, $mensaje)
+{
+    // Obtener el correo del administrador de WordPress
+    $correo_remitente = get_option('admin_email');
+
+    // Encabezados del correo (asegurándonos de que sea contenido HTML)
+    $headers = array(
+        'Content-Type: text/html; charset=UTF-8', // Permite contenido HTML
+        'From: ' . get_bloginfo('name') . ' <' . $correo_remitente . '>',
+    );
+
+    // Enviar el correo
+    $enviado = wp_mail($email, $asunto, $mensaje, $headers);
+
+    // Verificar si el correo se envió correctamente
+    return $enviado ? "Correo enviado con éxito" : "Error al enviar el correo";
+}
 
 add_action('wp_ajax_fqr_submit_form', 'fqr_submit_form_callback');
 add_action('wp_ajax_nopriv_fqr_submit_form', 'fqr_submit_form_callback');
-?>
