@@ -86,4 +86,46 @@ jQuery(document).ready(function ($) {
             cargarPreguntasHijas(id, pregunta);
         }
     });
+
+    $('.faq-container').on('submit', '.fqr-form', function (e) {
+        e.preventDefault(); // Evitar envío tradicional del formulario
+        const $form = $(this);
+        const $responseContainer = $form.closest('.formulario-base');
+
+        // Recopilar datos del formulario
+        const formData = $form.serialize();
+
+        // Enviar datos mediante AJAX
+        $.ajax({
+            url: ajax_object.ajax_url, // URL de admin-ajax.php
+            type: 'POST',
+            data: formData,
+            beforeSend: function () {
+                $form.find('button[type="submit"]').prop('disabled', true); // Deshabilitar botón mientras se envía
+            },
+            success: function (response) {
+                if (response.success) {
+                    // Mostrar mensaje de éxito
+                    $responseContainer.html(
+                        `<div class="fqr-alert success">${response.message}</div>`
+                    );
+                } else {
+                    // Mostrar mensaje de error
+                    $responseContainer.prepend(
+                        `<div class="fqr-alert error">${response.message}</div>`
+                    );
+                }
+                // Recargar CAPTCHA en caso de error
+                $('#captcha-img').attr('src', $('#captcha-img').attr('src') + '?' + Math.random());
+            },
+            complete: function () {
+                $form.find('button[type="submit"]').prop('disabled', false); // Habilitar botón nuevamente
+            },
+            error: function () {
+                $responseContainer.prepend(
+                    `<div class="fqr-alert error">Ocurrió un error inesperado. Intenta nuevamente.</div>`
+                );
+            }
+        });
+    });
 });
