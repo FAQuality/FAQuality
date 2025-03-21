@@ -25,7 +25,7 @@ function faqer_new_faq_page()
             'pregunta' => $pregunta,
             'respuesta' => $respuesta,
             'FK_idpadre' => $FK_idpadre,
-            'prioridad'=> $prioridad,
+            'prioridad' => $prioridad,
             'FK_idcat' => $FK_idcat
         ]);
         wp_safe_redirect(admin_url('admin.php?page=FAQ'));
@@ -71,35 +71,42 @@ function faqer_new_faq_page()
         <label for="titulo_faq"><strong>Pregunta:</strong></label><br>
         <input type="text" id="pregunta" name="pregunta" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe la pregunta aquí">
         <p id="error-pregunta" style="color: red; display: none;">Por favor, ingrese una pregunta.</p>
-        <div class="editable-justify"> <!-- Lista dinamica -->
-            <label for="id_cat" style="margin-top: 30px;"><Strong>Selecciona una categoria:</Strong></label>
-            <select name="id_cat" id="id_cat" style="margin-bottom: 10px;">
-                <?php
-                //Comprueba si existe categoria alguna
-                if ($categorias) {
-                    //Reproduce en bucle las categorias existentes
-                    foreach ($categorias as $categoria) {
-                        echo '<option value="' . esc_attr($categoria->id) . '">' . esc_html($categoria->categoria) . '</option>';
+        <!-- Lista dinamica -->
+        <div class="editable-grid">
+            <div class="form-group">
+                <label for="id_cat"><Strong>Selecciona una categoria:</Strong></label>
+                <select name="id_cat" id="id_cat">
+                    <?php
+                    //Comprueba si existe categoria alguna
+                    if ($categorias) {
+                        //Reproduce en bucle las categorias existentes
+                        foreach ($categorias as $categoria) {
+                            echo '<option value="' . esc_attr($categoria->id) . '">' . esc_html($categoria->categoria) . '</option>';
+                        }
+                    } else {
+                        echo '<option value="">No hay categorías disponibles</option>';
                     }
-                } else {
-                    echo '<option value="">No hay categorías disponibles</option>';
-                }
-                ?>
-            </select>
+                    ?>
+                </select>
+            </div>
             <!-- Id pregunta padre -->
-            <label for="id_padre" style="margin-top: 30px !important;"><strong>Pregunta Padre:</strong></label>
-            <select name="id_padre" id="id_padre" style="margin-bottom: 10px;">
-                <option value="1">Sin padre</option>
-                <?php
-                if ($preguntas) {
-                    echo mostrar_opciones_jerarquicas($preguntas);
-                } else {
-                    echo '<option value="">No hay preguntas disponibles</option>';
-                }
-                ?>
-            </select>
-            <label for="num_prioridad" style="margin-top: 30px !important;"><strong>Numero de prioridad</strong></label>
-            <input type="number" name="num_prioridad" id="num_prioridad" min="0" max="9999">
+            <div class="form-group">
+                <label for="id_padre"><strong>Pregunta Padre:</strong></label>
+                <select name="id_padre" id="id_padre">
+                    <option value="1">Sin padre</option>
+                    <?php
+                    if ($preguntas) {
+                        echo mostrar_opciones_jerarquicas($preguntas);
+                    } else {
+                        echo '<option value="">No hay preguntas disponibles</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="num_prioridad"><strong>Numero de prioridad</strong></label>
+                <input type="number" name="num_prioridad" id="num_prioridad" min="-9999" max="9999">
+            </div>
         </div>
         <!-- Respuesta -->
         <label for="respuesta"><strong>Respuesta:</strong></label><br>
