@@ -19,12 +19,13 @@ function faqer_new_faq_page()
         $respuesta = wp_kses_post($_POST['respuesta']);
         $FK_idpadre = sanitize_text_field($_POST['id_padre']);
         $FK_idcat = sanitize_text_field($_POST['id_cat']);
-
+        $prioridad = intval($_POST['num_prioridad']);
         //Insertamos en la tabla los datos y hacemos redirect a la lista principal
         $wpdb->insert($tabla_faq, [
             'pregunta' => $pregunta,
             'respuesta' => $respuesta,
             'FK_idpadre' => $FK_idpadre,
+            'prioridad'=> $prioridad,
             'FK_idcat' => $FK_idcat
         ]);
         wp_safe_redirect(admin_url('admin.php?page=FAQ'));
@@ -97,6 +98,8 @@ function faqer_new_faq_page()
                 }
                 ?>
             </select>
+            <label for="num_prioridad" style="margin-top: 30px !important;"><strong>Numero de prioridad</strong></label>
+            <input type="number" name="num_prioridad" id="num_prioridad" min="0" max="9999">
         </div>
         <!-- Respuesta -->
         <label for="respuesta"><strong>Respuesta:</strong></label><br>
