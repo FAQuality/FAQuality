@@ -139,7 +139,7 @@ function enviar_correo_personalizado($email, $datos_adicionales = [])
     $asunto = isset($config['email_asunto']) ? $config['email_asunto'] : 'Gracias por contactar con nosotros';
 
     // Usar el mensaje de la configuración o un valor por defecto
-    $mensaje = isset($config['email_cuerpo']) ? $config['email_cuerpo'] : 'Le responderemos en breve';
+    $mensaje = isset($config['email_cuerpo']) ? htmlspecialchars_decode($config['email_cuerpo']) : 'Le responderemos en breve';
 
     // Reemplazar placeholders en el mensaje
     foreach ($datos_adicionales as $key => $value) {
