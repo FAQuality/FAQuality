@@ -6,8 +6,8 @@
 
 - Creación y administración de FAQs de manera jerárquica mediante categorías.
 - Generación de shortcodes dinámicos para insertar FAQs en cualquier parte del sitio.
-- Formulario integrado en cada FAQ para que los usuarios envíen sus preguntas adicionales.
-- Envío automático de correos personalizados con las dudas de los usuarios.
+- Formulario integrado al final de la jerarquía de cada FAQ para que los usuarios envíen sus preguntas adicionales.
+- Envío automático de correos personalizados a los usuarios con dudas.
 
 ## Instalación
 
