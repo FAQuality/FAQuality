@@ -19,10 +19,10 @@
 ### Administración
 Desde el panel de administración de WordPress, puedes acceder a las siguientes opciones:
 
-- **Crear una nueva FAQ**: `admin.php?page=Nuevo_FAQ`
-- **Crear una categoría**: `admin.php?page=FAQ_New_Categoria`
-- **Revisar preguntas de usuarios**: `admin.php?page=Dudas`
+- **Crear una nueva FAQ**
+- **Crear una categoría**
+- **Revisar preguntas de usuarios**
 
 ### Generación de Shortcodes
-Para insertar FAQs en tu sitio, puedes generar un shortcode dinámico seleccionando una categoría desde el panel de administración:
+Para insertar FAQs en tu sitio, puedes generar un shortcode seleccionando una categoría desde el panel de administración
 
