@@ -167,7 +167,7 @@ class Categoria_List_Contacto extends WP_List_Table
     //Agrega botones de acción en la columna "Acciones" 
     function column_acciones($item)
     {
-        $delete_link = '?page=Contacto&action=delete&id=' . $item['id'];
+        $delete_link = '?page=Contactos&action=delete&id=' . $item['id'];
         return sprintf(
             '<a href="%s" onclick="return confirm(\'¿Estás seguro?\')">❌ Eliminar</a>',
             esc_url($delete_link)

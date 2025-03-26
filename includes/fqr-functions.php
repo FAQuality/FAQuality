@@ -58,10 +58,10 @@ function fqr_Add_My_Admin_Link()
     );
     add_submenu_page( //Menu contacto
         'FAQuality',  // El slug del menú principal al que pertenece
-        'Contacto', // Título de la página del submenú
-        'Contacto',  // Nombre del submenú que aparecerá en el menú
+        'Contactos', // Título de la página del submenú
+        'Contactos',  // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
-        'Dudas',   // Slug único para la página del submenú
+        'Contactos',   // Slug único para la página del submenú
         'FAQuality_contact_page' // Función que renderiza la página del submenú
     );
     add_submenu_page( //Menu ABOUT US
