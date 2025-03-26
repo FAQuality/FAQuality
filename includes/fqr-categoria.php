@@ -244,9 +244,26 @@ function FAQuality_categoria_page()
             if (categoriasSeleccionadas == []) {
                 categoriasSeleccionadas == [1]
             }
+
+            marcarComoSelected('1');
             // Actualizar shortcode
             actualizarShortcode();
         }
+
+        function marcarComoSelected(valorDeseado) {
+                    var select = document.getElementById('id_cat');
+                    var options = select.getElementsByTagName('option');
+
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].value === valorDeseado) {
+                            options[i].selected = true;
+                            options[i].setAttribute('selected', 'selected');
+                        } else {
+                            options[i].selected = false;
+                            options[i].removeAttribute('selected');
+                        }
+                    }
+                }
         // Evento para detectar cambios en el <select>
         document.getElementById("id_cat").addEventListener("change", agregarCategoria);
         </script>       
