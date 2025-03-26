@@ -136,6 +136,11 @@ function FAQuality_categoria_page()
 
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
             FAQuality_edit_categoria_page();
+
+            if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['paged'])) {
+                wp_redirect(admin_url('admin.php?page=FAQ_Categoria&paged=2'));
+            }
+
         } else if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
             deleteCategoria();
         }
@@ -208,43 +213,43 @@ function FAQuality_categoria_page()
         }
 
         function agregarCategoria() {
-    let select = document.getElementById("id_cat");
-    let categoriaID = select.value;
-    let categoriaTexto = select.options[select.selectedIndex].text;
+            let select = document.getElementById("id_cat");
+            let categoriaID = select.value;
+            let categoriaTexto = select.options[select.selectedIndex].text;
 
-    // Verificar si "Sin categoría" (ID 1) está seleccionado y es el único en el array
-    if (categoriasSeleccionadas.length === 1 && categoriasSeleccionadas[0] === '1' && categoriaID !== '1') {
-        // Eliminar "Sin categoría" del array
-        categoriasSeleccionadas = categoriasSeleccionadas.filter(categoria => categoria !== '1');
+            // Verificar si "Sin categoría" (ID 1) está seleccionado y es el único en el array
+            if (categoriasSeleccionadas.length === 1 && categoriasSeleccionadas[0] === '1' && categoriaID !== '1') {
+                // Eliminar "Sin categoría" del array
+                categoriasSeleccionadas = categoriasSeleccionadas.filter(categoria => categoria !== '1');
 
-        // Eliminar la etiqueta visual de "Sin categoría"
-        let tagContainer = document.getElementById("tagContainer");
-        let tags = tagContainer.getElementsByClassName("tag");
-        for (let tag of tags) {
-            if (tag.getAttribute("data-id") === '1') {
-                tag.remove();
-                break;
+                // Eliminar la etiqueta visual de "Sin categoría"
+                let tagContainer = document.getElementById("tagContainer");
+                let tags = tagContainer.getElementsByClassName("tag");
+                for (let tag of tags) {
+                    if (tag.getAttribute("data-id") === '1') {
+                        tag.remove();
+                        break;
+                    }
+                }
+            }
+
+            // Evitar agregar duplicados o una opción vacía
+            if (categoriaID && !categoriasSeleccionadas.includes(categoriaID)) {
+                categoriasSeleccionadas.push(categoriaID);
+
+                // Crear etiqueta visual con CSS en línea
+                let tagContainer = document.getElementById("tagContainer");
+                let tag = document.createElement("span");
+                tag.className = "tag";
+                tag.style.cssText = "display: inline-block; background: #0073aa; color: white; padding: 5px 10px; margin: 5px; border-radius: 5px;";
+                tag.innerHTML = categoriaTexto + ' <button onclick="eliminarCategoria(\'' + categoriaID + '\')" style="background: red; border: none; color: white; padding: 2px 5px; cursor: pointer;">X</button>';
+                tag.setAttribute("data-id", categoriaID);
+                tagContainer.appendChild(tag);
+
+                // Actualizar shortcode
+                actualizarShortcode();
             }
         }
-    }
-
-    // Evitar agregar duplicados o una opción vacía
-    if (categoriaID && !categoriasSeleccionadas.includes(categoriaID)) {
-        categoriasSeleccionadas.push(categoriaID);
-
-        // Crear etiqueta visual con CSS en línea
-        let tagContainer = document.getElementById("tagContainer");
-        let tag = document.createElement("span");
-        tag.className = "tag";
-        tag.style.cssText = "display: inline-block; background: #0073aa; color: white; padding: 5px 10px; margin: 5px; border-radius: 5px;";
-        tag.innerHTML = categoriaTexto + ' <button onclick="eliminarCategoria(\'' + categoriaID + '\')" style="background: red; border: none; color: white; padding: 2px 5px; cursor: pointer;">X</button>';
-        tag.setAttribute("data-id", categoriaID);
-        tagContainer.appendChild(tag);
-
-        // Actualizar shortcode
-        actualizarShortcode();
-    }
-}
 
         function eliminarCategoria(id) {
             // Remover la categoría del array
@@ -261,7 +266,7 @@ function FAQuality_categoria_page()
             }
 
             if (categoriasSeleccionadas.length === 0) {
-                categoriasSeleccionadas.push('1');
+                categoriasSeleccionadas = ['1']; // Asignar directamente el array con '1'
 
                 // Agregar etiqueta visual para la categoría '1'
                 let tag = document.createElement("span");
@@ -270,17 +275,11 @@ function FAQuality_categoria_page()
                 tag.innerHTML = 'Sin categoría <button onclick="eliminarCategoria(\'1\')" style="background: red; border: none; color: white; padding: 2px 5px; cursor: pointer;">X</button>';
                 tag.setAttribute("data-id", '1');
                 tagContainer.appendChild(tag);
-            } else {
-                categoriasSeleccionadas.remove('1');
-                categoriasSeleccionadas.remove(id);
             }
 
-
             marcarComoSelected('1');
-            // Actualizar shortcode
-            actualizarShortcode();
+            actualizarShortcode(); // Asegurarse de que esto se llame siempre
         }
-
         function marcarComoSelected(valorDeseado) {
             var select = document.getElementById('id_cat');
             var options = select.getElementsByTagName('option');

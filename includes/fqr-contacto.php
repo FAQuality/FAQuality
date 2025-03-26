@@ -206,7 +206,7 @@ function FAQuality_contact_page()
                 var id = $(this).data("id"); //Guardamos en variable el id delc checkbox cambiado
                 var estado = $(this).is(":checked") ? 1 : 0; //Guardamos el estado del checkbox
 
-                $.ajax({ //Para mandar informacion por ayax (que es lo que guarda de forma constante)
+                $.ajax({ //Para mandar informacion por ajax (que es lo que guarda de forma constante)
                     url: "<?php echo admin_url('admin-ajax.php'); ?>", //Coge de la libreria el ajax
                     type: "POST", //Indicamos el tipo de actualizacion que es POST (hacer consulta a la base)
                     data: {
