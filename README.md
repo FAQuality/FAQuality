@@ -1,6 +1,6 @@
 # FAQuality - Plugin de FAQ para WordPress
 
-**FAQuality** es un plugin para WordPress que permite gestionar un sistema de preguntas frecuentes (FAQ) de forma jerárquica. Además, incluye un formulario al final de cada FAQ para que los usuarios puedan enviar sus dudas, las cuales generan un correo personalizado.
+**FAQuality** es un plugin para WordPress que permite gestionar un sistema de preguntas frecuentes (FAQ) de forma jerárquica. Además, incluye un formulario al final de cada FAQ para que los usuarios puedan enviar sus dudas, las cuales les devuelve un correo personalizado.
 
 ## Características
 
@@ -26,7 +26,3 @@ Desde el panel de administración de WordPress, puedes acceder a las siguientes 
 ### Generación de Shortcodes
 Para insertar FAQs en tu sitio, puedes generar un shortcode dinámico seleccionando una categoría desde el panel de administración:
 
-```html
-<select name="id_cat" id="id_cat">
-    <option value="1">Ejemplo de Categoría</option>
-</select>
