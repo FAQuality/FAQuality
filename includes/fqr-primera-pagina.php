@@ -4,7 +4,7 @@ function FAQuality_page()
     ?>
     <div class="wrap">
         <h2>Guía del Plugin FAQuality para WordPress</h2>
-        
+
         <div class="administracion">
             <h3>Administración</h3>
             <p>Acceda a las siguientes funciones desde el panel de administración:</p>
@@ -110,8 +110,25 @@ function FAQuality_page()
                         }
                     }
 
+                    marcarComoSelected('1');
+
                     // Actualizar shortcode
                     actualizarShortcode();
+                }
+
+                function marcarComoSelected(valorDeseado) {
+                    var select = document.getElementById('id_cat');
+                    var options = select.getElementsByTagName('option');
+
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].value === valorDeseado) {
+                            options[i].selected = true;
+                            options[i].setAttribute('selected', 'selected');
+                        } else {
+                            options[i].selected = false;
+                            options[i].removeAttribute('selected');
+                        }
+                    }
                 }
                 // Evento para detectar cambios en el <select>
                 document.getElementById("id_cat").addEventListener("change", agregarCategoria);
