@@ -24,7 +24,7 @@ function ajustes_page() {
 
     // Obtener los valores actuales para mostrar en el formulario
     $asunto_actual = isset($config['email_asunto']) ? esc_attr($config['email_asunto']) : 'Gracias por contactar con nosotros';
-    $mensaje_actual = isset($config['email_cuerpo']) ? esc_textarea($config['email_cuerpo']) : 'Hemos recibido tu mensaje y contactaremos contigo en breve.';
+    $mensaje_actual = isset($config['email_cuerpo']) ? htmlspecialchars_decode(esc_textarea($config['email_cuerpo'])) : 'Hemos recibido tu mensaje y contactaremos contigo en breve.';
     ?>
 
     <div class="wrap">
