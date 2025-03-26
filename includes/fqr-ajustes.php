@@ -36,7 +36,7 @@ function ajustes_page() {
                 <input type="text" id="asunto" name="asunto" style="width: 40%; font-size: 16px; 
                 min-height:2rem;" placeholder="Indica el asunto" value="<?php echo $asunto_actual; ?>">
             </div>
-            <label for="mensaje_email"><strong>Mensaje por defecto:</strong></label>
+            <label for="mensaje_email"><strong>Cuerpo del mensaje por defecto:</strong></label>
             <div style="margin:6px 0;">
                 <?php
                 // Mostrar el editor avanzado de WordPress (TinyMCE)
