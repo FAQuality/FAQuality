@@ -19,7 +19,8 @@
 
 .shortcode {
     font-size: 1rem;
-    line-height: 1.5rem;
+    line-height: 1.3rem;
+    margin-top: 10px;
 }
 
 .boton-justify {
@@ -43,4 +44,54 @@
 .llaves {
     color: red;
     font-size: 1rem;
+}
+
+.max-900 {
+    max-width: 900px !important;
+}
+
+.shortcuts {
+    display: flex;
+    gap:2rem; 
+    max-width: 900px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+}
+
+.bg-white {
+    background-color: white;
+    border-radius: 16px;
+    padding: 1rem 2rem;
+    margin-top: 16px;
+}
+
+.contenido {
+    max-width: 900px;
+    margin: 1rem auto; 
+
+    p {
+        font-size: .9rem;
+    }
+
+    h3 {
+        font-size: 1.1rem
+    }
+
+    h2 {
+        font-size: 1.2rem
+    }
+
+    a {
+        font-size: .9rem;
+    }
+
+    label {
+        font-size: .9rem
+    }
+
+    li {
+        font-size: .9rem;
+        list-style:inside
+    }
 }

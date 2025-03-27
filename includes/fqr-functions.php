@@ -25,8 +25,8 @@ function fqr_Add_My_Admin_Link()
 
     add_submenu_page( //Menu categoria
         'FAQuality',           // El slug del menú principal al que pertenece
-        'Categoría', // Título de la página del submenú
-        'Categoría',              // Nombre del submenú que aparecerá en el menú
+        'Categorías', // Título de la página del submenú
+        'Categorías',              // Nombre del submenú que aparecerá en el menú
         'manage_options',       // Permiso requerido
         'FAQ_Categoria',   // Slug único para la página del submenú
         'FAQuality_categoria_page' // Función que renderiza la página del submenú
@@ -42,8 +42,8 @@ function fqr_Add_My_Admin_Link()
     );
     add_submenu_page( //Menu FAQ
         'FAQuality',   // El slug del menú principal al que pertenece
-        'FAQ', // Título de la página del submenú
-        'FAQ',  // Nombre del submenú que aparecerá en el menú
+        'FAQs', // Título de la página del submenú
+        'FAQs',  // Nombre del submenú que aparecerá en el menú
         'manage_options',  // Permiso requerido
         'FAQ',   // Slug único para la página del submenú
         'FAQuality_faq_page' // Función que renderiza la página del submenú

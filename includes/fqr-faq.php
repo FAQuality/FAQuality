@@ -85,13 +85,6 @@ class FAQ_List_Table extends WP_List_Table
         return $pregunta;
     }
 
-    //Generamos hueco para respuesta    
-    function column_respuesta($item)
-    {
-        $respuesta = wp_kses_post($item['respuesta']);
-        return sprintf('<div class="texto-truncado">%s </div>', $respuesta);
-    }
-
     function column_prioridad($item)
     {
         return sprintf(
@@ -191,6 +184,10 @@ function FAQuality_FAQ_page()
 
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
             FAQuality_edit_faq_page();
+
+            if(isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['paged'])) {
+                wp_redirect(admin_url('admin.php?page=FAQ&paged=2'));
+            } 
 
         } else if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
             dbMarkAsDeletedFAQ($_GET['id']);

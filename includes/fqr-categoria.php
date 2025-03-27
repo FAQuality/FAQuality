@@ -10,7 +10,8 @@ include_once './categoria.act.php';
 
 //Creamos la clase categoria_list_table que al extender de wp_list_table, cogemos lo que realiza la funcion
 //wp_list_table y la personalizamos 
-class Categoria_List_Table extends WP_List_Table {
+class Categoria_List_Table extends WP_List_Table
+{
 
     //Creamos un constructor con la informacion principal (ajax desactivado por ahora)
     function __construct()
@@ -31,7 +32,8 @@ class Categoria_List_Table extends WP_List_Table {
     }
 
     //Obtiene los datos de la base de datos 
-    function get_categorias($per_page, $page_number) {
+    function get_categorias($per_page, $page_number)
+    {
         global $wpdb;
         $prefijo = $wpdb->prefix . 'fqr_'; // Prefijo para todas las tablas
         $tabla_categoria = $prefijo . 'categoria';
@@ -134,8 +136,13 @@ function FAQuality_categoria_page()
 
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
             FAQuality_edit_categoria_page();
+
+            if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['paged'])) {
+                wp_redirect(admin_url('admin.php?page=FAQ_Categoria&paged=2'));
+            }
+
         } else if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
-           deleteCategoria();
+            deleteCategoria();
         }
     }
 
@@ -143,7 +150,7 @@ function FAQuality_categoria_page()
 
     echo '<div class="wrap"><div class="title-container"><h1 style="width: min-content;">Categorías</h1>';
     echo '<a class="button nuevo" href="?page=FAQ_New_Categoria">Nueva categoría</a></div>';
-    $categoria_table = new Categoria_List_Table(); 
+    $categoria_table = new Categoria_List_Table();
     $categoria_table->prepare_items();
     $categoria_table->display();
     echo '</div>';
@@ -152,10 +159,11 @@ function FAQuality_categoria_page()
     ?>
     <!-- Creamos la lista con las categorias que queremos seleccionar -->
     <div class="wrap">
-        <h1>Generar shortcode</h1>
+        <h1 style="margin-bottom: 12px;">Generar shortcode</h1>
         <!-- Lista dinamica -->
         <label for="id_cat" class="shortcode"><strong>Categorias:</strong> </label>
         <select name="id_cat" id="id_cat">
+            <option value="" disabled selected>Selecciona categoría</option>
             <?php
             //Comprueba si existe categoria alguna
             if ($categorias) {
@@ -169,12 +177,13 @@ function FAQuality_categoria_page()
             ?>
         </select><br>
         <!-- Contenedor de etiquetas, actualmente vacio ya que no se han agregado ninguna -->
-        <div id="tagContainer" style="margin-top: 10px;"></div>
+        <div id="tagContainer" style="margin-top: 6px;"></div>
 
         <!-- Shortcode dinámico -->
-        <!-- Contenedor del shortcode y botón -->       
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <p class="shortcode"><strong>Shortcode final: </strong><span id="shortcode">[FAQuality categorias="1"]</span></p>
+        <!-- Contenedor del shortcode y botón -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 0px;">
+            <p class="shortcode"><strong>Shortcode final: </strong><span id="shortcode">[FAQuality categorias=""]</span>
+            </p>
             <button onclick="copiarAlPortapapeles()" class="button nuevo">Copiar</button>
             <!-- Este span se mostrará después de copiar el texto -->
             <span id="copiadoMensaje" style="display: none; color: green;">¡Copiado!</span>
@@ -200,20 +209,30 @@ function FAQuality_categoria_page()
     <script>
         let categoriasSeleccionadas = []; // Array que almacena los IDs de las categorías seleccionadas
 
-        function actualizarShortcode() { //Coge las categorias seleccionadas y las inserta en la base del shortcode
-            document.getElementById("shortcode").innerText = '[FAQuality categorias="' + categoriasSeleccionadas.join(",") + '"]';
+        window.onload = function () {
+            actualizarSelect();
+        };
+
+        function actualizarShortcode() {
+            let shortcodeText = categoriasSeleccionadas.length > 0
+                ? '[FAQuality categorias="' + categoriasSeleccionadas.join(",") + '"]'
+                : '[FAQuality categorias=""]';
+            document.getElementById("shortcode").innerText = shortcodeText;
         }
 
-        function agregarCategoria() { //Llamamos a la funcion select para usarla
+        function agregarCategoria() {
             let select = document.getElementById("id_cat");
             let categoriaID = select.value;
             let categoriaTexto = select.options[select.selectedIndex].text;
 
-            // Evitar agregar duplicados o una opción vacía
-            if (categoriaID && !categoriasSeleccionadas.includes(categoriaID)) {
+            if (categoriaID === "") {
+                return; // No hacer nada si se selecciona "Selecciona categoría"
+            }
+
+            if (!categoriasSeleccionadas.includes(categoriaID)) {
                 categoriasSeleccionadas.push(categoriaID);
 
-                // Crear etiqueta visual con css escrito en la misma linea
+                // Crear etiqueta visual
                 let tagContainer = document.getElementById("tagContainer");
                 let tag = document.createElement("span");
                 tag.className = "tag";
@@ -222,16 +241,18 @@ function FAQuality_categoria_page()
                 tag.setAttribute("data-id", categoriaID);
                 tagContainer.appendChild(tag);
 
-                // Actualizar shortcode
                 actualizarShortcode();
+                actualizarSelect();
             }
+
+            // Resetear el select a "Selecciona categoría"
+            select.selectedIndex = 0;
         }
 
+
         function eliminarCategoria(id) {
-            // Remover la categoría del array
             categoriasSeleccionadas = categoriasSeleccionadas.filter(categoria => categoria !== id);
 
-            // Eliminar la etiqueta visual
             let tagContainer = document.getElementById("tagContainer");
             let tags = tagContainer.getElementsByClassName("tag");
             for (let tag of tags) {
@@ -241,33 +262,48 @@ function FAQuality_categoria_page()
                 }
             }
 
-            if (categoriasSeleccionadas == []) {
-                categoriasSeleccionadas == [1]
-            }
-
-            marcarComoSelected('1');
-            // Actualizar shortcode
             actualizarShortcode();
+            actualizarSelect();
         }
 
-        function marcarComoSelected(valorDeseado) {
-                    var select = document.getElementById('id_cat');
-                    var options = select.getElementsByTagName('option');
+        function actualizarSelect() {
+            let select = document.getElementById("id_cat");
+            let options = select.getElementsByTagName('option');
 
-                    for (var i = 0; i < options.length; i++) {
-                        if (options[i].value === valorDeseado) {
-                            options[i].selected = true;
-                            options[i].setAttribute('selected', 'selected');
-                        } else {
-                            options[i].selected = false;
-                            options[i].removeAttribute('selected');
-                        }
-                    }
+            for (let option of options) {
+                if (option.value === "") {
+                    option.style.display = '';
+                } else if (categoriasSeleccionadas.includes(option.value)) {
+                    option.style.display = 'none';
+                } else {
+                    option.style.display = '';
                 }
+            }
+
+            select.selectedIndex = 0; // Siempre volver a "Selecciona categoría"
+        }
+
+
+
+
+        function marcarComoSelected(valorDeseado) {
+            var select = document.getElementById('id_cat');
+            var options = select.getElementsByTagName('option');
+
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].value === valorDeseado) {
+                    options[i].selected = true;
+                    options[i].setAttribute('selected', 'selected');
+                } else {
+                    options[i].selected = false;
+                    options[i].removeAttribute('selected');
+                }
+            }
+        }
         // Evento para detectar cambios en el <select>
         document.getElementById("id_cat").addEventListener("change", agregarCategoria);
-        </script>       
-<?php
+    </script>
+    <?php
 }
 
 
