@@ -3,7 +3,7 @@
 
 Plugin Name: FAQuality
 Description: Plugin de FAQ jerárquico clasificado por categorías con formulario de contacto y correos automáticos personalizados. 
-Version: 1.0.0
+Version: 1.0.2
 Author: <a href="https://github.com/MiauDona">Fernando de Cisneros</a> y José Raúl Sánchez Serena
 
 */
