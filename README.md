@@ -29,13 +29,8 @@ FAQuality es un plugin para WordPress que permite gestionar y mostrar preguntas 
 
 1. Accede al menú del plugin en tu panel de administración.
 2. Crea nuevas preguntas frecuentes, asignándoles categorías y configurando su prioridad.
-3. Organiza las preguntas jerárquicamente asignando padres e hijas según sea necesario.
-4. Inserta el shortcode `[faquality-faq]` en cualquier página o entrada para mostrar tus FAQs.
-
-## 🌟 Shortcodes disponibles
-
-- `[faquality-faq]`: Muestra la lista completa de FAQs en tu sitio web.
-- `[faquality-category id="X"]`: Muestra las FAQs pertenecientes a una categoría específica (reemplaza `X` por el ID de la categoría).
+3. Organiza las preguntas jerárquicamente asignando padres y prioridad según sea necesario.
+4. Genera un shortcode con el generador para mostrar las preguntas según su categoría. Es obligatorio poner al menos una categoría
 
 ## 🧑‍💻 Contribuciones
 
