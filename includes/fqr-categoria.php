@@ -159,10 +159,11 @@ function FAQuality_categoria_page()
     ?>
     <!-- Creamos la lista con las categorias que queremos seleccionar -->
     <div class="wrap">
-        <h1>Generar shortcode</h1>
+        <h1 style="margin-bottom: 12px;">Generar shortcode</h1>
         <!-- Lista dinamica -->
         <label for="id_cat" class="shortcode"><strong>Categorias:</strong> </label>
         <select name="id_cat" id="id_cat">
+            <option value="" disabled selected>Selecciona categoría</option>
             <?php
             //Comprueba si existe categoria alguna
             if ($categorias) {
@@ -176,12 +177,12 @@ function FAQuality_categoria_page()
             ?>
         </select><br>
         <!-- Contenedor de etiquetas, actualmente vacio ya que no se han agregado ninguna -->
-        <div id="tagContainer" style="margin-top: 10px;"></div>
+        <div id="tagContainer" style="margin-top: 6px;"></div>
 
         <!-- Shortcode dinámico -->
         <!-- Contenedor del shortcode y botón -->
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <p class="shortcode"><strong>Shortcode final: </strong><span id="shortcode">[FAQuality categorias="1"]</span>
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 0px;">
+            <p class="shortcode"><strong>Shortcode final: </strong><span id="shortcode">[FAQuality categorias=""]</span>
             </p>
             <button onclick="copiarAlPortapapeles()" class="button nuevo">Copiar</button>
             <!-- Este span se mostrará después de copiar el texto -->
@@ -208,8 +209,15 @@ function FAQuality_categoria_page()
     <script>
         let categoriasSeleccionadas = []; // Array que almacena los IDs de las categorías seleccionadas
 
-        function actualizarShortcode() { //Coge las categorias seleccionadas y las inserta en la base del shortcode
-            document.getElementById("shortcode").innerText = '[FAQuality categorias="' + categoriasSeleccionadas.join(",") + '"]';
+        window.onload = function () {
+            actualizarSelect();
+        };
+
+        function actualizarShortcode() {
+            let shortcodeText = categoriasSeleccionadas.length > 0
+                ? '[FAQuality categorias="' + categoriasSeleccionadas.join(",") + '"]'
+                : '[FAQuality categorias=""]';
+            document.getElementById("shortcode").innerText = shortcodeText;
         }
 
         function agregarCategoria() {
@@ -217,27 +225,14 @@ function FAQuality_categoria_page()
             let categoriaID = select.value;
             let categoriaTexto = select.options[select.selectedIndex].text;
 
-            // Verificar si "Sin categoría" (ID 1) está seleccionado y es el único en el array
-            if (categoriasSeleccionadas.length === 1 && categoriasSeleccionadas[0] === '1' && categoriaID !== '1') {
-                // Eliminar "Sin categoría" del array
-                categoriasSeleccionadas = categoriasSeleccionadas.filter(categoria => categoria !== '1');
-
-                // Eliminar la etiqueta visual de "Sin categoría"
-                let tagContainer = document.getElementById("tagContainer");
-                let tags = tagContainer.getElementsByClassName("tag");
-                for (let tag of tags) {
-                    if (tag.getAttribute("data-id") === '1') {
-                        tag.remove();
-                        break;
-                    }
-                }
+            if (categoriaID === "") {
+                return; // No hacer nada si se selecciona "Selecciona categoría"
             }
 
-            // Evitar agregar duplicados o una opción vacía
-            if (categoriaID && !categoriasSeleccionadas.includes(categoriaID)) {
+            if (!categoriasSeleccionadas.includes(categoriaID)) {
                 categoriasSeleccionadas.push(categoriaID);
 
-                // Crear etiqueta visual con CSS en línea
+                // Crear etiqueta visual
                 let tagContainer = document.getElementById("tagContainer");
                 let tag = document.createElement("span");
                 tag.className = "tag";
@@ -246,16 +241,18 @@ function FAQuality_categoria_page()
                 tag.setAttribute("data-id", categoriaID);
                 tagContainer.appendChild(tag);
 
-                // Actualizar shortcode
                 actualizarShortcode();
+                actualizarSelect();
             }
+
+            // Resetear el select a "Selecciona categoría"
+            select.selectedIndex = 0;
         }
 
+
         function eliminarCategoria(id) {
-            // Remover la categoría del array
             categoriasSeleccionadas = categoriasSeleccionadas.filter(categoria => categoria !== id);
 
-            // Eliminar la etiqueta visual
             let tagContainer = document.getElementById("tagContainer");
             let tags = tagContainer.getElementsByClassName("tag");
             for (let tag of tags) {
@@ -265,21 +262,30 @@ function FAQuality_categoria_page()
                 }
             }
 
-            if (categoriasSeleccionadas.length === 0) {
-                categoriasSeleccionadas = ['1']; // Asignar directamente el array con '1'
+            actualizarShortcode();
+            actualizarSelect();
+        }
 
-                // Agregar etiqueta visual para la categoría '1'
-                let tag = document.createElement("span");
-                tag.className = "tag";
-                tag.style.cssText = "display: inline-block; background: #0073aa; color: white; padding: 5px 10px; margin: 5px; border-radius: 5px;";
-                tag.innerHTML = 'Sin categoría <button onclick="eliminarCategoria(\'1\')" style="background: red; border: none; color: white; padding: 2px 5px; cursor: pointer;">X</button>';
-                tag.setAttribute("data-id", '1');
-                tagContainer.appendChild(tag);
+        function actualizarSelect() {
+            let select = document.getElementById("id_cat");
+            let options = select.getElementsByTagName('option');
+
+            for (let option of options) {
+                if (option.value === "") {
+                    option.style.display = '';
+                } else if (categoriasSeleccionadas.includes(option.value)) {
+                    option.style.display = 'none';
+                } else {
+                    option.style.display = '';
+                }
             }
 
-            marcarComoSelected('1');
-            actualizarShortcode(); // Asegurarse de que esto se llame siempre
+            select.selectedIndex = 0; // Siempre volver a "Selecciona categoría"
         }
+
+
+
+
         function marcarComoSelected(valorDeseado) {
             var select = document.getElementById('id_cat');
             var options = select.getElementsByTagName('option');
