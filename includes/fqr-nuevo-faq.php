@@ -32,12 +32,12 @@ function FAQuality_new_faq_page()
         exit;
     }
 
-    $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHERE borrado=0");
+    $categorias = $wpdb->get_results("SELECT id, categoria FROM $tabla_categoria WHERE borrado=0 or id=1");
     $preguntas = $wpdb->get_results("
     SELECT id, pregunta, FK_idpadre 
     FROM $tabla_faq 
-    WHERE borrado = 0 
-    ORDER BY FK_idpadre, id
+    WHERE borrado = 0
+    ORDER BY FK_idpadre, id;
 ");
 
     function mostrar_opciones_jerarquicas($preguntas, $padre_id = 1, $nivel = 0)
@@ -60,7 +60,7 @@ function FAQuality_new_faq_page()
 
 
     //HTML para la base de pagina web con herramientas de wordpress
-?>
+    ?>
     <div class="wrap">
         <div class="boton-justify">
             <h1>Crear Nuevo FAQ</h1>
@@ -69,7 +69,9 @@ function FAQuality_new_faq_page()
         </div> <!-- Campo para el título -->
         <!-- Insertamos los datos con el nombre   -->
         <label for="titulo_faq"><strong>Pregunta:</strong></label><br>
-        <input type="text" id="pregunta" name="pregunta" style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;" placeholder="Escribe la pregunta aquí">
+        <input type="text" id="pregunta" name="pregunta"
+            style="width: 100%; font-size: 18px; padding: 10px; margin-bottom: 10px;"
+            placeholder="Escribe la pregunta aquí">
         <p id="error-pregunta" style="color: red; display: none;">Por favor, ingrese una pregunta.</p>
         <!-- Lista dinamica -->
         <div class="editable-grid">
@@ -84,7 +86,7 @@ function FAQuality_new_faq_page()
                             echo '<option value="' . esc_attr($categoria->id) . '">' . esc_html($categoria->categoria) . '</option>';
                         }
                     } else {
-                        echo '<option value="">No hay categorías disponibles</option>';
+                        echo '<option value="1">Sin categoría</option>';
                     }
                     ?>
                 </select>
@@ -97,8 +99,6 @@ function FAQuality_new_faq_page()
                     <?php
                     if ($preguntas) {
                         echo mostrar_opciones_jerarquicas($preguntas);
-                    } else {
-                        echo '<option value="">No hay preguntas disponibles</option>';
                     }
                     ?>
                 </select>
@@ -114,7 +114,7 @@ function FAQuality_new_faq_page()
         //Se empieza uso de php en el html       
         $contenido_por_defecto = ''; //Contenido que aparecera en el formulario ya escrito (vacio)
         $editor_id = 'respuesta'; //Base e identificador del editor de wp 
-
+    
         //Configuracion del editor
         $configuracion_editor = array(
             'textarea_name' => 'respuesta', //Define el contenido del campo y se manda a la BD
@@ -153,7 +153,7 @@ function FAQuality_new_faq_page()
         <input name="Guardar_Pregunta" type="submit" value="Guardar Pregunta" class="button button-primary">
         </form>
     </div>
-<?php
+    <?php
     // if(isset($_POST['Guardar_Pregunta'])) {
     //     $FK_idpadre=isset($_POST['id_padre']) == false ? 'NULL' : $_POST['id_padre'];
     //     wp_die(''. $FK_idpadre .'');
