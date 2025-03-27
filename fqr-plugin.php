@@ -1,9 +1,10 @@
 <?php
 /*
 
-Plugin Name: FAQuality PRERELEASE 0.99
-Description: Plugin de FAQ jerárquico clasificado por categorías con formulario de contacto. 
-Author: Fernando de Cisneros González y José Raúl Sánchez Serena
+Plugin Name: FAQuality
+Description: Plugin de FAQ jerárquico clasificado por categorías con formulario de contacto y correos automáticos personalizados. 
+Version: 1.0.0
+Author: <a href="https://github.com/MiauDona">Fernando de Cisneros</a> y José Raúl Sánchez Serena
 
 */
 

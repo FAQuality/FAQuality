@@ -3,7 +3,7 @@ function FAQuality_aboutus_page()
 {
 ?>
     <div class="wrap">
-        <div class="content">
+        <div class="contenido">
             <h1>Sobre nosotros</h1>
             <h2>¿Quiénes somos?</h2>
             <div>
@@ -12,6 +12,11 @@ function FAQuality_aboutus_page()
                 <p>Aunque en sus inicios no teníamos claro cómo sería el producto final, hoy podemos decir con orgullo que hemos logrado crear algo que cumple con los objetivos que nos propusimos. Sin embargo, sabemos que el desarrollo nunca se detiene. Siempre hay algo nuevo por aprender, algo que mejorar o agregar, y por eso seguimos comprometidos a seguir optimizando este plugin y manteniéndolo actualizado.</p>
                 <p>Este proyecto ha sido un viaje de crecimiento constante, y estamos muy agradecidos por el apoyo de todos los usuarios que nos han acompañado en este proceso. Cada feedback recibido nos ha ayudado a perfeccionar detalles y a asegurarnos de que este plugin sea una herramienta verdaderamente útil. No cabe duda de que esta versión final es solo un punto de partida, y aunque ya estamos muy contentos con el resultado, siempre estamos abiertos a nuevas ideas y mejoras.</p>
                 <p>Esperamos que este plugin te sea tan útil como a nosotros nos ha sido para aprender y desarrollar nuevas habilidades. ¡Gracias por confiar en nosotros y ser parte de esta experiencia!</p>
+            </div>
+            <h2>El plugin</h2>
+            <div>
+                <p>Para descargar el plugin puedes descargarlo desde GitHub</p>
+                <a href="https://github.com/FAQuality/FAQuality/releases/" class="button button-secondary">Descargar</a>
             </div>
         </div>
     </div>

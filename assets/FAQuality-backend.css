@@ -74,6 +74,10 @@
         font-size: .9rem;
     }
 
+    h1 {
+        font-size: 1.5rem !important;
+    }
+
     h3 {
         font-size: 1.1rem
     }
